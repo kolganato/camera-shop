@@ -7,6 +7,7 @@ import { AppRoute } from '../../config';
 import MainPage from '../../pages/main';
 import BasketPage from '../../pages/basket';
 import ProductPage from '../../pages/product';
+import Page404 from '../../pages/404';
 
 
 function App(): JSX.Element {
@@ -18,6 +19,7 @@ function App(): JSX.Element {
             <Route index element={<MainPage />} />
             <Route path={AppRoute.Basket} element={<BasketPage />} />
             <Route path={AppRoute.Product} element={<ProductPage />} />
+            <Route path={AppRoute.NotFound} element={<Page404 />} />
           </Route>
         </Routes>
       </HistoryRouter>
