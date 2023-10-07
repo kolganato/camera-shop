@@ -1,8 +1,17 @@
 export enum AppRoute {
   Root = '/',
-  Product = '/product',
+  Product = '/cameras',
   Basket = '/basket',
   NotFound = '*',
+}
+
+export enum APIRoute {
+  Products = '/cameras',
+  SimilarProducts = '/similar',
+  Promo = '/promo',
+  Reviews = '/reviews',
+  Coupons = '/coupons',
+  Orders = '/orders',
 }
 
 export enum NameSpace {
