@@ -5,7 +5,7 @@ import { ProductsState } from './products-slice';
 
 export const getProducts = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
-  (state: ProductsState) => state.products
+  (state: ProductsState) => state.products // добавить .filter и проверку через state.filter
 );
 
 export const getIsProductsLoading = createSelector(
