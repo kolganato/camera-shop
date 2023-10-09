@@ -12,3 +12,13 @@ export const getIsProductsLoading = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.isProductsLoading
 );
+
+export const getIsPromoLoading = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isPromoLoading
+);
+
+export const getPromoProducts = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.promo
+);

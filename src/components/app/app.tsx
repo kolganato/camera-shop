@@ -10,18 +10,22 @@ import ProductPage from '../../pages/product';
 import Page404 from '../../pages/404';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect } from 'react';
-import { getIsProductsLoading } from '../../store/products/selector';
-import { getProductsAction } from '../../store/api-actions';
+import { getIsProductsLoading, getIsPromoLoading } from '../../store/products/selector';
+import { getProductsAction, getPromoAction } from '../../store/api-actions';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
   const isProductsLoading = useAppSelector(getIsProductsLoading);
+  const isPromoLoading = useAppSelector(getIsPromoLoading);
 
   useEffect(() => {
     if (!isProductsLoading) {
       dispatch(getProductsAction());
     }
-  }, [isProductsLoading, dispatch]);
+    if(!isPromoLoading){
+      dispatch(getPromoAction());
+    }
+  }, [isProductsLoading, dispatch, isPromoLoading]);
 
   return (
     <HelmetProvider>

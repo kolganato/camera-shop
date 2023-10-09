@@ -5,7 +5,7 @@ import { Product } from '../../types/product';
 import { Promo } from '../../types/promo';
 import { ReviewData } from '../../types/review-data';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getProductsAction } from '../api-actions';
+import { getProductsAction, getPromoAction } from '../api-actions';
 
 export type ProductsState = {
   products: Product[];
@@ -17,6 +17,7 @@ export type ProductsState = {
   filter: Filter;
   hasError: boolean;
   isProductsLoading: boolean;
+  isPromoLoading: boolean;
 };
 
 const initialState: ProductsState = {
@@ -35,6 +36,7 @@ const initialState: ProductsState = {
   },
   hasError: false,
   isProductsLoading: false,
+  isPromoLoading: false,
 };
 
 const productSlice = createSlice({
@@ -56,6 +58,17 @@ const productSlice = createSlice({
       })
       .addCase(getProductsAction.rejected, (state) => {
         state.isProductsLoading = false;
+        state.hasError = true;
+      })
+      .addCase(getPromoAction.pending, (state) => {
+        state.hasError = false;
+      })
+      .addCase(getPromoAction.fulfilled, (state, { payload }) => {
+        state.promo = payload;
+        state.isPromoLoading = true;
+      })
+      .addCase(getPromoAction.rejected, (state) => {
+        state.isPromoLoading = false;
         state.hasError = true;
       });
   },
