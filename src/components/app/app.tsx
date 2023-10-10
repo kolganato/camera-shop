@@ -8,14 +8,30 @@ import MainPage from '../../pages/main';
 import BasketPage from '../../pages/basket';
 import ProductPage from '../../pages/product';
 import Page404 from '../../pages/404';
-
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useEffect } from 'react';
+import { getIsProductsLoading, getIsPromoLoading } from '../../store/products/selector';
+import { getProductsAction, getPromoAction } from '../../store/api-actions';
 
 function App(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const isProductsLoading = useAppSelector(getIsProductsLoading);
+  const isPromoLoading = useAppSelector(getIsPromoLoading);
+
+  useEffect(() => {
+    if (!isProductsLoading) {
+      dispatch(getProductsAction());
+    }
+    if(!isPromoLoading){
+      dispatch(getPromoAction());
+    }
+  }, [isProductsLoading, dispatch, isPromoLoading]);
+
   return (
     <HelmetProvider>
       <HistoryRouter history={browserHistory}>
         <Routes>
-          <Route path={AppRoute.Root} element={<Layout />} >
+          <Route path={AppRoute.Root} element={<Layout />}>
             <Route index element={<MainPage />} />
             <Route path={AppRoute.Basket} element={<BasketPage />} />
             <Route path={`${AppRoute.Product}/:id`} element={<ProductPage />} />

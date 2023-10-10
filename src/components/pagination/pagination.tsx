@@ -1,0 +1,93 @@
+import { Link, useSearchParams } from 'react-router-dom';
+import { AppRoute } from '../../config';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import {
+  getArrayCountPagesByProducts,
+  getCountPagesByProducts,
+  getCountProducts,
+} from '../../store/products/selector';
+import {
+  COUNT_PAGES_PAGIONATIONS_SHOW,
+  COUNT_PRODUCTS_SHOW,
+  DEFAULT_PAGE_NUMBER,
+  getStartPagePagination,
+} from '../../utils/common';
+import classNames from 'classnames';
+import { setCurrentPage } from '../../store/products/products-slice';
+
+function Pagination() {
+  const dispatch = useAppDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const countPages = useAppSelector(getCountPagesByProducts);
+  const arrayPages = useAppSelector(getArrayCountPagesByProducts);
+  const countProducts = useAppSelector(getCountProducts);
+  const currentPage = Number(searchParams.get('page')) || DEFAULT_PAGE_NUMBER;
+  const startPage = getStartPagePagination(currentPage, countPages, arrayPages);
+  const countShowPages = arrayPages.slice(startPage, currentPage + 2);
+
+  if (countProducts <= COUNT_PRODUCTS_SHOW) {
+    return;
+  }
+
+  const handleClick = (evt: React.MouseEvent<HTMLElement>, page: number): void => {
+    evt.preventDefault();
+    searchParams.set('page', String(page));
+    setSearchParams(searchParams);
+    dispatch(setCurrentPage(page));
+  };
+
+  return (
+    <div className="pagination">
+      <ul className="pagination__list">
+        {currentPage > DEFAULT_PAGE_NUMBER && (
+          <li className="pagination__item">
+            <Link
+              onClick={(evt) => {
+                evt.preventDefault();
+                handleClick(evt, startPage);
+              }}
+              className="pagination__link pagination__link--text"
+              to={`${AppRoute.Root}?page=${startPage}`}
+            >
+              Назад
+            </Link>
+          </li>
+        )}
+        {countShowPages &&
+          countShowPages.map((page) => (
+            <li className="pagination__item" key={page}>
+              <Link
+                onClick={(evt) => {
+                  handleClick(evt, page);
+                }}
+                className={classNames('pagination__link', {
+                  'pagination__link--active': Number(currentPage) === page,
+                })}
+                to={`${AppRoute.Root}?page=${page}`}
+              >
+                {page}
+              </Link>
+            </li>
+          ))}
+        {currentPage + COUNT_PAGES_PAGIONATIONS_SHOW <= countPages &&
+          countPages > COUNT_PAGES_PAGIONATIONS_SHOW && (
+          <li className="pagination__item">
+            <Link
+              onClick={(evt) => {
+                handleClick(evt, currentPage + COUNT_PAGES_PAGIONATIONS_SHOW);
+              }}
+              className="pagination__link pagination__link--text"
+              to={`${AppRoute.Root}?page=${
+                currentPage + COUNT_PAGES_PAGIONATIONS_SHOW
+              }`}
+            >
+                Далее
+            </Link>
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+}
+
+export default Pagination;
