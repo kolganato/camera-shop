@@ -1,5 +1,7 @@
 import { useAppSelector } from '../../hooks';
-import { getProducts } from '../../store/products/selector';
+import {
+  getProducts,
+} from '../../store/products/selector';
 import ProductCard from '../product-card';
 
 function ProductList(): JSX.Element {

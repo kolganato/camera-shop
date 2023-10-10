@@ -6,9 +6,11 @@ import { Promo } from '../../types/promo';
 import { ReviewData } from '../../types/review-data';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getProductsAction, getPromoAction } from '../api-actions';
+import { DEFAULT_PAGE_NUMBER } from '../../utils/common';
 
 export type ProductsState = {
   products: Product[];
+  currentPage: number;
   productsSilimar: Product[];
   promo: Promo[];
   reviews: ReviewData[];
@@ -22,6 +24,7 @@ export type ProductsState = {
 
 const initialState: ProductsState = {
   products: [],
+  currentPage: DEFAULT_PAGE_NUMBER,
   productsSilimar: [],
   promo: [],
   reviews: [],
@@ -45,6 +48,9 @@ const productSlice = createSlice({
   reducers: {
     setFilter: (state, { payload }: PayloadAction<Filter>) => {
       state.filter = payload;
+    },
+    setCurrentPage: (state, { payload }: PayloadAction<number>) => {
+      state.currentPage = payload;
     },
   },
   extraReducers(builder) {
@@ -74,6 +80,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { setFilter } = productSlice.actions;
+export const { setFilter, setCurrentPage } = productSlice.actions;
 
 export default productSlice.reducer;
