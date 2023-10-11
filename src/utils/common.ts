@@ -37,3 +37,4 @@ export const DEFAULT_PAGE_NUMBER = 1;
 export const COUNT_PAGES_PAGIONATIONS_SHOW = 3;
 
 export const getStartPagePagination = (currentPage: number, countPages: number, arrayPages: number[]) => currentPage + 2 <= countPages ? currentPage - DEFAULT_PAGE_NUMBER : arrayPages[arrayPages.length - 4];
+

@@ -1,16 +1,23 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../config';
+import { useAppSelector } from '../../hooks';
+import { getCountProductsInBasket } from '../../store/products/selector';
+
 function Header(): JSX.Element {
+  const countProductsInBasket = useAppSelector(getCountProductsInBasket);
+
   return (
     <header className="header" id="header">
       <div className="container">
-        <a
+        <Link
           className="header__logo"
-          href="index.html"
+          to={AppRoute.Root}
           aria-label="Переход на главную"
         >
           <svg width={100} height={36} aria-hidden="true">
             <use xlinkHref="#icon-logo" />
           </svg>
-        </a>
+        </Link>
         <nav className="main-nav header__main-nav">
           <ul className="main-nav__list">
             <li className="main-nav__item">
@@ -78,11 +85,12 @@ function Header(): JSX.Element {
             <span className="visually-hidden">Сбросить поиск</span>
           </button>
         </div>
-        <a className="header__basket-link" href="#">
+        <Link className="header__basket-link" to={AppRoute.Basket}>
           <svg width={16} height={16} aria-hidden="true">
             <use xlinkHref="#icon-basket" />
           </svg>
-        </a>
+          {countProductsInBasket > 0 && <span className="header__basket-count">{countProductsInBasket}</span>}
+        </Link>
       </div>
     </header>
   );
