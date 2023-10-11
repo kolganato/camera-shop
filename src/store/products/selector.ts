@@ -74,3 +74,23 @@ export const getCurrentPage = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.currentPage
 );
+
+export const getBasket = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.basket
+);
+
+export const getProductToAdd = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.productToAdd
+);
+
+export const getCountProductsInBasket = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.basket.length
+);
+
+export const getStatusShowModal = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isActiveModal
+);

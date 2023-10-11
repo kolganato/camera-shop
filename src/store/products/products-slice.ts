@@ -12,6 +12,8 @@ export type ProductsState = {
   products: Product[];
   currentPage: number;
   productsSilimar: Product[];
+  productToAdd: Product | null;
+  isActiveModal: boolean;
   promo: Promo[];
   reviews: ReviewData[];
   coupon: Coupon | null;
@@ -26,6 +28,8 @@ const initialState: ProductsState = {
   products: [],
   currentPage: DEFAULT_PAGE_NUMBER,
   productsSilimar: [],
+  productToAdd: null,
+  isActiveModal: false,
   promo: [],
   reviews: [],
   coupon: null,
@@ -51,6 +55,17 @@ const productSlice = createSlice({
     },
     setCurrentPage: (state, { payload }: PayloadAction<number>) => {
       state.currentPage = payload;
+    },
+    addProductToBasket: (state, { payload }: PayloadAction<Product['id']>) => {
+      state.basket = [...state.basket, payload];
+    },
+    setProductToAdd: (state, { payload }: PayloadAction<Product | null>) => {
+      state.productToAdd = payload;
+      if (payload === null) {
+        state.isActiveModal = false;
+      } else {
+        state.isActiveModal = true;
+      }
     },
   },
   extraReducers(builder) {
@@ -80,6 +95,11 @@ const productSlice = createSlice({
   },
 });
 
-export const { setFilter, setCurrentPage } = productSlice.actions;
+export const {
+  setFilter,
+  setCurrentPage,
+  setProductToAdd,
+  addProductToBasket,
+} = productSlice.actions;
 
 export default productSlice.reducer;

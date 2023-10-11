@@ -2,12 +2,13 @@ import { AppRoute } from '../../config';
 import { Product } from '../../types/product';
 import { Link } from 'react-router-dom';
 
-
 type ProductCardProps = {
   product: Product;
+  inBasket: boolean;
+  onClick: (product: Product) => void;
 };
 
-function ProductCard({ product }: ProductCardProps): JSX.Element {
+function ProductCard({ product, inBasket, onClick }: ProductCardProps): JSX.Element {
   const {
     id,
     name,
@@ -19,6 +20,10 @@ function ProductCard({ product }: ProductCardProps): JSX.Element {
     rating,
     reviewCount,
   } = product;
+
+  const handleClick = () => {
+    onClick(product);
+  };
 
   return (
     <div className="product-card">
@@ -41,7 +46,9 @@ function ProductCard({ product }: ProductCardProps): JSX.Element {
         <div className="rate product-card__rate">
           {Array.from({ length: 5 }, (_, index) => (
             <svg width={17} height={16} aria-hidden="true" key={index}>
-              <use xlinkHref={index < rating ? '#icon-full-star' : '#icon-star' } />
+              <use
+                xlinkHref={index < rating ? '#icon-full-star' : '#icon-star'}
+              />
             </svg>
           ))}
           <p className="visually-hidden">Рейтинг: {rating}</p>
@@ -57,18 +64,22 @@ function ProductCard({ product }: ProductCardProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button">
-          Купить
-        </button>
-        {/* <a
-          className="btn btn--purple-border product-card__btn product-card__btn--in-cart"
-          href="#"
-        >
-          <svg width={16} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-basket" />
-          </svg>
-          В корзине
-        </a> */}
+        {!inBasket && (
+          <button className="btn btn--purple product-card__btn" type="button" onClick={handleClick}>
+            Купить
+          </button>
+        )}
+        {inBasket && (
+          <a
+            className="btn btn--purple-border product-card__btn product-card__btn--in-cart"
+            href="#"
+          >
+            <svg width={16} height={16} aria-hidden="true">
+              <use xlinkHref="#icon-basket" />
+            </svg>
+            В корзине
+          </a>
+        )}
         <Link className="btn btn--transparent" to={`${AppRoute.Product}/${id}`}>
           Подробнее
         </Link>

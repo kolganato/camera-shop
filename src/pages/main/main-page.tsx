@@ -1,5 +1,7 @@
 import Banner from '../../components/banner';
 import Catalog from '../../components/catalog';
+import Modal from '../../components/modal/modal';
+
 
 function MainPage(): JSX.Element {
   return (
@@ -27,6 +29,7 @@ function MainPage(): JSX.Element {
         </div>
         <Catalog />
       </div>
+      <Modal />
     </main>
   );
 }
