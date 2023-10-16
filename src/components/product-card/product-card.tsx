@@ -1,14 +1,22 @@
 import { AppRoute } from '../../config';
 import { Product } from '../../types/product';
 import { Link } from 'react-router-dom';
+import Rating from '../rating';
+import classNames from 'classnames';
 
 type ProductCardProps = {
   product: Product;
   inBasket: boolean;
   onClick: (product: Product) => void;
+  isSimilar?: boolean;
 };
 
-function ProductCard({ product, inBasket, onClick }: ProductCardProps): JSX.Element {
+function ProductCard({
+  product,
+  inBasket,
+  onClick,
+  isSimilar,
+}: ProductCardProps): JSX.Element {
   const {
     id,
     name,
@@ -26,7 +34,14 @@ function ProductCard({ product, inBasket, onClick }: ProductCardProps): JSX.Elem
   };
 
   return (
-    <div className="product-card">
+    <div
+      className={classNames('product-card', {
+        'is-active': isSimilar,
+      })}
+      style={{
+        width: '100%'
+      }}
+    >
       <div className="product-card__img">
         <picture>
           <source
@@ -44,13 +59,7 @@ function ProductCard({ product, inBasket, onClick }: ProductCardProps): JSX.Elem
       </div>
       <div className="product-card__info">
         <div className="rate product-card__rate">
-          {Array.from({ length: 5 }, (_, index) => (
-            <svg width={17} height={16} aria-hidden="true" key={index}>
-              <use
-                xlinkHref={index < rating ? '#icon-full-star' : '#icon-star'}
-              />
-            </svg>
-          ))}
+          <Rating rating={rating} />
           <p className="visually-hidden">Рейтинг: {rating}</p>
           <p className="rate__count">
             <span className="visually-hidden">Всего оценок:</span>
@@ -65,7 +74,11 @@ function ProductCard({ product, inBasket, onClick }: ProductCardProps): JSX.Elem
       </div>
       <div className="product-card__buttons">
         {!inBasket && (
-          <button className="btn btn--purple product-card__btn" type="button" onClick={handleClick}>
+          <button
+            className="btn btn--purple product-card__btn"
+            type="button"
+            onClick={handleClick}
+          >
             Купить
           </button>
         )}

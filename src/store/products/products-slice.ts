@@ -5,13 +5,13 @@ import { Product } from '../../types/product';
 import { Promo } from '../../types/promo';
 import { ReviewData } from '../../types/review-data';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getProductsAction, getPromoAction } from '../api-actions';
+import { getProductsAction, getPromoAction, getReviews, getSimilarProductsAction } from '../api-actions';
 import { DEFAULT_PAGE_NUMBER } from '../../utils/common';
 
 export type ProductsState = {
   products: Product[];
   currentPage: number;
-  productsSilimar: Product[];
+  similarProducts: Product[];
   productToAdd: Product | null;
   isActiveModal: boolean;
   promo: Promo[];
@@ -22,12 +22,14 @@ export type ProductsState = {
   hasError: boolean;
   isProductsLoading: boolean;
   isPromoLoading: boolean;
+  isSimilarProductsLoading: boolean;
+  isReviewsLoading: boolean;
 };
 
 const initialState: ProductsState = {
   products: [],
   currentPage: DEFAULT_PAGE_NUMBER,
-  productsSilimar: [],
+  similarProducts: [],
   productToAdd: null,
   isActiveModal: false,
   promo: [],
@@ -44,6 +46,8 @@ const initialState: ProductsState = {
   hasError: false,
   isProductsLoading: false,
   isPromoLoading: false,
+  isSimilarProductsLoading: false,
+  isReviewsLoading: false,
 };
 
 const productSlice = createSlice({
@@ -66,6 +70,9 @@ const productSlice = createSlice({
       } else {
         state.isActiveModal = true;
       }
+    },
+    setStatusSimilarProducts: (state, { payload }: PayloadAction<boolean>) => {
+      state.isSimilarProductsLoading = payload;
     },
   },
   extraReducers(builder) {
@@ -91,6 +98,28 @@ const productSlice = createSlice({
       .addCase(getPromoAction.rejected, (state) => {
         state.isPromoLoading = false;
         state.hasError = true;
+      })
+      .addCase(getSimilarProductsAction.pending, (state) => {
+        state.hasError = false;
+      })
+      .addCase(getSimilarProductsAction.fulfilled, (state, { payload }) => {
+        state.similarProducts = payload;
+        state.isSimilarProductsLoading = true;
+      })
+      .addCase(getSimilarProductsAction.rejected, (state) => {
+        state.isSimilarProductsLoading = false;
+        state.hasError = true;
+      })
+      .addCase(getReviews.pending, (state) => {
+        state.hasError = false;
+      })
+      .addCase(getReviews.fulfilled, (state, { payload }) => {
+        state.reviews = payload;
+        state.isReviewsLoading = true;
+      })
+      .addCase(getReviews.rejected, (state) => {
+        state.isReviewsLoading = false;
+        state.hasError = true;
       });
   },
 });
@@ -100,6 +129,7 @@ export const {
   setCurrentPage,
   setProductToAdd,
   addProductToBasket,
+  setStatusSimilarProducts
 } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -1,4 +1,4 @@
-import { SortMethod, SortPriority } from '../config';
+import { SortMethod, SortPriority, Tab } from '../config';
 import { Product } from '../types/product';
 
 const sortLowToHigh = (a: Product, b: Product) => a.price - b.price;
@@ -36,5 +36,23 @@ export const DEFAULT_PAGE_NUMBER = 1;
 
 export const COUNT_PAGES_PAGIONATIONS_SHOW = 3;
 
-export const getStartPagePagination = (currentPage: number, countPages: number, arrayPages: number[]) => currentPage + 2 <= countPages ? currentPage - DEFAULT_PAGE_NUMBER : arrayPages[arrayPages.length - 4];
+export const getStartPagePagination = (
+  currentPage: number,
+  countPages: number,
+  arrayPages: number[]
+) =>
+  currentPage + 2 <= countPages
+    ? currentPage - DEFAULT_PAGE_NUMBER
+    : arrayPages[arrayPages.length - 4];
 
+export const getTab = <T = string | null | Tab>(tab: T) => {
+  if (tab === Tab.Characteristics) {
+    return Tab.Characteristics;
+  }
+
+  if (tab === Tab.Description) {
+    return Tab.Description;
+  }
+
+  return Tab.Characteristics;
+};

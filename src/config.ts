@@ -53,3 +53,8 @@ export enum SortPriority {
   Up = 'up',
   Down = 'down',
 }
+
+export enum Tab {
+  Characteristics = 'characteristics',
+  Description = 'description',
+}

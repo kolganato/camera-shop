@@ -4,7 +4,7 @@ import { State } from '..';
 import { ProductsState } from './products-slice';
 import { COUNT_PRODUCTS_SHOW, DEFAULT_PAGE_NUMBER } from '../../utils/common';
 
-export const getProducts = createSelector(
+export const getProductsShow = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => {
     const currentPage = state.currentPage;
@@ -20,6 +20,11 @@ export const getProducts = createSelector(
     );
   }
   // добавить .filter и проверку через state.filter
+);
+
+export const getProducts = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.products
 );
 
 export const getCountProducts = createSelector(
@@ -93,4 +98,24 @@ export const getCountProductsInBasket = createSelector(
 export const getStatusShowModal = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.isActiveModal
+);
+
+export const getSimilarProducts = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.similarProducts
+);
+
+export const getStatusSimilarProductsLoading = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isSimilarProductsLoading
+);
+
+export const getReviews = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.reviews
+);
+
+export const getStatusReviewsLoading = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isReviewsLoading
 );
