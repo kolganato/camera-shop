@@ -8,11 +8,13 @@ import { Product } from '../../types/product';
 type ModalAddProductProps = {
   product: Product;
   onClick: (showModalSuccess: boolean) => void;
+  onCloseModal: () => void;
 };
 
 function ModalAddProduct({
   product,
   onClick,
+  onCloseModal,
 }: ModalAddProductProps): JSX.Element {
   const dispatch = useAppDispatch();
   const {
@@ -85,6 +87,7 @@ function ModalAddProduct({
         aria-label="Закрыть попап"
         onClick={() => {
           dispatch(setProductToAdd(null));
+          onCloseModal();
         }}
       >
         <svg width={10} height={10} aria-hidden="true">

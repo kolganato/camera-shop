@@ -1,19 +1,27 @@
-import { NameSpace } from '../../config';
+import { NameSpace, Status } from '../../config';
 import { Coupon } from '../../types/coupon';
 import { Filter } from '../../types/fitler';
 import { Product } from '../../types/product';
 import { Promo } from '../../types/promo';
 import { ReviewData } from '../../types/review-data';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getProductsAction, getPromoAction } from '../api-actions';
+import {
+  fetchReviewAction,
+  getProductsAction,
+  getPromoAction,
+  getReviewsAction,
+  getSimilarProductsAction,
+} from '../api-actions';
 import { DEFAULT_PAGE_NUMBER } from '../../utils/common';
 
 export type ProductsState = {
   products: Product[];
   currentPage: number;
-  productsSilimar: Product[];
+  similarProducts: Product[];
   productToAdd: Product | null;
   isActiveModal: boolean;
+  isModalProduct: boolean;
+  isModalReview: boolean;
   promo: Promo[];
   reviews: ReviewData[];
   coupon: Coupon | null;
@@ -22,14 +30,19 @@ export type ProductsState = {
   hasError: boolean;
   isProductsLoading: boolean;
   isPromoLoading: boolean;
+  isSimilarProductsLoading: boolean;
+  isReviewsLoading: boolean;
+  statusReviewData: Status;
 };
 
 const initialState: ProductsState = {
   products: [],
   currentPage: DEFAULT_PAGE_NUMBER,
-  productsSilimar: [],
+  similarProducts: [],
   productToAdd: null,
   isActiveModal: false,
+  isModalProduct: false,
+  isModalReview: false,
   promo: [],
   reviews: [],
   coupon: null,
@@ -44,6 +57,9 @@ const initialState: ProductsState = {
   hasError: false,
   isProductsLoading: false,
   isPromoLoading: false,
+  isSimilarProductsLoading: false,
+  isReviewsLoading: false,
+  statusReviewData: Status.Idle,
 };
 
 const productSlice = createSlice({
@@ -66,6 +82,18 @@ const productSlice = createSlice({
       } else {
         state.isActiveModal = true;
       }
+    },
+    setStatusSimilarProducts: (state, { payload }: PayloadAction<boolean>) => {
+      state.isSimilarProductsLoading = payload;
+    },
+    setStatusActiveModal: (state, { payload }: PayloadAction<boolean>) => {
+      state.isActiveModal = payload;
+    },
+    setStatusModalProduct: (state, { payload }: PayloadAction<boolean>) => {
+      state.isModalProduct = payload;
+    },
+    setStatusModalReview: (state, { payload }: PayloadAction<boolean>) => {
+      state.isModalReview = payload;
     },
   },
   extraReducers(builder) {
@@ -91,6 +119,38 @@ const productSlice = createSlice({
       .addCase(getPromoAction.rejected, (state) => {
         state.isPromoLoading = false;
         state.hasError = true;
+      })
+      .addCase(getSimilarProductsAction.pending, (state) => {
+        state.hasError = false;
+      })
+      .addCase(getSimilarProductsAction.fulfilled, (state, { payload }) => {
+        state.similarProducts = payload;
+        state.isSimilarProductsLoading = true;
+      })
+      .addCase(getSimilarProductsAction.rejected, (state) => {
+        state.isSimilarProductsLoading = false;
+        state.hasError = true;
+      })
+      .addCase(getReviewsAction.pending, (state) => {
+        state.hasError = false;
+      })
+      .addCase(getReviewsAction.fulfilled, (state, { payload }) => {
+        state.reviews = payload;
+        state.isReviewsLoading = true;
+      })
+      .addCase(getReviewsAction.rejected, (state) => {
+        state.isReviewsLoading = false;
+        state.hasError = true;
+      })
+      .addCase(fetchReviewAction.pending, (state) => {
+        state.statusReviewData = Status.Loading;
+      })
+      .addCase(fetchReviewAction.fulfilled, (state, { payload }) => {
+        state.reviews = [...state.reviews, payload];
+        state.statusReviewData = Status.Success;
+      })
+      .addCase(fetchReviewAction.rejected, (state) => {
+        state.statusReviewData = Status.Error;
       });
   },
 });
@@ -100,6 +160,10 @@ export const {
   setCurrentPage,
   setProductToAdd,
   addProductToBasket,
+  setStatusSimilarProducts,
+  setStatusActiveModal,
+  setStatusModalProduct,
+  setStatusModalReview,
 } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -2,9 +2,9 @@ import { createSelector } from '@reduxjs/toolkit';
 import { NameSpace } from '../../config';
 import { State } from '..';
 import { ProductsState } from './products-slice';
-import { COUNT_PRODUCTS_SHOW, DEFAULT_PAGE_NUMBER } from '../../utils/common';
+import { COUNT_PRODUCTS_SHOW, DEFAULT_PAGE_NUMBER, sortReviewsByDate } from '../../utils/common';
 
-export const getProducts = createSelector(
+export const getProductsShow = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => {
     const currentPage = state.currentPage;
@@ -20,6 +20,11 @@ export const getProducts = createSelector(
     );
   }
   // добавить .filter и проверку через state.filter
+);
+
+export const getProducts = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.products
 );
 
 export const getCountProducts = createSelector(
@@ -93,4 +98,39 @@ export const getCountProductsInBasket = createSelector(
 export const getStatusShowModal = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.isActiveModal
+);
+
+export const getSimilarProducts = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.similarProducts
+);
+
+export const getStatusSimilarProductsLoading = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isSimilarProductsLoading
+);
+
+export const getReviews = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.reviews.slice().sort(sortReviewsByDate)
+);
+
+export const getStatusReviewsLoading = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isReviewsLoading
+);
+
+export const getIsModalProduct = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isModalProduct
+);
+
+export const getIsModalReview = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isModalReview
+);
+
+export const getStatusReviewData = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.statusReviewData
 );
