@@ -4,30 +4,23 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   getArrayCountPagesByProducts,
   getCountPagesByProducts,
-  getCountProducts,
 } from '../../store/products/selector';
 import {
   COUNT_PAGES_PAGIONATIONS_SHOW,
-  COUNT_PRODUCTS_SHOW,
   DEFAULT_PAGE_NUMBER,
   getStartPagePagination,
 } from '../../utils/common';
 import classNames from 'classnames';
 import { setCurrentPage } from '../../store/products/products-slice';
 
-function Pagination() {
+function Pagination(): JSX.Element {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const countPages = useAppSelector(getCountPagesByProducts);
   const arrayPages = useAppSelector(getArrayCountPagesByProducts);
-  const countProducts = useAppSelector(getCountProducts);
   const currentPage = Number(searchParams.get('page')) || DEFAULT_PAGE_NUMBER;
   const startPage = getStartPagePagination(currentPage, countPages, arrayPages);
   const countShowPages = arrayPages.slice(startPage, currentPage + 2);
-
-  if (countProducts <= COUNT_PRODUCTS_SHOW) {
-    return;
-  }
 
   const handleClick = (evt: React.MouseEvent<HTMLElement>, page: number): void => {
     evt.preventDefault();

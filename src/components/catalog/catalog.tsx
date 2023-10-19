@@ -1,9 +1,14 @@
+import { useAppSelector } from '../../hooks';
+import { getCountProducts } from '../../store/products/selector';
+import { COUNT_PRODUCTS_SHOW } from '../../utils/common';
 import Filter from '../filter';
 import Pagination from '../pagination';
 import ProductList from '../product-list';
 import Sort from '../sorting';
 
 function Catalog(): JSX.Element {
+  const countProducts = useAppSelector(getCountProducts);
+
   return (
     <section className="catalog">
       <div className="container">
@@ -15,7 +20,7 @@ function Catalog(): JSX.Element {
           <div className="catalog__content">
             <Sort />
             <ProductList />
-            <Pagination />
+            {!(countProducts <= COUNT_PRODUCTS_SHOW) && <Pagination /> }
           </div>
         </div>
       </div>

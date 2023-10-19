@@ -10,7 +10,7 @@ function Sorting(): JSX.Element {
                 type="radio"
                 id="sortPrice"
                 name="sort"
-                defaultChecked=""
+                defaultChecked
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>
@@ -25,7 +25,7 @@ function Sorting(): JSX.Element {
                 type="radio"
                 id="up"
                 name="sort-icon"
-                defaultChecked=""
+                defaultChecked
                 aria-label="По возрастанию"
               />
               <label htmlFor="up">
