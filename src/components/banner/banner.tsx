@@ -40,7 +40,7 @@ function Banner(): JSX.Element {
                 <span className="banner__text">
                   Профессиональная камера от&nbsp;известного производителя
                 </span>
-                <Link className="btn" to={`${AppRoute.Product}/${product.id}`}>
+                <Link className="btn" to={`${AppRoute.Catalog}/${product.id}`}>
                   Подробнее
                 </Link>
               </p>

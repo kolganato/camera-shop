@@ -34,7 +34,7 @@ function App(): JSX.Element {
           <Route path={AppRoute.Root} element={<Layout />}>
             <Route index element={<MainPage />} />
             <Route path={AppRoute.Basket} element={<BasketPage />} />
-            <Route path={`${AppRoute.Product}/:id`} element={<ProductPage />} />
+            <Route path={`${AppRoute.Catalog}/:id`} element={<ProductPage />} />
             <Route path={AppRoute.NotFound} element={<Page404 />} />
           </Route>
         </Routes>

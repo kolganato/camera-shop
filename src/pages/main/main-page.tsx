@@ -1,32 +1,20 @@
+import { Helmet } from 'react-helmet-async';
 import Banner from '../../components/banner';
+import BreadCrumbs from '../../components/breadcrumbs';
 import Catalog from '../../components/catalog';
 import Modal from '../../components/modal/modal';
+import { TitlesPages } from '../../config';
 
 
 function MainPage(): JSX.Element {
   return (
     <main>
+      <Helmet>
+        <title>{TitlesPages.Catalog}</title>
+      </Helmet>
       <Banner />
       <div className="page-content">
-        <div className="breadcrumbs">
-          <div className="container">
-            <ul className="breadcrumbs__list">
-              <li className="breadcrumbs__item">
-                <a className="breadcrumbs__link" href="index.html">
-                  Главная
-                  <svg width={5} height={8} aria-hidden="true">
-                    <use xlinkHref="#icon-arrow-mini" />
-                  </svg>
-                </a>
-              </li>
-              <li className="breadcrumbs__item">
-                <span className="breadcrumbs__link breadcrumbs__link--active">
-                  Каталог
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <BreadCrumbs title={TitlesPages.Catalog} />
         <Catalog />
       </div>
       <Modal />

@@ -13,12 +13,19 @@ import { AppRoute, Tab } from '../../config';
 import Spinner from '../../components/spinner';
 import Rating from '../../components/rating';
 import { Helmet } from 'react-helmet-async';
-import { getReviewsAction, getSimilarProductsAction } from '../../store/api-actions';
+import {
+  getReviewsAction,
+  getSimilarProductsAction,
+} from '../../store/api-actions';
 import SimilarProducts from '../../components/similar-products';
 import Modal from '../../components/modal/modal';
 import Reviews from '../../components/reviews';
 import classNames from 'classnames';
 import { getTab } from '../../utils/common';
+import {
+  setProductToAdd,
+  setStatusModalProduct,
+} from '../../store/products/products-slice';
 
 function ProductPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -27,8 +34,12 @@ function ProductPage(): JSX.Element {
   const product = useAppSelector(getProducts).find(
     (item) => item.id === Number(id)
   );
-  const similarProducts = useAppSelector(getSimilarProducts).filter((item) => item.id !== Number(id));
-  const isSimilarProductsLoading = useAppSelector(getStatusSimilarProductsLoading);
+  const similarProducts = useAppSelector(getSimilarProducts).filter(
+    (item) => item.id !== Number(id)
+  );
+  const isSimilarProductsLoading = useAppSelector(
+    getStatusSimilarProductsLoading
+  );
   const isReviewsLoading = useAppSelector(getStatusReviewsLoading);
 
   const [tab, setTub] = useState<Tab | string>(getTab(searchParams.get('tab')));
@@ -77,7 +88,7 @@ function ProductPage(): JSX.Element {
         <title>{name}</title>
       </Helmet>
       <div className="page-content">
-        <BreadCrumbs />
+        <BreadCrumbs title={name} />
         <div className="page-content__section">
           <section className="product">
             <div className="container">
@@ -110,7 +121,14 @@ function ProductPage(): JSX.Element {
                   <span className="visually-hidden">Цена:</span>
                   {price.toLocaleString('ru-RU')} ₽
                 </p>
-                <button className="btn btn--purple" type="button">
+                <button
+                  className="btn btn--purple"
+                  type="button"
+                  onClick={() => {
+                    dispatch(setProductToAdd(product));
+                    dispatch(setStatusModalProduct(true));
+                  }}
+                >
                   <svg width={24} height={16} aria-hidden="true">
                     <use xlinkHref="#icon-add-basket" />
                   </svg>
