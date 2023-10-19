@@ -1,17 +1,27 @@
 import { useState } from 'react';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getReviews } from '../../store/products/selector';
 import { ReviewData } from '../../types/review-data';
 import Rating from '../rating';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+import {
+  setStatusActiveModal,
+  setStatusModalReview,
+} from '../../store/products/products-slice';
 dayjs.locale('ru');
 
 function Reviews(): JSX.Element {
+  const dispatch = useAppDispatch();
   const reviews = useAppSelector(getReviews);
   const [reviewsShow, setReviewShow] = useState<ReviewData[]>(
     reviews.slice(0, 3)
   );
+
+  const handleClick = () => {
+    dispatch(setStatusActiveModal(true));
+    dispatch(setStatusModalReview(true));
+  };
 
   return (
     <div className="page-content__section">
@@ -19,7 +29,7 @@ function Reviews(): JSX.Element {
         <div className="container">
           <div className="page-content__headed">
             <h2 className="title title--h3">Отзывы</h2>
-            <button className="btn" type="button">
+            <button className="btn" type="button" onClick={handleClick}>
               Оставить свой отзыв
             </button>
           </div>
@@ -62,7 +72,8 @@ function Reviews(): JSX.Element {
               <button
                 className="btn btn--purple"
                 type="button"
-                onClick={() =>setReviewShow(reviews.slice(0, reviewsShow.length + 3))}
+                onClick={() =>
+                  setReviewShow(reviews.slice(0, reviewsShow.length + 3))}
               >
                 Показать больше отзывов
               </button>

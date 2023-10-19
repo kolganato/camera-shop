@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setProductToAdd } from '../../store/products/products-slice';
+import { setProductToAdd, setStatusModalProduct } from '../../store/products/products-slice';
 import { getBasket, getProductsShow } from '../../store/products/selector';
 import { Product } from '../../types/product';
 import ProductCard from '../product-card';
@@ -11,6 +11,7 @@ function ProductList(): JSX.Element {
 
   const handleClick = (product: Product) => {
     dispatch(setProductToAdd(product));
+    dispatch(setStatusModalProduct(true));
   };
 
   return (

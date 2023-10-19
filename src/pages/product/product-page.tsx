@@ -13,7 +13,7 @@ import { AppRoute, Tab } from '../../config';
 import Spinner from '../../components/spinner';
 import Rating from '../../components/rating';
 import { Helmet } from 'react-helmet-async';
-import { getReviews, getSimilarProductsAction } from '../../store/api-actions';
+import { getReviewsAction, getSimilarProductsAction } from '../../store/api-actions';
 import SimilarProducts from '../../components/similar-products';
 import Modal from '../../components/modal/modal';
 import Reviews from '../../components/reviews';
@@ -43,7 +43,7 @@ function ProductPage(): JSX.Element {
     }
 
     if (!isReviewsLoading) {
-      dispatch(getReviews(Number(id)));
+      dispatch(getReviewsAction(Number(id)));
     }
   }, [dispatch, product, isSimilarProductsLoading, isReviewsLoading, id]);
 
@@ -178,7 +178,7 @@ function ProductPage(): JSX.Element {
         {similarProducts && <SimilarProducts products={similarProducts} />}
         {isReviewsLoading && <Reviews />}
       </div>
-      <Modal />
+      <Modal id={product.id} />
     </main>
   );
 }

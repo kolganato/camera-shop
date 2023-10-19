@@ -1,5 +1,6 @@
 import { SortMethod, SortPriority, Tab } from '../config';
 import { Product } from '../types/product';
+import { ReviewData } from '../types/review-data';
 
 const sortLowToHigh = (a: Product, b: Product) => a.price - b.price;
 
@@ -8,6 +9,9 @@ const sortHighToLow = (a: Product, b: Product) => b.price - a.price;
 const sortByRatingUpToDown = (a: Product, b: Product) => b.rating - a.rating;
 
 const sortByRatingDownToUp = (a: Product, b: Product) => a.rating - b.rating;
+
+export const sortReviewsByDate = (a: ReviewData, b: ReviewData) => Date.parse(b.createAt) - Date.parse(a.createAt);
+
 
 type Sorting = (
   products: Product[],

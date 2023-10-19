@@ -58,3 +58,18 @@ export enum Tab {
   Characteristics = 'characteristics',
   Description = 'description',
 }
+
+export const RATING = {
+  5: 'отлично',
+  4: 'хорошо',
+  3: 'нормально',
+  2: 'плохо',
+  1: 'ужасно',
+};
+
+export enum Status {
+  Idle = 'idle',
+  Loading = 'loading',
+  Success = 'success',
+  Error = 'error',
+}

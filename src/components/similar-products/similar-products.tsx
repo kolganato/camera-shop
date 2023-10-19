@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setProductToAdd } from '../../store/products/products-slice';
+import { setProductToAdd, setStatusModalProduct } from '../../store/products/products-slice';
 import { getBasket } from '../../store/products/selector';
 import { Product } from '../../types/product';
 import ProductCard from '../product-card';
@@ -22,6 +22,7 @@ function SimilarProducts({ products }: SimilarProductsProps): JSX.Element {
 
   const handleClick = (product: Product) => {
     dispatch(setProductToAdd(product));
+    dispatch(setStatusModalProduct(true));
   };
 
   return (
@@ -30,20 +31,20 @@ function SimilarProducts({ products }: SimilarProductsProps): JSX.Element {
         <div className="container">
           <h2 className="title title--h3">Похожие товары</h2>
           <div className="product-similar__slider">
-            <Swiper
-              onSwiper={(swiper) => {
-                swiperRef.current = swiper;
-              }}
-              slidesPerView={3}
-              modules={[Navigation]}
-              spaceBetween={32}
-              slidesPerGroup={3}
-              navigation={{
-                prevEl: navigationPrevRef.current,
-                nextEl: navigationNextRef.current,
-              }}
-            >
-              <div className="product-similar__slider-list">
+            <div className="product-similar__slider-list">
+              <Swiper
+                onSwiper={(swiper) => {
+                  swiperRef.current = swiper;
+                }}
+                slidesPerView={3}
+                modules={[Navigation]}
+                spaceBetween={32}
+                slidesPerGroup={3}
+                navigation={{
+                  prevEl: navigationPrevRef.current,
+                  nextEl: navigationNextRef.current,
+                }}
+              >
                 {products.map((product) => (
                   <SwiperSlide key={product.id}>
                     <ProductCard
@@ -54,8 +55,8 @@ function SimilarProducts({ products }: SimilarProductsProps): JSX.Element {
                     />
                   </SwiperSlide>
                 ))}
-              </div>
-            </Swiper>
+              </Swiper>
+            </div>
             <button
               ref={navigationPrevRef}
               onClick={() => swiperRef.current?.slidePrev()}
