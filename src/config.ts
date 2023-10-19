@@ -1,8 +1,15 @@
 export enum AppRoute {
   Root = '/',
-  Product = '/cameras',
+  Catalog = '/cameras',
   Basket = '/basket',
   NotFound = '*',
+}
+
+export enum TitlesPages {
+  Root = 'Главная',
+  Catalog = 'Каталог',
+  Basket = 'Корзина',
+  NotFound = 'Страница не найдена',
 }
 
 export enum APIRoute {

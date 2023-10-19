@@ -93,7 +93,7 @@ function ProductCard({
             В корзине
           </a>
         )}
-        <Link className="btn btn--transparent" to={`${AppRoute.Product}/${id}`}>
+        <Link className="btn btn--transparent" to={`${AppRoute.Catalog}/${id}`}>
           Подробнее
         </Link>
       </div>
