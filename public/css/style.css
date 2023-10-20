@@ -3106,6 +3106,7 @@ button,
 }
 
 .slider-controls {
+  z-index: 2;
   position: absolute;
   top: 50%;
   display: -webkit-box;
@@ -3624,7 +3625,6 @@ button,
   .slider-controls:active {
     color: #7575e2;
     background-color: #a2a2ff;
-    pointer-events: none;
   }
 
   .link:hover,
