@@ -39,7 +39,7 @@ function SimilarProducts({ products }: SimilarProductsProps): JSX.Element {
                 slidesPerView={3}
                 modules={[Navigation]}
                 spaceBetween={32}
-                slidesPerGroup={3}
+                slidesPerGroup={1}
                 navigation={{
                   prevEl: navigationPrevRef.current,
                   nextEl: navigationNextRef.current,
@@ -64,9 +64,6 @@ function SimilarProducts({ products }: SimilarProductsProps): JSX.Element {
               type="button"
               aria-label="Предыдущий слайд"
               disabled={false}
-              style={{
-                zIndex: 2,
-              }}
             >
               <svg width={7} height={12} aria-hidden="true">
                 <use xlinkHref="#icon-arrow" />
@@ -78,9 +75,6 @@ function SimilarProducts({ products }: SimilarProductsProps): JSX.Element {
               className="slider-controls slider-controls--next"
               type="button"
               aria-label="Следующий слайд"
-              style={{
-                zIndex: 2,
-              }}
             >
               <svg width={7} height={12} aria-hidden="true">
                 <use xlinkHref="#icon-arrow" />
