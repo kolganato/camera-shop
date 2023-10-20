@@ -30,7 +30,7 @@ import {
 function ProductPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const product = useAppSelector(getProducts).find(
     (item) => item.id === Number(id)
   );
@@ -80,6 +80,8 @@ function ProductPage(): JSX.Element {
 
   const handleClickTab = (value: Tab): void => {
     setTub(value);
+    searchParams.set('tab', value);
+    setSearchParams(searchParams);
   };
 
   return (
