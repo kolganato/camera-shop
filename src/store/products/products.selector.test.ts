@@ -4,14 +4,36 @@ import {
   makeFakePromo,
   makeFakeReview,
 } from '../../test-mocks/test-mocks';
+import { COUNT_PRODUCTS_SHOW, DEFAULT_PAGE_NUMBER } from '../../utils/common';
 import { testInitialState } from './products-slice';
-import { getArrayCountPagesByProducts, getBasket, getCountPagesByProducts, getCountProducts, getCountProductsInBasket, getCurrentPage, getIsModalProduct, getIsModalReview, getIsProductsLoading, getIsPromoLoading, getProductToAdd, getProducts, getProductsShow, getPromoProducts, getReviews, getSimilarProducts, getStatusReviewData, getStatusReviewsLoading, getStatusShowModal, getStatusSimilarProductsLoading } from './selector';
+import {
+  getArrayCountPagesByProducts,
+  getBasket,
+  getCountPagesByProducts,
+  getCountProducts,
+  getCountProductsInBasket,
+  getCurrentPage,
+  getIsModalProduct,
+  getIsModalReview,
+  getIsProductsLoading,
+  getIsPromoLoading,
+  getProductToAdd,
+  getProducts,
+  getProductsShow,
+  getPromoProducts,
+  getReviews,
+  getSimilarProducts,
+  getStatusReviewData,
+  getStatusReviewsLoading,
+  getStatusShowModal,
+  getStatusSimilarProductsLoading,
+} from './selector';
 
 describe('Products selectors', () => {
   const state = {
     [NameSpace.Products]: {
       ...testInitialState,
-      products: [makeFakeProduct()],
+      products: Array.from({ length: 39 }, makeFakeProduct),
       reviews: [makeFakeReview()],
       similarProducts: [makeFakeProduct()],
       promo: [makeFakePromo()],
@@ -43,15 +65,25 @@ describe('Products selectors', () => {
   });
 
   it('Должен получить список товаров для отображения в каталоге на одной странице', () => {
-    const { products } = state[NameSpace.Products];
+    const { products, currentPage } = state[NameSpace.Products];
     const result = getProductsShow(state);
-    expect(result).toEqual(products);
+
+    if (currentPage === DEFAULT_PAGE_NUMBER) {
+      expect(result).toEqual(products.slice(0, COUNT_PRODUCTS_SHOW));
+    } else {
+      expect(result).toEqual(
+        products.slice(
+          (currentPage - 1) * COUNT_PRODUCTS_SHOW,
+          COUNT_PRODUCTS_SHOW * currentPage
+        )
+      );
+    }
   });
 
   it('Должен получить количество товаров', () => {
     const { products } = state[NameSpace.Products];
     const result = getCountProducts(state);
-    expect(result).toEqual(products);
+    expect(result).toEqual(products.length);
   });
 
   it('Должен получить статус загрузки товаров', () => {
@@ -69,13 +101,31 @@ describe('Products selectors', () => {
   it('Должен получить количество страниц пагинации относительно количества товаров', () => {
     const { products } = state[NameSpace.Products];
     const result = getCountPagesByProducts(state);
-    expect(result).toEqual(products);
+    const countProducts = products.length;
+    const countPages = countProducts % 9;
+
+    if (countProducts % 9 > 0) {
+      expect(result).toEqual(countPages + 1);
+    } else {
+      expect(result).toEqual(countPages);
+    }
   });
 
   it('Должен получить массив страниц пагинации', () => {
     const { products } = state[NameSpace.Products];
     const result = getArrayCountPagesByProducts(state);
-    expect(result).toEqual(products);
+    const countProducts = products.length;
+    const countPages = countProducts % 9;
+
+    if (countProducts % 9 > 0) {
+      expect(result).toEqual(
+        Array.from({ length: countPages + 1 }, (_, index) => index + 1)
+      );
+    } else {
+      expect(result).toEqual(
+        Array.from({ length: countPages }, (_, index) => index + 1)
+      );
+    }
   });
 
   it('Должен получить текущую страницу пагинации', () => {
@@ -99,7 +149,7 @@ describe('Products selectors', () => {
   it('Должен получить количество товаров в корзине', () => {
     const { basket } = state[NameSpace.Products];
     const result = getCountProductsInBasket(state);
-    expect(result).toEqual(basket);
+    expect(result).toEqual(basket.length);
   });
 
   it('Должен получить статус отображения модального окна', () => {
@@ -137,5 +187,4 @@ describe('Products selectors', () => {
     const result = getStatusReviewData(state);
     expect(result).toEqual(statusReviewData);
   });
-
 });
