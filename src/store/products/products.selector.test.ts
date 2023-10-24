@@ -34,9 +34,9 @@ describe('Products selectors', () => {
     [NameSpace.Products]: {
       ...testInitialState,
       products: Array.from({ length: 39 }, makeFakeProduct),
-      reviews: [makeFakeReview()],
-      similarProducts: [makeFakeProduct()],
-      promo: [makeFakePromo()],
+      reviews: Array.from({length: 83}, makeFakeReview),
+      similarProducts: Array.from({length: 12}, makeFakeProduct),
+      promo: Array.from({length: 3}, makeFakePromo),
     },
   };
 
