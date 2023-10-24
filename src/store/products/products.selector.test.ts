@@ -89,13 +89,13 @@ describe('Products selectors', () => {
   it('Должен получить статус загрузки товаров', () => {
     const { isProductsLoading } = state[NameSpace.Products];
     const result = getIsProductsLoading(state);
-    expect(result).toEqual(isProductsLoading);
+    expect(result).toBe(isProductsLoading);
   });
 
   it('Должен получить статус загрузки промо товаров', () => {
     const { isPromoLoading } = state[NameSpace.Products];
     const result = getIsPromoLoading(state);
-    expect(result).toEqual(isPromoLoading);
+    expect(result).toBe(isPromoLoading);
   });
 
   it('Должен получить количество страниц пагинации относительно количества товаров', () => {
@@ -105,9 +105,9 @@ describe('Products selectors', () => {
     const countPages = countProducts % 9;
 
     if (countProducts % 9 > 0) {
-      expect(result).toEqual(countPages + 1);
+      expect(result).toBe(countPages + 1);
     } else {
-      expect(result).toEqual(countPages);
+      expect(result).toBe(countPages);
     }
   });
 
@@ -131,7 +131,7 @@ describe('Products selectors', () => {
   it('Должен получить текущую страницу пагинации', () => {
     const { currentPage } = state[NameSpace.Products];
     const result = getCurrentPage(state);
-    expect(result).toEqual(currentPage);
+    expect(result).toBe(currentPage);
   });
 
   it('Должен получить массив id из корзины', () => {
@@ -149,37 +149,37 @@ describe('Products selectors', () => {
   it('Должен получить количество товаров в корзине', () => {
     const { basket } = state[NameSpace.Products];
     const result = getCountProductsInBasket(state);
-    expect(result).toEqual(basket.length);
+    expect(result).toBe(basket.length);
   });
 
   it('Должен получить статус отображения модального окна', () => {
     const { isActiveModal } = state[NameSpace.Products];
     const result = getStatusShowModal(state);
-    expect(result).toEqual(isActiveModal);
+    expect(result).toBe(isActiveModal);
   });
 
   it('Должен получить статус загрузки похожих товаров', () => {
     const { isSimilarProductsLoading } = state[NameSpace.Products];
     const result = getStatusSimilarProductsLoading(state);
-    expect(result).toEqual(isSimilarProductsLoading);
+    expect(result).toBe(isSimilarProductsLoading);
   });
 
   it('Должен получить статус загрузки отзывов', () => {
     const { isReviewsLoading } = state[NameSpace.Products];
     const result = getStatusReviewsLoading(state);
-    expect(result).toEqual(isReviewsLoading);
+    expect(result).toBe(isReviewsLoading);
   });
 
   it('Должен получить статус модального окна товара', () => {
     const { isModalProduct } = state[NameSpace.Products];
     const result = getIsModalProduct(state);
-    expect(result).toEqual(isModalProduct);
+    expect(result).toBe(isModalProduct);
   });
 
   it('Должен получить статус модального окна отзыва', () => {
     const { isModalReview } = state[NameSpace.Products];
     const result = getIsModalReview(state);
-    expect(result).toEqual(isModalReview);
+    expect(result).toBe(isModalReview);
   });
 
   it('Должен получить статус отправления отзыва', () => {
