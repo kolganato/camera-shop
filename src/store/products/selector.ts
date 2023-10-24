@@ -19,7 +19,6 @@ export const getProductsShow = createSelector(
       COUNT_PRODUCTS_SHOW * currentPage
     );
   }
-  // добавить .filter и проверку через state.filter
 );
 
 export const getProducts = createSelector(

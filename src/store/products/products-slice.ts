@@ -166,4 +166,6 @@ export const {
   setStatusModalReview,
 } = productSlice.actions;
 
+export { initialState as testInitialState };
+
 export default productSlice.reducer;
