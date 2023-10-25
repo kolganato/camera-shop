@@ -62,7 +62,7 @@ const initialState: ProductsState = {
   statusReviewData: Status.Idle,
 };
 
-const productSlice = createSlice({
+export const productsSlice = createSlice({
   name: NameSpace.Products,
   initialState,
   reducers: {
@@ -82,9 +82,6 @@ const productSlice = createSlice({
       } else {
         state.isActiveModal = true;
       }
-    },
-    setStatusSimilarProducts: (state, { payload }: PayloadAction<boolean>) => {
-      state.isSimilarProductsLoading = payload;
     },
     setStatusActiveModal: (state, { payload }: PayloadAction<boolean>) => {
       state.isActiveModal = payload;
@@ -160,12 +157,9 @@ export const {
   setCurrentPage,
   setProductToAdd,
   addProductToBasket,
-  setStatusSimilarProducts,
   setStatusActiveModal,
   setStatusModalProduct,
   setStatusModalReview,
-} = productSlice.actions;
+} = productsSlice.actions;
 
 export { initialState as testInitialState };
-
-export default productSlice.reducer;

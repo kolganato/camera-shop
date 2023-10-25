@@ -24,7 +24,7 @@ export const makeFakeProduct = (): Product =>
 
 export const makeFakeReview = (): ReviewData =>
   ({
-    id: faker.random.alpha({count: 4}),
+    id: faker.random.alpha({ count: 4 }),
     createAt: String(new Date()),
     cameraId: Number(faker.datatype.number(53)),
     userName: faker.name.firstName(),
@@ -34,11 +34,22 @@ export const makeFakeReview = (): ReviewData =>
     rating: faker.datatype.number(5),
   } as ReviewData);
 
-export const makeFakePromo = (): Promo => ({
-  id: Number(faker.random.alphaNumeric(3)),
-  name: faker.commerce.productName(),
-  previewImg: faker.image.technics(),
-  previewImg2x: faker.image.technics(),
-  previewImgWebp: faker.image.technics(),
-  previewImgWebp2x: faker.image.technics(),
-} as Promo);
+export const makeFakeReviewNew = (): ReviewData =>
+  ({
+    cameraId: Number(faker.datatype.number(53)),
+    userName: faker.name.firstName(),
+    advantage: faker.lorem.words(10),
+    disadvantage: faker.lorem.words(10),
+    review: faker.lorem.words(18),
+    rating: faker.datatype.number(5),
+  } as ReviewData);
+
+export const makeFakePromo = (): Promo =>
+  ({
+    id: Number(faker.random.alphaNumeric(3)),
+    name: faker.commerce.productName(),
+    previewImg: faker.image.technics(),
+    previewImg2x: faker.image.technics(),
+    previewImgWebp: faker.image.technics(),
+    previewImgWebp2x: faker.image.technics(),
+  } as Promo);
