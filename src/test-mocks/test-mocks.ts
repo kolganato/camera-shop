@@ -3,10 +3,16 @@ import { Product } from '../types/product';
 import faker from 'faker';
 import { ReviewData } from '../types/review-data';
 import { Promo } from '../types/promo';
+import { Action, ThunkDispatch } from '@reduxjs/toolkit';
+import { State } from '../store';
+import { createAPI } from '../services/api';
+
+export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>;
+export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }) => type);
 
 export const makeFakeProduct = (): Product =>
   ({
-    id: Number(faker.random.alphaNumeric(53)),
+    id: faker.datatype.number(),
     name: faker.commerce.productName(),
     vendorCode: faker.random.word(),
     type: ProductType.Collectible,
@@ -46,7 +52,7 @@ export const makeFakeReviewNew = (): ReviewData =>
 
 export const makeFakePromo = (): Promo =>
   ({
-    id: Number(faker.random.alphaNumeric(3)),
+    id: faker.datatype.number(),
     name: faker.commerce.productName(),
     previewImg: faker.image.technics(),
     previewImg2x: faker.image.technics(),
