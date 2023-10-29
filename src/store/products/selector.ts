@@ -129,6 +129,16 @@ export const getIsModalReview = createSelector(
   (state: ProductsState) => state.isModalReview
 );
 
+export const getIsModalProductSucess = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isModalProductSuccess
+);
+
+export const getIsModalReviewSuccess = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isModalReviewSuccess
+);
+
 export const getStatusReviewData = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.statusReviewData

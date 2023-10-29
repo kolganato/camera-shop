@@ -14,7 +14,9 @@ import {
   getCountProductsInBasket,
   getCurrentPage,
   getIsModalProduct,
+  getIsModalProductSucess,
   getIsModalReview,
+  getIsModalReviewSuccess,
   getIsProductsLoading,
   getIsPromoLoading,
   getProductToAdd,
@@ -180,6 +182,18 @@ describe('Products selectors', () => {
     const { isModalReview } = state[NameSpace.Products];
     const result = getIsModalReview(state);
     expect(result).toBe(isModalReview);
+  });
+
+  it('Должен получить статус модального окна успешного добавления продуктов в корзину', () => {
+    const { isModalProductSuccess } = state[NameSpace.Products];
+    const result = getIsModalProductSucess(state);
+    expect(result).toBe(isModalProductSuccess);
+  });
+
+  it('Должен получить статус модального окна успешного отправления отзыва', () => {
+    const { isModalReviewSuccess } = state[NameSpace.Products];
+    const result = getIsModalReviewSuccess(state);
+    expect(result).toBe(isModalReviewSuccess);
   });
 
   it('Должен получить статус отправления отзыва', () => {

@@ -1,8 +1,8 @@
 type ModalReviewSuccessProps = {
-  onCloseModal: () => void;
+  closeModal: () => void;
 }
 
-function ModalReviewSuccess({onCloseModal}: ModalReviewSuccessProps): JSX.Element {
+function ModalReviewSuccess({closeModal}: ModalReviewSuccessProps): JSX.Element {
   return (
     <div className="modal__content">
       <p className="title title--h4">Спасибо за отзыв</p>
@@ -13,12 +13,12 @@ function ModalReviewSuccess({onCloseModal}: ModalReviewSuccessProps): JSX.Elemen
         <button
           className="btn btn--purple modal__btn modal__btn--fit-width"
           type="button"
-          onClick={onCloseModal}
+          onClick={closeModal}
         >
           Вернуться к покупкам
         </button>
       </div>
-      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={onCloseModal}>
+      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={closeModal}>
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
         </svg>

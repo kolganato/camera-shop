@@ -2,19 +2,18 @@ import { useAppDispatch } from '../../hooks';
 import {
   addProductToBasket,
   setProductToAdd,
+  setStatusModalProductSuccess,
 } from '../../store/products/products-slice';
 import { Product } from '../../types/product';
 
 type ModalAddProductProps = {
   product: Product;
-  onClick: (showModalSuccess: boolean) => void;
-  onCloseModal: () => void;
+  closeModal: () => void;
 };
 
 function ModalAddProduct({
   product,
-  onClick,
-  onCloseModal,
+  closeModal
 }: ModalAddProductProps): JSX.Element {
   const dispatch = useAppDispatch();
   const {
@@ -72,7 +71,7 @@ function ModalAddProduct({
           type="button"
           onClick={() => {
             dispatch(addProductToBasket(id));
-            onClick(true);
+            dispatch(setStatusModalProductSuccess(true));
           }}
         >
           <svg width={24} height={16} aria-hidden="true">
@@ -87,7 +86,7 @@ function ModalAddProduct({
         aria-label="Закрыть попап"
         onClick={() => {
           dispatch(setProductToAdd(null));
-          onCloseModal();
+          closeModal();
         }}
       >
         <svg width={10} height={10} aria-hidden="true">

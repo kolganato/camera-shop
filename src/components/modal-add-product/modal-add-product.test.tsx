@@ -3,12 +3,15 @@ import { testInitialState } from '../../store/products/products-slice';
 import { render, screen } from '@testing-library/react';
 import ModalAddProduct from '.';
 import { makeFakeProduct } from '../../test-mocks/test-mocks';
+import { useState } from 'react';
 
 describe('Component: Modal', () => {
   it('Должен отрисовать компонент', () => {
     const mockProduct = makeFakeProduct();
+    const [isProductSuccess, setIsProductSuccess] = useState<boolean>(true);
+
     const modalTestId = 'modal-add-product';
-    const { withStoreComponent } = withStore(<ModalAddProduct product={mockProduct} onClick={} onCloseModal={} />, {
+    const { withStoreComponent } = withStore(<ModalAddProduct product={mockProduct} onClick={setIsProductSuccess} onCloseModal={} />, {
       PRODUCTS: {
         ...testInitialState,
         isActiveModal: true

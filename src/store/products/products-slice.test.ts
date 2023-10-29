@@ -23,7 +23,9 @@ import {
   setProductToAdd,
   setStatusActiveModal,
   setStatusModalProduct,
+  setStatusModalProductSuccess,
   setStatusModalReview,
+  setStatusModalReviewSuccess,
   setStatusReviewData,
   testInitialState,
 } from './products-slice';
@@ -114,6 +116,24 @@ describe('Products Slice', () => {
       setStatusModalReview(expectedStatusModalReview)
     );
     expect(result.isModalReview).toBe(expectedStatusModalReview);
+  });
+
+  it('Должен вернуть состояния модального окна успешного отправления отзыва', () => {
+    const expectedStatusModalProductSuccess = true;
+    const result = productsSlice.reducer(
+      state,
+      setStatusModalReviewSuccess(expectedStatusModalProductSuccess)
+    );
+    expect(result.isModalReviewSuccess).toBe(expectedStatusModalProductSuccess);
+  });
+
+  it('Должен вернуть состояния модального окна успешного добавления продукта в корзину', () => {
+    const expectedStatusModalReviewSuccess = true;
+    const result = productsSlice.reducer(
+      state,
+      setStatusModalProductSuccess(expectedStatusModalReviewSuccess)
+    );
+    expect(result.isModalProductSuccess).toBe(expectedStatusModalReviewSuccess);
   });
 
   it('Должен вернуть статус отправки отзыва', () => {

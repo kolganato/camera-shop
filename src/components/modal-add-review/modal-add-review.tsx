@@ -9,10 +9,10 @@ import { useAppDispatch } from '../../hooks';
 
 type ModalAddReviewProps = {
   productId: Product['id'];
-  onCloseModal: () => void;
+  closeModal: () => void;
 };
 
-function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.Element {
+function ModalAddReview({ productId, closeModal }: ModalAddReviewProps): JSX.Element {
   const [ratingShow, setRatingShow] = useState<number>(0);
   const dispatch = useAppDispatch();
 
@@ -239,7 +239,7 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
           </button>
         </form>
       </div>
-      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={onCloseModal}>
+      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={closeModal}>
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
         </svg>

@@ -4,15 +4,17 @@ import { useAppDispatch } from '../../hooks';
 import { setProductToAdd } from '../../store/products/products-slice';
 
 type ModalProps = {
-  onClick: (showModalSucces: boolean) => void;
+  // onClick: (showModalSucces: boolean) => void;
+  closeModal: () => void;
 };
 
-function ModalAddSuccess({ onClick }: ModalProps): JSX.Element {
+function ModalAddSuccess({ closeModal }: ModalProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const handleClick = () => {
     dispatch(setProductToAdd(null));
-    onClick(false);
+    // onClick(false);
+    closeModal();
   };
 
   return (

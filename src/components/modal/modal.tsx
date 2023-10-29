@@ -2,7 +2,9 @@ import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   getIsModalProduct,
+  getIsModalProductSucess,
   getIsModalReview,
+  getIsModalReviewSuccess,
   getProductToAdd,
   getStatusReviewData,
   getStatusShowModal,
@@ -15,7 +17,9 @@ import { Product } from '../../types/product';
 import {
   setStatusActiveModal,
   setStatusModalProduct,
+  setStatusModalProductSuccess,
   setStatusModalReview,
+  setStatusModalReviewSuccess,
   setStatusReviewData,
 } from '../../store/products/products-slice';
 import ModalReviewSuccess from '../modal-review-success';
@@ -29,19 +33,18 @@ function Modal({ id }: ModalProps): JSX.Element {
   const dispatch = useAppDispatch();
   const isActive = useAppSelector(getStatusShowModal);
   const productToAdd = useAppSelector(getProductToAdd);
-  const [isProductSuccess, setIsProductSuccess] = useState<boolean>(false);
-  const [isReviewSuccess, setIsReviewSuccess] = useState<boolean>(false);
   const statusData = useAppSelector(getStatusReviewData);
-
   const isModalProduct = useAppSelector(getIsModalProduct);
   const isModalReview = useAppSelector(getIsModalReview);
+  const isModalProductSuccess = useAppSelector(getIsModalProductSucess);
+  const isModalReviewSuccess = useAppSelector(getIsModalReviewSuccess);
 
   const closeModal = useCallback(() => {
     dispatch(setStatusActiveModal(false));
     dispatch(setStatusModalProduct(false));
     dispatch(setStatusModalReview(false));
-    setIsProductSuccess(false);
-    setIsReviewSuccess(false);
+    dispatch(setStatusModalProductSuccess(false));
+    dispatch(setStatusModalReviewSuccess(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -61,8 +64,8 @@ function Modal({ id }: ModalProps): JSX.Element {
 
   useEffect(() => {
     if (statusData === Status.Success) {
-      setIsReviewSuccess(true);
       dispatch(setStatusReviewData(Status.Idle));
+      dispatch(setStatusModalReviewSuccess(true));
     }
   }, [statusData, dispatch]);
 
@@ -70,30 +73,23 @@ function Modal({ id }: ModalProps): JSX.Element {
     <div
       className={classNames('modal', {
         'is-active': isActive,
-        'modal--narrow': isProductSuccess,
+        'modal--narrow': isModalProductSuccess,
       })}
       data-testid="modal"
     >
       <div className="modal__wrapper">
         <div className="modal__overlay" onClick={closeModal} />
-        {isModalProduct && productToAdd && !isProductSuccess && (
-          <ModalAddProduct
-            product={productToAdd}
-            onClick={setIsProductSuccess}
-            onCloseModal={closeModal}
-          />
+        {isModalProduct && productToAdd && !isModalProductSuccess && (
+          <ModalAddProduct product={productToAdd} closeModal={closeModal} />
         )}
-        {isModalProduct && productToAdd && isProductSuccess && (
-          <ModalAddSuccess onClick={setIsProductSuccess} />
+        {isModalProduct && productToAdd && isModalProductSuccess && (
+          <ModalAddSuccess closeModal={closeModal} />
         )}
-        {isModalReview && !isReviewSuccess && id && (
-          <ModalAddReview
-            productId={id}
-            onCloseModal={closeModal}
-          />
+        {isModalReview && !isModalReviewSuccess && id && (
+          <ModalAddReview productId={id} closeModal={closeModal} />
         )}
-        {isModalReview && isReviewSuccess && (
-          <ModalReviewSuccess onCloseModal={closeModal} />
+        {isModalReview && isModalReviewSuccess && (
+          <ModalReviewSuccess closeModal={closeModal} />
         )}
       </div>
     </div>
