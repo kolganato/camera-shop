@@ -1,4 +1,4 @@
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useClosingModal } from '../../hooks';
 import {
   addProductToBasket,
   setProductToAdd,
@@ -8,14 +8,14 @@ import { Product } from '../../types/product';
 
 type ModalAddProductProps = {
   product: Product;
-  closeModal: () => void;
 };
 
 function ModalAddProduct({
   product,
-  closeModal
 }: ModalAddProductProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const closeModal = useClosingModal;
+
   const {
     id,
     name,
@@ -31,7 +31,7 @@ function ModalAddProduct({
   } = product;
 
   return (
-    <div className="modal__content">
+    <div className="modal__content" data-testid="modal-add-product">
       <p className="title title--h4">Добавить товар в корзину</p>
       <div className="basket-item basket-item--short">
         <div className="basket-item__img">
@@ -86,7 +86,7 @@ function ModalAddProduct({
         aria-label="Закрыть попап"
         onClick={() => {
           dispatch(setProductToAdd(null));
-          closeModal();
+          closeModal(dispatch);
         }}
       >
         <svg width={10} height={10} aria-hidden="true">

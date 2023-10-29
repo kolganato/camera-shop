@@ -1,26 +1,37 @@
-import { withStore } from '../../utils/mock-component';
-import { testInitialState } from '../../store/products/products-slice';
-import { render, screen } from '@testing-library/react';
+import { withHistory, withStore } from '../../utils/mock-component';
+import {
+  setStatusActiveModal,
+  setStatusModalProduct,
+  setStatusModalProductSuccess,
+  setStatusModalReview,
+  setStatusModalReviewSuccess,
+  testInitialState,
+} from '../../store/products/products-slice';
+import { render, renderHook, screen } from '@testing-library/react';
 import ModalAddProduct from '.';
 import { makeFakeProduct } from '../../test-mocks/test-mocks';
-import { useState } from 'react';
+import { useAppDispatch, useClosingModal } from '../../hooks';
 
-describe('Component: Modal', () => {
+describe('Component: ModalAddProduct', () => {
   it('Должен отрисовать компонент', () => {
     const mockProduct = makeFakeProduct();
-    const [isProductSuccess, setIsProductSuccess] = useState<boolean>(true);
 
     const modalTestId = 'modal-add-product';
-    const { withStoreComponent } = withStore(<ModalAddProduct product={mockProduct} onClick={setIsProductSuccess} onCloseModal={} />, {
-      PRODUCTS: {
-        ...testInitialState,
-        isActiveModal: true
-      },
-    });
+    const { withStoreComponent } = withStore(
+      <ModalAddProduct product={mockProduct} closeModal={() => renderHook(() => useClosingModal())} />,
+      {
+        PRODUCTS: {
+          ...testInitialState,
+          isActiveModal: true,
+          isModalProduct: true,
+        },
+      }
+    );
 
-    render(withStoreComponent);
+    const preparedComponent = withHistory(withStoreComponent);
+
+    render(preparedComponent);
 
     expect(screen.getByTestId(modalTestId)).toBeInTheDocument();
-
   });
 });

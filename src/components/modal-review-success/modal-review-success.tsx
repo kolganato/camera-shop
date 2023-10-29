@@ -1,8 +1,8 @@
-type ModalReviewSuccessProps = {
-  closeModal: () => void;
-}
+import { useAppDispatch, useClosingModal } from '../../hooks';
 
-function ModalReviewSuccess({closeModal}: ModalReviewSuccessProps): JSX.Element {
+function ModalReviewSuccess(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const closeModal = useClosingModal;
   return (
     <div className="modal__content">
       <p className="title title--h4">Спасибо за отзыв</p>
@@ -13,12 +13,17 @@ function ModalReviewSuccess({closeModal}: ModalReviewSuccessProps): JSX.Element 
         <button
           className="btn btn--purple modal__btn modal__btn--fit-width"
           type="button"
-          onClick={closeModal}
+          onClick={() => closeModal(dispatch)}
         >
           Вернуться к покупкам
         </button>
       </div>
-      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={closeModal}>
+      <button
+        className="cross-btn"
+        type="button"
+        aria-label="Закрыть попап"
+        onClick={() => closeModal(dispatch)}
+      >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
         </svg>

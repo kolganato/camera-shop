@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector, useClosingModal } from '../../hooks';
 import {
   getIsModalProduct,
   getIsModalProductSucess,
@@ -10,15 +10,11 @@ import {
   getStatusShowModal,
 } from '../../store/products/selector';
 import ModalAddProduct from '../modal-add-product';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import ModalAddSuccess from '../modal-add-success';
 import ModalAddReview from '../modal-add-review';
 import { Product } from '../../types/product';
 import {
-  setStatusActiveModal,
-  setStatusModalProduct,
-  setStatusModalProductSuccess,
-  setStatusModalReview,
   setStatusModalReviewSuccess,
   setStatusReviewData,
 } from '../../store/products/products-slice';
@@ -39,19 +35,13 @@ function Modal({ id }: ModalProps): JSX.Element {
   const isModalProductSuccess = useAppSelector(getIsModalProductSucess);
   const isModalReviewSuccess = useAppSelector(getIsModalReviewSuccess);
 
-  const closeModal = useCallback(() => {
-    dispatch(setStatusActiveModal(false));
-    dispatch(setStatusModalProduct(false));
-    dispatch(setStatusModalReview(false));
-    dispatch(setStatusModalProductSuccess(false));
-    dispatch(setStatusModalReviewSuccess(false));
-  }, [dispatch]);
+  const closeModal = useClosingModal;
 
   useEffect(() => {
     if (isActive) {
       const handleEsc = (evt: KeyboardEvent) => {
         if (evt.key === 'Escape') {
-          closeModal();
+          closeModal(dispatch);
         }
       };
       window.addEventListener('keydown', handleEsc);
@@ -78,18 +68,18 @@ function Modal({ id }: ModalProps): JSX.Element {
       data-testid="modal"
     >
       <div className="modal__wrapper">
-        <div className="modal__overlay" onClick={closeModal} />
+        <div className="modal__overlay" onClick={() => closeModal(dispatch)} />
         {isModalProduct && productToAdd && !isModalProductSuccess && (
-          <ModalAddProduct product={productToAdd} closeModal={closeModal} />
+          <ModalAddProduct product={productToAdd} />
         )}
         {isModalProduct && productToAdd && isModalProductSuccess && (
-          <ModalAddSuccess closeModal={closeModal} />
+          <ModalAddSuccess />
         )}
         {isModalReview && !isModalReviewSuccess && id && (
-          <ModalAddReview productId={id} closeModal={closeModal} />
+          <ModalAddReview productId={id}/>
         )}
         {isModalReview && isModalReviewSuccess && (
-          <ModalReviewSuccess closeModal={closeModal} />
+          <ModalReviewSuccess />
         )}
       </div>
     </div>

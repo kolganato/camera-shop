@@ -5,16 +5,18 @@ import { Fragment, useState } from 'react';
 import classNames from 'classnames';
 import { Product } from '../../types/product';
 import { fetchReviewAction } from '../../store/api-actions';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useClosingModal } from '../../hooks';
 
 type ModalAddReviewProps = {
   productId: Product['id'];
-  closeModal: () => void;
 };
 
-function ModalAddReview({ productId, closeModal }: ModalAddReviewProps): JSX.Element {
+function ModalAddReview({
+  productId,
+}: ModalAddReviewProps): JSX.Element {
   const [ratingShow, setRatingShow] = useState<number>(0);
   const dispatch = useAppDispatch();
+  const closeModal = useClosingModal;
 
   const {
     register,
@@ -23,21 +25,20 @@ function ModalAddReview({ productId, closeModal }: ModalAddReviewProps): JSX.Ele
   } = useForm<Review>();
 
   const onSubmit: SubmitHandler<Review> = (data: Review) => {
-    dispatch(fetchReviewAction({
-      ...data,
-      rating: Number(data.rating),
-      cameraId: productId,
-    }));
+    dispatch(
+      fetchReviewAction({
+        ...data,
+        rating: Number(data.rating),
+        cameraId: productId,
+      })
+    );
   };
 
   return (
     <div className="modal__content">
       <p className="title title--h4">Оставить отзыв</p>
       <div className="form-review">
-        <form
-          action=''
-          onSubmit={(evt) => void handleSubmit(onSubmit)(evt)}
-        >
+        <form action="" onSubmit={(evt) => void handleSubmit(onSubmit)(evt)}>
           <div className="form-review__rate">
             <fieldset
               className={classNames('rate form-review__item', {
@@ -239,7 +240,12 @@ function ModalAddReview({ productId, closeModal }: ModalAddReviewProps): JSX.Ele
           </button>
         </form>
       </div>
-      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={closeModal}>
+      <button
+        className="cross-btn"
+        type="button"
+        aria-label="Закрыть попап"
+        onClick={() => closeModal(dispatch)}
+      >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
         </svg>

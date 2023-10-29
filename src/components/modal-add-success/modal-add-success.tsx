@@ -1,20 +1,16 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../config';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useClosingModal } from '../../hooks';
 import { setProductToAdd } from '../../store/products/products-slice';
 
-type ModalProps = {
-  // onClick: (showModalSucces: boolean) => void;
-  closeModal: () => void;
-};
-
-function ModalAddSuccess({ closeModal }: ModalProps): JSX.Element {
+function ModalAddSuccess(): JSX.Element {
   const dispatch = useAppDispatch();
+  const closeModal = useClosingModal;
 
   const handleClick = () => {
     dispatch(setProductToAdd(null));
     // onClick(false);
-    closeModal();
+    closeModal(dispatch);
   };
 
   return (
