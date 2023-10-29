@@ -7,7 +7,7 @@ function Header(): JSX.Element {
   const countProductsInBasket = useAppSelector(getCountProductsInBasket);
 
   return (
-    <header className="header" id="header">
+    <header className="header" id="header" data-testid="header">
       <div className="container">
         <Link
           className="header__logo"
@@ -89,7 +89,7 @@ function Header(): JSX.Element {
           <svg width={16} height={16} aria-hidden="true">
             <use xlinkHref="#icon-basket" />
           </svg>
-          {countProductsInBasket > 0 && <span className="header__basket-count">{countProductsInBasket}</span>}
+          {countProductsInBasket > 0 && <span className="header__basket-count" data-testid="basket-count">{countProductsInBasket}</span>}
         </Link>
       </div>
     </header>

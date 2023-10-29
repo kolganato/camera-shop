@@ -24,6 +24,7 @@ import {
   setStatusActiveModal,
   setStatusModalProduct,
   setStatusModalReview,
+  setStatusReviewData,
   testInitialState,
 } from './products-slice';
 
@@ -113,6 +114,15 @@ describe('Products Slice', () => {
       setStatusModalReview(expectedStatusModalReview)
     );
     expect(result.isModalReview).toBe(expectedStatusModalReview);
+  });
+
+  it('Должен вернуть статус отправки отзыва', () => {
+    const expectedStatusReviewData = Status.Idle;
+    const result = productsSlice.reducer(
+      state,
+      setStatusReviewData(expectedStatusReviewData)
+    );
+    expect(result.statusReviewData).toBe(expectedStatusReviewData);
   });
 
   it('Должен вернуть флаг процесса загрузки true и ошибки false', () => {

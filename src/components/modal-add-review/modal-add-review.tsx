@@ -1,53 +1,15 @@
-import { SubmitHandler, UseFormRegister, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Review } from '../../types/review';
 import { RATING } from '../../config';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import classNames from 'classnames';
 import { Product } from '../../types/product';
 import { fetchReviewAction } from '../../store/api-actions';
 import { useAppDispatch } from '../../hooks';
 
-type RatingElementProps = {
-  rating: number;
-  title: string;
-  setRatingShow: (rating: number) => void;
-  register: UseFormRegister<Review>;
-};
-
-function FormRatingElement({
-  rating,
-  title,
-  setRatingShow,
-  register,
-}: RatingElementProps): JSX.Element {
-  return (
-    <>
-      <input
-        className="visually-hidden"
-        id={`star-${rating}`}
-        {...register('rating', {
-          required: true,
-          value: Number(rating),
-          min: 1,
-          max: 5,
-        })}
-        type="radio"
-        defaultValue={rating}
-      />
-      <label
-        className="rate__label"
-        htmlFor={`star-${rating}`}
-        title={title}
-        onClick={() => setRatingShow(Number(rating))}
-      />
-    </>
-  );
-}
-
 type ModalAddReviewProps = {
   productId: Product['id'];
   onCloseModal: () => void;
-  onSuccess: (isSuccess: boolean) => void;
 };
 
 function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.Element {
@@ -92,13 +54,26 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
                 <div className="rate__group">
                   {Array.from(Object.entries(RATING))
                     .map(([rating, title]) => (
-                      <FormRatingElement
-                        key={rating}
-                        rating={Number(rating)}
-                        title={title}
-                        setRatingShow={setRatingShow}
-                        register={register}
-                      />
+                      <Fragment key={rating}>
+                        <input
+                          className="visually-hidden"
+                          id={`star-${rating}`}
+                          {...register('rating', {
+                            required: true,
+                            value: Number(rating),
+                            min: 1,
+                            max: 5,
+                          })}
+                          type="radio"
+                          defaultValue={rating}
+                        />
+                        <label
+                          className="rate__label"
+                          htmlFor={`star-${rating}`}
+                          title={title}
+                          onClick={() => setRatingShow(Number(rating))}
+                        />
+                      </Fragment>
                     ))
                     .reverse()}
                 </div>

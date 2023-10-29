@@ -36,7 +36,7 @@ function Reviews(): JSX.Element {
           <ul className="review-block__list">
             {reviews &&
               reviewsShow.map((review) => (
-                <li className="review-card" key={review.id}>
+                <li className="review-card" key={review.id} data-testid="review">
                   <div className="review-card__head">
                     <p className="title title--h4">{review.userName}</p>
                     <time

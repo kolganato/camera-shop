@@ -92,6 +92,9 @@ export const productsSlice = createSlice({
     setStatusModalReview: (state, { payload }: PayloadAction<boolean>) => {
       state.isModalReview = payload;
     },
+    setStatusReviewData: (state, {payload}: PayloadAction<Status>) => {
+      state.statusReviewData = payload;
+    }
   },
   extraReducers(builder) {
     builder
@@ -160,6 +163,7 @@ export const {
   setStatusActiveModal,
   setStatusModalProduct,
   setStatusModalReview,
+  setStatusReviewData
 } = productsSlice.actions;
 
 export { initialState as testInitialState };
