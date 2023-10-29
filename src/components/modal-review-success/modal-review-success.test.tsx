@@ -3,22 +3,20 @@ import {
   testInitialState,
 } from '../../store/products/products-slice';
 import { render, screen } from '@testing-library/react';
-import ModalAddProduct from '.';
-import { makeFakeProduct } from '../../test-mocks/test-mocks';
+import ModalReviewSuccess from '.';
 
-describe('Component: ModalAddProduct', () => {
+describe('Component: ModalReviewSuccess', () => {
   it('Должен отрисовать компонент', () => {
-    const mockProduct = makeFakeProduct();
-
-    const modalTestId = 'modal-add-product';
+    const expectedText = 'Спасибо за отзыв';
+    const modalTestId = 'modal-review-success';
     const { withStoreComponent } = withStore(
-      <ModalAddProduct product={mockProduct} />,
+      <ModalReviewSuccess />,
       {
         PRODUCTS: {
           ...testInitialState,
           isActiveModal: true,
-          isModalProduct: true,
-          productToAdd: mockProduct,
+          isModalReview: true,
+          isModalReviewSuccess: true,
         },
       }
     );
@@ -26,6 +24,7 @@ describe('Component: ModalAddProduct', () => {
     render(withStoreComponent);
 
     expect(screen.getByTestId(modalTestId)).toBeInTheDocument();
-    expect(screen.getByText(mockProduct.name)).toBeInTheDocument();
+    expect(screen.getByText(expectedText)).toBeInTheDocument();
+
   });
 });

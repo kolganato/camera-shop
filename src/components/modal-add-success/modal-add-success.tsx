@@ -9,12 +9,11 @@ function ModalAddSuccess(): JSX.Element {
 
   const handleClick = () => {
     dispatch(setProductToAdd(null));
-    // onClick(false);
     closeModal(dispatch);
   };
 
   return (
-    <div className="modal__content">
+    <div className="modal__content" data-testid="modal-add-success">
       <p className="title title--h4">Товар успешно добавлен в корзину</p>
       <svg className="modal__icon" width={86} height={80} aria-hidden="true">
         <use xlinkHref="#icon-success" />

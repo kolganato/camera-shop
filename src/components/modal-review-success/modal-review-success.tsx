@@ -4,7 +4,7 @@ function ModalReviewSuccess(): JSX.Element {
   const dispatch = useAppDispatch();
   const closeModal = useClosingModal;
   return (
-    <div className="modal__content">
+    <div className="modal__content" data-testid="modal-review-success">
       <p className="title title--h4">Спасибо за отзыв</p>
       <svg className="modal__icon" width={80} height={78} aria-hidden="true">
         <use xlinkHref="#icon-review-success" />
