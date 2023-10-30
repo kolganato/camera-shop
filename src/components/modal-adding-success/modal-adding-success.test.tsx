@@ -4,16 +4,16 @@ import {
 } from '../../store/products/products-slice';
 import { render, screen } from '@testing-library/react';
 import { makeFakeProduct } from '../../test-mocks/test-mocks';
-import ModalAddSuccess from '.';
+import ModalAddingSuccess from '.';
 
-describe('Component: ModalAddSuccess', () => {
+describe('Component: ModalAddingSuccess', () => {
   it('Должен отрисовать компонент', () => {
     const mockProduct = makeFakeProduct();
     const expectedText = 'Товар успешно добавлен в корзину';
 
     const modalTestId = 'modal-add-success';
     const { withStoreComponent } = withStore(
-      <ModalAddSuccess />,
+      <ModalAddingSuccess />,
       {
         PRODUCTS: {
           ...testInitialState,

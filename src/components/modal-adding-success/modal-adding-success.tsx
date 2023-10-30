@@ -3,7 +3,7 @@ import { AppRoute } from '../../config';
 import { useAppDispatch, useClosingModal } from '../../hooks';
 import { setProductToAdd } from '../../store/products/products-slice';
 
-function ModalAddSuccess(): JSX.Element {
+function ModalAddingSuccess(): JSX.Element {
   const dispatch = useAppDispatch();
   const closeModal = useClosingModal;
 
@@ -44,4 +44,4 @@ function ModalAddSuccess(): JSX.Element {
   );
 }
 
-export default ModalAddSuccess;
+export default ModalAddingSuccess;

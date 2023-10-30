@@ -9,10 +9,10 @@ import {
   getStatusReviewData,
   getStatusShowModal,
 } from '../../store/products/selector';
-import ModalAddProduct from '../modal-add-product';
+import ModalAddingProduct from '../modal-adding-product';
 import { useEffect } from 'react';
-import ModalAddSuccess from '../modal-add-success';
-import ModalAddReview from '../modal-add-review';
+import ModalAddingSuccess from '../modal-adding-success';
+import ModalAddingReview from '../modal-adding-review';
 import { Product } from '../../types/product';
 import {
   setStatusModalReviewSuccess,
@@ -70,13 +70,13 @@ function Modal({ id }: ModalProps): JSX.Element {
       <div className="modal__wrapper">
         <div className="modal__overlay" onClick={() => closeModal(dispatch)} />
         {isModalProduct && productToAdd && !isModalProductSuccess && (
-          <ModalAddProduct product={productToAdd} />
+          <ModalAddingProduct product={productToAdd} />
         )}
         {isModalProduct && productToAdd && isModalProductSuccess && (
-          <ModalAddSuccess />
+          <ModalAddingSuccess />
         )}
         {isModalReview && !isModalReviewSuccess && id && (
-          <ModalAddReview productId={id}/>
+          <ModalAddingReview productId={id}/>
         )}
         {isModalReview && isModalReviewSuccess && (
           <ModalReviewSuccess />

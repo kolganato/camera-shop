@@ -5,9 +5,9 @@ import { testInitialState } from '../../store/products/products-slice';
 import { APIRoute } from '../../config';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ModalAddReview from '.';
+import ModalAddingReview from '.';
 
-describe('Component: ModalAddReview', () => {
+describe('Component: ModalAddingReview', () => {
   it('Должен отрисовать правильно', () => {
     const expectedText = 'Оставить отзыв';
     const expectedCount = 5;
@@ -26,7 +26,7 @@ describe('Component: ModalAddReview', () => {
     };
 
     const { withStoreComponent } = withStore(
-      <ModalAddReview productId={mockReview.cameraId} />,
+      <ModalAddingReview productId={mockReview.cameraId} />,
       {
         PRODUCTS: {
           ...testInitialState,
@@ -67,7 +67,7 @@ describe('Component: ModalAddReview', () => {
     const reviewElementValue = mockReview.review;
 
     const { withStoreComponent, mockAxiosAdapter } = withStore(
-      <ModalAddReview productId={mockReview.cameraId} />,
+      <ModalAddingReview productId={mockReview.cameraId} />,
       {}
     );
 

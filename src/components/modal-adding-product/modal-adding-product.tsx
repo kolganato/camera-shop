@@ -6,13 +6,13 @@ import {
 } from '../../store/products/products-slice';
 import { Product } from '../../types/product';
 
-type ModalAddProductProps = {
+type ModalAddingProductProps = {
   product: Product;
 };
 
-function ModalAddProduct({
+function ModalAddingProduct({
   product,
-}: ModalAddProductProps): JSX.Element {
+}: ModalAddingProductProps): JSX.Element {
   const dispatch = useAppDispatch();
   const closeModal = useClosingModal;
 
@@ -97,4 +97,4 @@ function ModalAddProduct({
   );
 }
 
-export default ModalAddProduct;
+export default ModalAddingProduct;

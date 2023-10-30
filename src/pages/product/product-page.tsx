@@ -85,7 +85,7 @@ function ProductPage(): JSX.Element {
   };
 
   return (
-    <main>
+    <main data-testid="product-page">
       <Helmet>
         <title>{name}</title>
       </Helmet>

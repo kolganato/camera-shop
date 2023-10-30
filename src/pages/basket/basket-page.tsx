@@ -4,7 +4,7 @@ import { TitlesPages } from '../../config';
 
 function BasketPage(): JSX.Element {
   return (
-    <main>
+    <main data-testid="basket">
       <Helmet>
         <title>{TitlesPages.Basket}</title>
       </Helmet>

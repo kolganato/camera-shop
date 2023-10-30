@@ -7,13 +7,13 @@ import { Product } from '../../types/product';
 import { fetchReviewAction } from '../../store/api-actions';
 import { useAppDispatch, useClosingModal } from '../../hooks';
 
-type ModalAddReviewProps = {
+type ModalAddingReviewProps = {
   productId: Product['id'];
 };
 
-function ModalAddReview({
+function ModalAddingReview({
   productId,
-}: ModalAddReviewProps): JSX.Element {
+}: ModalAddingReviewProps): JSX.Element {
   const [ratingShow, setRatingShow] = useState<number>(0);
   const dispatch = useAppDispatch();
   const closeModal = useClosingModal;
@@ -260,4 +260,4 @@ function ModalAddReview({
   );
 }
 
-export default ModalAddReview;
+export default ModalAddingReview;

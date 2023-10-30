@@ -3,16 +3,16 @@ import {
   testInitialState,
 } from '../../store/products/products-slice';
 import { render, screen } from '@testing-library/react';
-import ModalAddProduct from '.';
+import ModalAddingProduct from '.';
 import { makeFakeProduct } from '../../test-mocks/test-mocks';
 
-describe('Component: ModalAddProduct', () => {
+describe('Component: ModalAddingProduct', () => {
   it('Должен отрисовать компонент', () => {
     const mockProduct = makeFakeProduct();
 
     const modalTestId = 'modal-add-product';
     const { withStoreComponent } = withStore(
-      <ModalAddProduct product={mockProduct} />,
+      <ModalAddingProduct product={mockProduct} />,
       {
         PRODUCTS: {
           ...testInitialState,
