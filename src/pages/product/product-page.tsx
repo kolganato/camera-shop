@@ -10,7 +10,6 @@ import {
 import { useEffect, useState } from 'react';
 import { redirectToRoute } from '../../store/actions';
 import { AppRoute, Tab } from '../../config';
-import Spinner from '../../components/spinner';
 import Rating from '../../components/rating';
 import { Helmet } from 'react-helmet-async';
 import {
@@ -26,6 +25,7 @@ import {
   setProductToAdd,
   setStatusModalProduct,
 } from '../../store/products/products-slice';
+import Page404 from '../404';
 
 function ProductPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -49,17 +49,17 @@ function ProductPage(): JSX.Element {
       dispatch(redirectToRoute(AppRoute.NotFound));
     }
 
-    if (!isSimilarProductsLoading) {
+    if (!isSimilarProductsLoading && product?.id) {
       dispatch(getSimilarProductsAction(Number(id)));
     }
 
-    if (!isReviewsLoading) {
+    if (!isReviewsLoading && product?.id) {
       dispatch(getReviewsAction(Number(id)));
     }
   }, [dispatch, product, isSimilarProductsLoading, isReviewsLoading, id]);
 
   if (!product) {
-    return <Spinner />;
+    return <Page404 />;
   }
 
   const {
@@ -85,7 +85,7 @@ function ProductPage(): JSX.Element {
   };
 
   return (
-    <main>
+    <main data-testid="product-page">
       <Helmet>
         <title>{name}</title>
       </Helmet>

@@ -80,3 +80,5 @@ export enum Status {
   Success = 'success',
   Error = 'error',
 }
+
+export const TIME_TO_RENDER_PAGE = 250;

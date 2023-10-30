@@ -2,7 +2,7 @@ import styles from './spinner.module.css';
 
 function Spinner(): JSX.Element {
   return (
-    <div className={styles.spinner}>
+    <div className={styles.spinner} data-testid="spinner">
       <svg
         className={styles.pl}
         viewBox="0 0 160 160"

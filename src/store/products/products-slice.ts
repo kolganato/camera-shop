@@ -22,6 +22,8 @@ export type ProductsState = {
   isActiveModal: boolean;
   isModalProduct: boolean;
   isModalReview: boolean;
+  isModalProductSuccess: boolean;
+  isModalReviewSuccess: boolean;
   promo: Promo[];
   reviews: ReviewData[];
   coupon: Coupon | null;
@@ -43,6 +45,8 @@ const initialState: ProductsState = {
   isActiveModal: false,
   isModalProduct: false,
   isModalReview: false,
+  isModalProductSuccess: false,
+  isModalReviewSuccess: false,
   promo: [],
   reviews: [],
   coupon: null,
@@ -62,7 +66,7 @@ const initialState: ProductsState = {
   statusReviewData: Status.Idle,
 };
 
-const productSlice = createSlice({
+export const productsSlice = createSlice({
   name: NameSpace.Products,
   initialState,
   reducers: {
@@ -83,9 +87,6 @@ const productSlice = createSlice({
         state.isActiveModal = true;
       }
     },
-    setStatusSimilarProducts: (state, { payload }: PayloadAction<boolean>) => {
-      state.isSimilarProductsLoading = payload;
-    },
     setStatusActiveModal: (state, { payload }: PayloadAction<boolean>) => {
       state.isActiveModal = payload;
     },
@@ -94,6 +95,21 @@ const productSlice = createSlice({
     },
     setStatusModalReview: (state, { payload }: PayloadAction<boolean>) => {
       state.isModalReview = payload;
+    },
+    setStatusModalProductSuccess: (
+      state,
+      { payload }: PayloadAction<boolean>
+    ) => {
+      state.isModalProductSuccess = payload;
+    },
+    setStatusModalReviewSuccess: (
+      state,
+      { payload }: PayloadAction<boolean>
+    ) => {
+      state.isModalReviewSuccess = payload;
+    },
+    setStatusReviewData: (state, { payload }: PayloadAction<Status>) => {
+      state.statusReviewData = payload;
     },
   },
   extraReducers(builder) {
@@ -160,10 +176,12 @@ export const {
   setCurrentPage,
   setProductToAdd,
   addProductToBasket,
-  setStatusSimilarProducts,
   setStatusActiveModal,
   setStatusModalProduct,
   setStatusModalReview,
-} = productSlice.actions;
+  setStatusReviewData,
+  setStatusModalProductSuccess,
+  setStatusModalReviewSuccess,
+} = productsSlice.actions;
 
-export default productSlice.reducer;
+export { initialState as testInitialState };

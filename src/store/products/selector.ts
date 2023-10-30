@@ -19,7 +19,6 @@ export const getProductsShow = createSelector(
       COUNT_PRODUCTS_SHOW * currentPage
     );
   }
-  // добавить .filter и проверку через state.filter
 );
 
 export const getProducts = createSelector(
@@ -128,6 +127,16 @@ export const getIsModalProduct = createSelector(
 export const getIsModalReview = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.isModalReview
+);
+
+export const getIsModalProductSucess = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isModalProductSuccess
+);
+
+export const getIsModalReviewSuccess = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isModalReviewSuccess
 );
 
 export const getStatusReviewData = createSelector(

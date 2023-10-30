@@ -1,58 +1,22 @@
-import { SubmitHandler, UseFormRegister, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Review } from '../../types/review';
 import { RATING } from '../../config';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import classNames from 'classnames';
 import { Product } from '../../types/product';
 import { fetchReviewAction } from '../../store/api-actions';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useClosingModal } from '../../hooks';
 
-type RatingElementProps = {
-  rating: number;
-  title: string;
-  setRatingShow: (rating: number) => void;
-  register: UseFormRegister<Review>;
-};
-
-function FormRatingElement({
-  rating,
-  title,
-  setRatingShow,
-  register,
-}: RatingElementProps): JSX.Element {
-  return (
-    <>
-      <input
-        className="visually-hidden"
-        id={`star-${rating}`}
-        {...register('rating', {
-          required: true,
-          value: Number(rating),
-          min: 1,
-          max: 5,
-        })}
-        type="radio"
-        defaultValue={rating}
-      />
-      <label
-        className="rate__label"
-        htmlFor={`star-${rating}`}
-        title={title}
-        onClick={() => setRatingShow(Number(rating))}
-      />
-    </>
-  );
-}
-
-type ModalAddReviewProps = {
+type ModalAddingReviewProps = {
   productId: Product['id'];
-  onCloseModal: () => void;
-  onSuccess: (isSuccess: boolean) => void;
 };
 
-function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.Element {
+function ModalAddingReview({
+  productId,
+}: ModalAddingReviewProps): JSX.Element {
   const [ratingShow, setRatingShow] = useState<number>(0);
   const dispatch = useAppDispatch();
+  const closeModal = useClosingModal;
 
   const {
     register,
@@ -61,21 +25,20 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
   } = useForm<Review>();
 
   const onSubmit: SubmitHandler<Review> = (data: Review) => {
-    dispatch(fetchReviewAction({
-      ...data,
-      rating: Number(data.rating),
-      cameraId: productId,
-    }));
+    dispatch(
+      fetchReviewAction({
+        ...data,
+        rating: Number(data.rating),
+        cameraId: productId,
+      })
+    );
   };
 
   return (
     <div className="modal__content">
       <p className="title title--h4">Оставить отзыв</p>
       <div className="form-review">
-        <form
-          action=''
-          onSubmit={(evt) => void handleSubmit(onSubmit)(evt)}
-        >
+        <form action="" onSubmit={(evt) => void handleSubmit(onSubmit)(evt)}>
           <div className="form-review__rate">
             <fieldset
               className={classNames('rate form-review__item', {
@@ -92,13 +55,27 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
                 <div className="rate__group">
                   {Array.from(Object.entries(RATING))
                     .map(([rating, title]) => (
-                      <FormRatingElement
-                        key={rating}
-                        rating={Number(rating)}
-                        title={title}
-                        setRatingShow={setRatingShow}
-                        register={register}
-                      />
+                      <Fragment key={rating}>
+                        <input
+                          className="visually-hidden"
+                          id={`star-${rating}`}
+                          {...register('rating', {
+                            required: true,
+                            value: Number(rating),
+                            min: 1,
+                            max: 5,
+                          })}
+                          type="radio"
+                          defaultValue={rating}
+                          data-testid={`star-${rating}`}
+                        />
+                        <label
+                          className="rate__label"
+                          htmlFor={`star-${rating}`}
+                          title={title}
+                          onClick={() => setRatingShow(Number(rating))}
+                        />
+                      </Fragment>
                     ))
                     .reverse()}
                 </div>
@@ -139,6 +116,7 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
                     },
                   })}
                   placeholder="Введите ваше имя"
+                  data-testid="userElement"
                 />
               </label>
               <p className="custom-input__error">Нужно указать имя</p>
@@ -176,6 +154,7 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
                     },
                   })}
                   placeholder="Основные преимущества товара"
+                  data-testid="advantageElement"
                 />
               </label>
               <p className="custom-input__error">{errors.advantage?.message}</p>
@@ -213,6 +192,7 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
                     },
                   })}
                   placeholder="Главные недостатки товара"
+                  data-testid="disadvantageElement"
                 />
               </label>
               <p className="custom-input__error">
@@ -252,6 +232,7 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
                     value: '',
                   })}
                   placeholder="Поделитесь своим опытом покупки"
+                  data-testid="reviewElement"
                 />
               </label>
               <div className="custom-textarea__error">
@@ -264,7 +245,13 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
           </button>
         </form>
       </div>
-      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={onCloseModal}>
+      <button
+        className="cross-btn"
+        type="button"
+        aria-label="Закрыть попап"
+        onClick={() => closeModal(dispatch)}
+        data-testid="button"
+      >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
         </svg>
@@ -273,4 +260,4 @@ function ModalAddReview({ productId, onCloseModal }: ModalAddReviewProps): JSX.E
   );
 }
 
-export default ModalAddReview;
+export default ModalAddingReview;

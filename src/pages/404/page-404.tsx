@@ -5,7 +5,7 @@ import { TitlesPages } from '../../config';
 
 function Page404(): JSX.Element {
   return (
-    <main>
+    <main data-testid="page-404">
       <Helmet>
         <title>{TitlesPages.NotFound}</title>
       </Helmet>

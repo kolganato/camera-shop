@@ -8,7 +8,7 @@ import { TitlesPages } from '../../config';
 
 function MainPage(): JSX.Element {
   return (
-    <main>
+    <main data-testid="main">
       <Helmet>
         <title>{TitlesPages.Catalog}</title>
       </Helmet>

@@ -1,22 +1,19 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../config';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useClosingModal } from '../../hooks';
 import { setProductToAdd } from '../../store/products/products-slice';
 
-type ModalProps = {
-  onClick: (showModalSucces: boolean) => void;
-};
-
-function ModalAddSuccess({ onClick }: ModalProps): JSX.Element {
+function ModalAddingSuccess(): JSX.Element {
   const dispatch = useAppDispatch();
+  const closeModal = useClosingModal;
 
   const handleClick = () => {
     dispatch(setProductToAdd(null));
-    onClick(false);
+    closeModal(dispatch);
   };
 
   return (
-    <div className="modal__content">
+    <div className="modal__content" data-testid="modal-add-success">
       <p className="title title--h4">Товар успешно добавлен в корзину</p>
       <svg className="modal__icon" width={86} height={80} aria-hidden="true">
         <use xlinkHref="#icon-success" />
@@ -47,4 +44,4 @@ function ModalAddSuccess({ onClick }: ModalProps): JSX.Element {
   );
 }
 
-export default ModalAddSuccess;
+export default ModalAddingSuccess;
