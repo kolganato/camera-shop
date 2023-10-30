@@ -6,9 +6,22 @@ import { Promo } from '../types/promo';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { State } from '../store';
 import { createAPI } from '../services/api';
+import { testInitialState } from '../store/products/products-slice';
 
-export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>;
-export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }) => type);
+export type AppThunkDispatch = ThunkDispatch<
+  State,
+  ReturnType<typeof createAPI>,
+  Action
+>;
+export const extractActionsTypes = (actions: Action<string>[]) =>
+  actions.map(({ type }) => type);
+
+export const makeFakeStore = (initialState?: Partial<State>): State => ({
+  PRODUCTS: {
+    ...testInitialState,
+  },
+  ...(initialState ?? {}),
+});
 
 export const makeFakeProduct = (): Product =>
   ({
