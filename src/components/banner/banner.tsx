@@ -16,11 +16,12 @@ function Banner(): JSX.Element {
       slidesPerView={1}
       spaceBetween={0}
       modules={[Autoplay]}
+      data-testid="banner"
     >
       {promoProducts &&
         promoProducts.map((product) => (
           <SwiperSlide key={product.id}>
-            <div className="banner">
+            <div className="banner" data-testid="promo">
               <picture>
                 <source
                   type="image/webp"

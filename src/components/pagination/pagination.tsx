@@ -30,7 +30,7 @@ function Pagination(): JSX.Element {
   };
 
   return (
-    <div className="pagination">
+    <div className="pagination" data-testid="pagination">
       <ul className="pagination__list">
         {currentPage > DEFAULT_PAGE_NUMBER && (
           <li className="pagination__item">

@@ -7,8 +7,9 @@ import { testInitialState } from '../../store/products/products-slice';
 describe('Component: Reviews', () => {
   it('Должен проверить правильность отрисовки', () => {
     const reviewTestId = 'review';
-    const mockExpectedReview = [makeFakeReview()];
+    const mockExpectedReview = Array.from({length: 12}, makeFakeReview);
     const expectedText = 'Отзывы';
+    const expectedCount = 3;
 
     const { withStoreComponent } = withStore(<Reviews />, {
       PRODUCTS: {
@@ -20,6 +21,6 @@ describe('Component: Reviews', () => {
     render(withStoreComponent);
 
     expect(screen.getByText(expectedText)).toBeInTheDocument();
-    expect(screen.getAllByTestId(reviewTestId).length).toBe(mockExpectedReview.length);
+    expect(screen.getAllByTestId(reviewTestId).length).toBe(expectedCount);
   });
 });

@@ -26,7 +26,7 @@ function SimilarProducts({ products }: SimilarProductsProps): JSX.Element {
   };
 
   return (
-    <div className="page-content__section">
+    <div className="page-content__section" data-testid="similar">
       <section className="product-similar">
         <div className="container">
           <h2 className="title title--h3">Похожие товары</h2>
@@ -46,7 +46,7 @@ function SimilarProducts({ products }: SimilarProductsProps): JSX.Element {
                 }}
               >
                 {products.map((product) => (
-                  <SwiperSlide key={product.id}>
+                  <SwiperSlide key={product.id} data-testid="slide-card">
                     <ProductCard
                       product={product}
                       inBasket={basket.includes(product.id)}

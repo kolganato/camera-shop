@@ -38,9 +38,7 @@ function ProductCard({
       className={classNames('product-card', {
         'is-active': isSimilar,
       })}
-      style={{
-        width: '100%'
-      }}
+      data-testid="product-card"
     >
       <div className="product-card__img">
         <picture>

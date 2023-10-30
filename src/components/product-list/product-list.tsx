@@ -15,7 +15,7 @@ function ProductList(): JSX.Element {
   };
 
   return (
-    <div className="cards catalog__cards">
+    <div className="cards catalog__cards" data-testid="product-list">
       {products &&
         products.map((product) => (
           <ProductCard
@@ -23,6 +23,7 @@ function ProductList(): JSX.Element {
             key={product.id}
             inBasket={basket.includes(product.id)}
             onClick={handleClick}
+            data-testid="product-card"
           />
         ))}
     </div>

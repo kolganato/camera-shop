@@ -67,6 +67,7 @@ function ModalAddReview({
                           })}
                           type="radio"
                           defaultValue={rating}
+                          data-testid={`star-${rating}`}
                         />
                         <label
                           className="rate__label"
@@ -115,6 +116,7 @@ function ModalAddReview({
                     },
                   })}
                   placeholder="Введите ваше имя"
+                  data-testid="userElement"
                 />
               </label>
               <p className="custom-input__error">Нужно указать имя</p>
@@ -152,6 +154,7 @@ function ModalAddReview({
                     },
                   })}
                   placeholder="Основные преимущества товара"
+                  data-testid="advantageElement"
                 />
               </label>
               <p className="custom-input__error">{errors.advantage?.message}</p>
@@ -189,6 +192,7 @@ function ModalAddReview({
                     },
                   })}
                   placeholder="Главные недостатки товара"
+                  data-testid="disadvantageElement"
                 />
               </label>
               <p className="custom-input__error">
@@ -228,6 +232,7 @@ function ModalAddReview({
                     value: '',
                   })}
                   placeholder="Поделитесь своим опытом покупки"
+                  data-testid="reviewElement"
                 />
               </label>
               <div className="custom-textarea__error">
@@ -245,6 +250,7 @@ function ModalAddReview({
         type="button"
         aria-label="Закрыть попап"
         onClick={() => closeModal(dispatch)}
+        data-testid="button"
       >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
