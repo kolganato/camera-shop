@@ -111,7 +111,7 @@ function ModalAddingReview({
                       message: 'Максимум 160 символов',
                     },
                     pattern: {
-                      value: /^[а-яА-ЯёЁa-zA-Z -,.!]+$/,
+                      value: /^[а-яА-ЯёЁa-zA-Z0-9 -,.!]+$/,
                       message: 'Введите валидное значение',
                     },
                   })}
@@ -145,7 +145,7 @@ function ModalAddingReview({
                       message: 'Максимум 160 символов',
                     },
                     pattern: {
-                      value: /^[а-яА-ЯёЁa-zA-Z -,.!]+$/,
+                      value: /^[а-яА-ЯёЁa-zA-Z0-9 -,.!]+$/,
                       message: 'Введите валидное значение',
                     },
                     required: {
@@ -183,7 +183,7 @@ function ModalAddingReview({
                       message: 'Максимум 160 символов',
                     },
                     pattern: {
-                      value: /^[а-яА-ЯёЁa-zA-Z -,.!]+$/,
+                      value: /^[а-яА-ЯёЁa-zA-Z0-9 -,.!]+$/,
                       message: 'Введите валидное значение',
                     },
                     required: {
@@ -200,7 +200,7 @@ function ModalAddingReview({
               </p>
             </div>
             <div
-              className={classNames('custom-input form-review__item', {
+              className={classNames('custom-textarea form-review__item', {
                 'is-invalid': errors.review,
               })}
             >
@@ -222,7 +222,7 @@ function ModalAddingReview({
                       message: 'Максимум 160 символов',
                     },
                     pattern: {
-                      value: /^[а-яА-ЯёЁa-zA-Z -,.!]+$/,
+                      value: /^[а-яА-ЯёЁa-zA-Z0-9 -,=_:;"'.!]+$/,
                       message: 'Введите валидное значение',
                     },
                     required: {
@@ -236,7 +236,7 @@ function ModalAddingReview({
                 />
               </label>
               <div className="custom-textarea__error">
-                Нужно добавить комментарий
+                {errors.review?.message}
               </div>
             </div>
           </div>
