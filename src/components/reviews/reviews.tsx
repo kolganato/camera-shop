@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getReviews } from '../../store/products/selector';
-import { ReviewData } from '../../types/review-data';
 import Rating from '../rating';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
@@ -9,14 +8,13 @@ import {
   setStatusActiveModal,
   setStatusModalReview,
 } from '../../store/products/products-slice';
+
 dayjs.locale('ru');
 
 function Reviews(): JSX.Element {
   const dispatch = useAppDispatch();
   const reviews = useAppSelector(getReviews);
-  const [reviewsShow, setReviewShow] = useState<ReviewData[]>(
-    reviews.slice(0, 3)
-  );
+  const [reviewsShowCount, setReviewShowCount] = useState<number>(3);
 
   const handleClick = () => {
     dispatch(setStatusActiveModal(true));
@@ -35,8 +33,12 @@ function Reviews(): JSX.Element {
           </div>
           <ul className="review-block__list">
             {reviews &&
-              reviewsShow.map((review) => (
-                <li className="review-card" key={review.id} data-testid="review">
+              reviews.slice(0, reviewsShowCount).map((review) => (
+                <li
+                  className="review-card"
+                  key={review.id}
+                  data-testid="review"
+                >
                   <div className="review-card__head">
                     <p className="title title--h4">{review.userName}</p>
                     <time
@@ -67,13 +69,12 @@ function Reviews(): JSX.Element {
                 </li>
               ))}
           </ul>
-          {reviews.length !== reviewsShow.length && (
+          {reviews.length !== reviewsShowCount && (
             <div className="review-block__buttons">
               <button
                 className="btn btn--purple"
                 type="button"
-                onClick={() =>
-                  setReviewShow(reviews.slice(0, reviewsShow.length + 3))}
+                onClick={() => setReviewShowCount(reviewsShowCount + 3)}
               >
                 Показать больше отзывов
               </button>
