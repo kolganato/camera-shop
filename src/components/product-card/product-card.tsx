@@ -75,6 +75,9 @@ function ProductCard({
           <button
             className="btn btn--purple product-card__btn"
             type="button"
+            onFocus={(evt) => {
+              evt.target.blur();
+            }}
             onClick={handleClick}
           >
             Купить

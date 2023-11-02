@@ -3,9 +3,10 @@ import { getPromoProducts } from '../../store/products/selector';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../config';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
+import 'swiper/css/pagination';
 
 function Banner(): JSX.Element {
   const promoProducts = useAppSelector(getPromoProducts);
@@ -15,8 +16,16 @@ function Banner(): JSX.Element {
       autoplay={{ disableOnInteraction: true }}
       slidesPerView={1}
       spaceBetween={0}
-      modules={[Autoplay]}
+      modules={[Autoplay, Pagination]}
       data-testid="banner"
+      navigation
+      pagination={{
+        clickable: true,
+        bulletClass: 'banner-bullet',
+        bulletActiveClass:
+          'banner-bullet-active',
+        horizontalClass: 'bullet-container',
+      }}
     >
       {promoProducts &&
         promoProducts.map((product) => (
