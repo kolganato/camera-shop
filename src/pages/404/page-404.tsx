@@ -15,7 +15,7 @@ function Page404(): JSX.Element {
         <BreadCrumbs title={TitlesPages.NotFound} />
         <div className="page-content__section">
           <div className="container">
-            <h1 className="title title--h2">Страница не найдена</h1>
+            <h1 className="title title--h2">Ошибка 404 - Страница не найдена</h1>
             <Link className="btn btn--purple" to={AppRoute.Root}>Вернуться на главную</Link>
           </div>
         </div>
