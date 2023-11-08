@@ -51,14 +51,20 @@ function FormSearch(): JSX.Element {
         </label>
         {searchLive.length >= 3 && productsBySearchLive.length >= 1 && (
           <ul className="form-search__select-list scroller">
-            {productsBySearchLive.map((item, index) => (
+            {productsBySearchLive.map((item) => (
               <li
                 className="form-search__select-item"
-                tabIndex={index}
+                tabIndex={0}
                 key={item.id}
                 onClick={() => {
                   navigate(`${AppRoute.Catalog}/${item.id}`);
                   handleClick();
+                }}
+                onKeyDown={(evt) => {
+                  if (evt.key === 'Enter') {
+                    navigate(`${AppRoute.Catalog}/${item.id}`);
+                    handleClick();
+                  }
                 }}
               >
                 {item.name}
@@ -67,11 +73,7 @@ function FormSearch(): JSX.Element {
           </ul>
         )}
       </form>
-      <button
-        className="form-search__reset"
-        type="reset"
-        onClick={handleClick}
-      >
+      <button className="form-search__reset" type="reset" onClick={handleClick}>
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
         </svg>
