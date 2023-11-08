@@ -2,7 +2,11 @@ import { createSelector } from '@reduxjs/toolkit';
 import { NameSpace } from '../../config';
 import { State } from '..';
 import { ProductsState } from './products-slice';
-import { COUNT_PRODUCTS_SHOW, DEFAULT_PAGE_NUMBER, sortReviewsByDate } from '../../utils/common';
+import {
+  COUNT_PRODUCTS_SHOW,
+  DEFAULT_PAGE_NUMBER,
+  sortReviewsByDate,
+} from '../../utils/common';
 
 export const getProductsShow = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
@@ -142,4 +146,20 @@ export const getIsModalReviewSuccess = createSelector(
 export const getStatusReviewData = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.statusReviewData
+);
+
+export const getProductsBySearchLive = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => {
+    const searchLiveReg = new RegExp(state.searchLive, 'ig');
+
+    return state.products.filter((product) =>
+      product.name.match(searchLiveReg)
+    );
+  }
+);
+
+export const getSearchLive = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.searchLive
 );

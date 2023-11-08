@@ -21,6 +21,7 @@ import {
   setCurrentPage,
   setFilter,
   setProductToAdd,
+  setSearchLive,
   setStatusActiveModal,
   setStatusModalProduct,
   setStatusModalProductSuccess,
@@ -134,6 +135,15 @@ describe('Products Slice', () => {
       setStatusModalProductSuccess(expectedStatusModalReviewSuccess)
     );
     expect(result.isModalProductSuccess).toBe(expectedStatusModalReviewSuccess);
+  });
+
+  it('Должен вернуть значение searchLive', () => {
+    const expectedSearchLive = 'look';
+    const result = productsSlice.reducer(
+      state,
+      setSearchLive(expectedSearchLive)
+    );
+    expect(result.searchLive).toBe(expectedSearchLive);
   });
 
   it('Должен вернуть статус отправки отзыва', () => {

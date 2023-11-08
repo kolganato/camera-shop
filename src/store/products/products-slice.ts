@@ -35,6 +35,7 @@ export type ProductsState = {
   isSimilarProductsLoading: boolean;
   isReviewsLoading: boolean;
   statusReviewData: Status;
+  searchLive: string;
 };
 
 const initialState: ProductsState = {
@@ -64,6 +65,7 @@ const initialState: ProductsState = {
   isSimilarProductsLoading: false,
   isReviewsLoading: false,
   statusReviewData: Status.Idle,
+  searchLive: '',
 };
 
 export const productsSlice = createSlice({
@@ -110,6 +112,9 @@ export const productsSlice = createSlice({
     },
     setStatusReviewData: (state, { payload }: PayloadAction<Status>) => {
       state.statusReviewData = payload;
+    },
+    setSearchLive: (state, { payload }: PayloadAction<string>) => {
+      state.searchLive = payload;
     },
   },
   extraReducers(builder) {
@@ -182,6 +187,7 @@ export const {
   setStatusReviewData,
   setStatusModalProductSuccess,
   setStatusModalReviewSuccess,
+  setSearchLive
 } = productsSlice.actions;
 
 export { initialState as testInitialState };

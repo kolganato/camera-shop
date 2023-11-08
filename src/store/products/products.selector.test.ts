@@ -21,9 +21,11 @@ import {
   getIsPromoLoading,
   getProductToAdd,
   getProducts,
+  getProductsBySearchLive,
   getProductsShow,
   getPromoProducts,
   getReviews,
+  getSearchLive,
   getSimilarProducts,
   getStatusReviewData,
   getStatusReviewsLoading,
@@ -36,9 +38,9 @@ describe('Products selectors', () => {
     [NameSpace.Products]: {
       ...testInitialState,
       products: Array.from({ length: 39 }, makeFakeProduct),
-      reviews: Array.from({length: 83}, makeFakeReview),
-      similarProducts: Array.from({length: 12}, makeFakeProduct),
-      promo: Array.from({length: 3}, makeFakePromo),
+      reviews: Array.from({ length: 83 }, makeFakeReview),
+      similarProducts: Array.from({ length: 12 }, makeFakeProduct),
+      promo: Array.from({ length: 3 }, makeFakePromo),
     },
   };
 
@@ -200,5 +202,21 @@ describe('Products selectors', () => {
     const { statusReviewData } = state[NameSpace.Products];
     const result = getStatusReviewData(state);
     expect(result).toEqual(statusReviewData);
+  });
+
+  it('Должен получить searchLive', () => {
+    const { searchLive } = state[NameSpace.Products];
+    const result = getSearchLive(state);
+    expect(result).toEqual(searchLive);
+  });
+
+  it('Должен получить список продуктов для поиска', () => {
+    const { products, searchLive } = state[NameSpace.Products];
+    const result = getProductsBySearchLive(state);
+    const searchLiveReg = new RegExp(searchLive, 'ig');
+
+    expect(result).toEqual(
+      products.filter((product) => product.name.match(searchLiveReg))
+    );
   });
 });
