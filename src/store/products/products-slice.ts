@@ -1,4 +1,4 @@
-import { NameSpace, Status } from '../../config';
+import { NameSpace, SortingDirection, SortingType, Status } from '../../config';
 import { Coupon } from '../../types/coupon';
 import { Filter } from '../../types/fitler';
 import { Product } from '../../types/product';
@@ -36,6 +36,8 @@ export type ProductsState = {
   isReviewsLoading: boolean;
   statusReviewData: Status;
   searchLive: string;
+  sortingType: SortingType;
+  sortingDirection: SortingDirection;
 };
 
 const initialState: ProductsState = {
@@ -66,12 +68,23 @@ const initialState: ProductsState = {
   isReviewsLoading: false,
   statusReviewData: Status.Idle,
   searchLive: '',
+  sortingType: SortingType.Default,
+  sortingDirection: SortingDirection.Default,
 };
 
 export const productsSlice = createSlice({
   name: NameSpace.Products,
   initialState,
   reducers: {
+    setSortingType: (state, { payload }: PayloadAction<SortingType>) => {
+      state.sortingType = payload;
+    },
+    setSortingDirection: (
+      state,
+      { payload }: PayloadAction<SortingDirection>
+    ) => {
+      state.sortingDirection = payload;
+    },
     setFilter: (state, { payload }: PayloadAction<Filter>) => {
       state.filter = payload;
     },
@@ -187,7 +200,9 @@ export const {
   setStatusReviewData,
   setStatusModalProductSuccess,
   setStatusModalReviewSuccess,
-  setSearchLive
+  setSearchLive,
+  setSortingType,
+  setSortingDirection,
 } = productsSlice.actions;
 
 export { initialState as testInitialState };

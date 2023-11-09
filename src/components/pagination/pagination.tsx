@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   getArrayCountPagesByProducts,
   getCountPagesByProducts,
+  getCurrentPage,
 } from '../../store/products/selector';
 import {
   COUNT_PAGES_PAGIONATIONS_SHOW,
@@ -12,15 +13,24 @@ import {
 } from '../../utils/common';
 import classNames from 'classnames';
 import { setCurrentPage } from '../../store/products/products-slice';
+import { useEffect } from 'react';
 
 function Pagination(): JSX.Element {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const countPages = useAppSelector(getCountPagesByProducts);
   const arrayPages = useAppSelector(getArrayCountPagesByProducts);
-  const currentPage = Number(searchParams.get('page')) || DEFAULT_PAGE_NUMBER;
+  const currentPage = useAppSelector(getCurrentPage);
   const startPage = getStartPagePagination(currentPage, countPages, arrayPages);
   const countShowPages = arrayPages.slice(startPage, currentPage + 2);
+
+  useEffect(()=>{
+    if(searchParams.get('page')){
+      dispatch(setCurrentPage(Number(searchParams.get('page'))));
+    }else{
+      dispatch(setCurrentPage(DEFAULT_PAGE_NUMBER));
+    }
+  }, [dispatch, currentPage, searchParams]);
 
   const handleClick = (evt: React.MouseEvent<HTMLElement>, page: number): void => {
     evt.preventDefault();

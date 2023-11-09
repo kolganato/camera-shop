@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { Status } from '../../config';
+import { SortingDirection, SortingType, Status } from '../../config';
 import {
   makeFakeProduct,
   makeFakePromo,
@@ -22,6 +22,8 @@ import {
   setFilter,
   setProductToAdd,
   setSearchLive,
+  setSortingDirection,
+  setSortingType,
   setStatusActiveModal,
   setStatusModalProduct,
   setStatusModalProductSuccess,
@@ -67,6 +69,25 @@ describe('Products Slice', () => {
     );
     expect(result.currentPage).toBe(expectedCurrentPage);
   });
+
+  it('Должен вернуть тип сортирования', () => {
+    const expectedSortingType = SortingType.Price;
+    const result = productsSlice.reducer(
+      state,
+      setSortingType(expectedSortingType)
+    );
+    expect(result.sortingType).toBe(expectedSortingType);
+  });
+
+  it('Должен вернуть направление сортирования', () => {
+    const expectedSortingDirection = SortingDirection.HighToLow;
+    const result = productsSlice.reducer(
+      state,
+      setSortingDirection(expectedSortingDirection)
+    );
+    expect(result.sortingDirection).toBe(expectedSortingDirection);
+  });
+
 
   it('Должен вернуть фильтры каталога', () => {
     const expectedFilter = {} as Filter;

@@ -6,19 +6,22 @@ import {
   COUNT_PRODUCTS_SHOW,
   DEFAULT_PAGE_NUMBER,
   sortReviewsByDate,
+  sorting,
 } from '../../utils/common';
 
 export const getProductsShow = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => {
-    const currentPage = state.currentPage;
     const products = state.products;
+    const sortingType = state.sortingType;
+    const sortingDirection = state.sortingDirection;
+    const currentPage = state.currentPage;
 
     if (currentPage === DEFAULT_PAGE_NUMBER) {
-      return products.slice(0, COUNT_PRODUCTS_SHOW);
+      return sorting(products, sortingDirection, sortingType).slice(0, COUNT_PRODUCTS_SHOW);
     }
 
-    return products.slice(
+    return sorting(products, sortingDirection, sortingType).slice(
       (currentPage - 1) * COUNT_PRODUCTS_SHOW,
       COUNT_PRODUCTS_SHOW * currentPage
     );
@@ -163,3 +166,4 @@ export const getSearchLive = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.searchLive
 );
+

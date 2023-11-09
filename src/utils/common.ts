@@ -1,4 +1,4 @@
-import { SortMethod, SortPriority, Tab } from '../config';
+import { SortingDirection, SortingType, Tab } from '../config';
 import { Product } from '../types/product';
 import { ReviewData } from '../types/review-data';
 
@@ -10,28 +10,35 @@ const sortByRatingUpToDown = (a: Product, b: Product) => b.rating - a.rating;
 
 const sortByRatingDownToUp = (a: Product, b: Product) => a.rating - b.rating;
 
-export const sortReviewsByDate = (a: ReviewData, b: ReviewData) => Date.parse(b.createAt) - Date.parse(a.createAt);
-
+export const sortReviewsByDate = (a: ReviewData, b: ReviewData) =>
+  Date.parse(b.createAt) - Date.parse(a.createAt);
 
 type Sorting = (
   products: Product[],
-  priority: SortPriority,
-  method: SortMethod
+  priority: SortingDirection,
+  method: SortingType
 ) => Product[];
 
 export const sorting: Sorting = (products, priority, method) => {
-  switch ([priority, method]) {
-    case [SortPriority.Up, SortMethod.Price]:
-      return products.slice().sort(sortLowToHigh);
-    case [SortPriority.Down, SortMethod.Price]:
-      return products.slice().sort(sortHighToLow);
-    case [SortPriority.Up, SortMethod.Popular]:
-      return products.slice().sort(sortByRatingDownToUp);
-    case [SortPriority.Down, SortMethod.Popular]:
-      return products.slice().sort(sortByRatingUpToDown);
-    default:
-      return products.slice();
+  if (method === SortingType.Price) {
+    switch (priority) {
+      case SortingDirection.LowToHigh:
+        return products.slice().sort(sortLowToHigh);
+      case SortingDirection.HighToLow:
+        return products.slice().sort(sortHighToLow);
+    }
   }
+
+  if (method === SortingType.Popular) {
+    switch (priority) {
+      case SortingDirection.LowToHigh:
+        return products.slice().sort(sortByRatingDownToUp);
+      case SortingDirection.HighToLow:
+        return products.slice().sort(sortByRatingUpToDown);
+    }
+  }
+
+  return products.slice();
 };
 
 export const COUNT_PRODUCTS_SHOW = 9;
@@ -59,4 +66,30 @@ export const getTab = <T = string | null | Tab>(tab: T) => {
   }
 
   return Tab.Characteristics;
+};
+
+export const getCurrentSortingType = (param: string | null): SortingType => {
+  if (param === SortingType.Popular) {
+    return SortingType.Popular;
+  }
+
+  if (param === SortingType.Price) {
+    return SortingType.Price;
+  }
+
+  return SortingType.Default;
+};
+
+export const getCurrentSortingDirection = (
+  param: string | null
+): SortingDirection => {
+  if (param === SortingDirection.HighToLow) {
+    return SortingDirection.HighToLow;
+  }
+
+  if (param === SortingDirection.LowToHigh) {
+    return SortingDirection.LowToHigh;
+  }
+
+  return SortingDirection.Default;
 };
