@@ -42,7 +42,7 @@ function Pagination(): JSX.Element {
   return (
     <div className="pagination" data-testid="pagination">
       <ul className="pagination__list">
-        {currentPage > DEFAULT_PAGE_NUMBER && (
+        {currentPage > DEFAULT_PAGE_NUMBER && countPages > 3 && (
           <li className="pagination__item">
             <Link
               onClick={(evt) => {

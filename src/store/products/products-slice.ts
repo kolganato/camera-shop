@@ -55,9 +55,9 @@ const initialState: ProductsState = {
   coupon: null,
   basket: [],
   filter: {
-    type: null,
+    type: [],
     category: null,
-    level: null,
+    level: [],
     priceMin: null,
     priceMax: null,
   },

@@ -1,10 +1,12 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { NameSpace } from '../../config';
+import { NameSpace, SortingDirection, SortingType } from '../../config';
 import { State } from '..';
 import { ProductsState } from './products-slice';
 import {
   COUNT_PRODUCTS_SHOW,
   DEFAULT_PAGE_NUMBER,
+  getFilteredProducts,
+  getFilteredProductsWithoutPrice,
   sortReviewsByDate,
   sorting,
 } from '../../utils/common';
@@ -16,15 +18,53 @@ export const getProductsShow = createSelector(
     const sortingType = state.sortingType;
     const sortingDirection = state.sortingDirection;
     const currentPage = state.currentPage;
+    const filterData = state.filter;
+
+    const filteredProducts = getFilteredProducts(products, filterData);
 
     if (currentPage === DEFAULT_PAGE_NUMBER) {
-      return sorting(products, sortingDirection, sortingType).slice(0, COUNT_PRODUCTS_SHOW);
+      return sorting(filteredProducts, sortingDirection, sortingType).slice(
+        0,
+        COUNT_PRODUCTS_SHOW
+      );
     }
 
-    return sorting(products, sortingDirection, sortingType).slice(
+    return sorting(filteredProducts, sortingDirection, sortingType).slice(
       (currentPage - 1) * COUNT_PRODUCTS_SHOW,
       COUNT_PRODUCTS_SHOW * currentPage
     );
+  }
+);
+
+export const getMinMaxPriceProducts = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => {
+    const products = state.products;
+    const filterData = state.filter;
+
+    const filteredProducts = getFilteredProductsWithoutPrice(products, filterData);
+
+    const sortProducts = sorting(
+      filteredProducts,
+      SortingDirection.LowToHigh,
+      SortingType.Price
+    );
+
+    if(filteredProducts.length === 0){
+      const sortNonFilteredProducts = sorting(
+        products,
+        SortingDirection.LowToHigh,
+        SortingType.Price
+      );
+      const productByMaxPrice = sortNonFilteredProducts[sortNonFilteredProducts.length - 1];
+
+      return [0, productByMaxPrice?.price];
+    }
+
+    const productByMinPrice = sortProducts.at(0);
+    const productByMaxPrice = sortProducts[sortProducts.length - 1];
+
+    return [productByMinPrice?.price, productByMaxPrice?.price];
   }
 );
 
@@ -56,12 +96,18 @@ export const getPromoProducts = createSelector(
 export const getCountPagesByProducts = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => {
-    const countProducts = state.products.length;
-    const countPages = countProducts % 9;
+    const products = state.products;
+    const filterData = state.filter;
 
-    if (countProducts % 9 > 0) {
-      return countPages + 1;
+    const filteredProducts = getFilteredProducts(products, filterData);
+
+    const countProducts = filteredProducts.length;
+
+    if(countProducts < 9){
+      return 1;
     }
+
+    const countPages = Math.ceil(countProducts / 9);
 
     return countPages;
   }
@@ -70,11 +116,16 @@ export const getCountPagesByProducts = createSelector(
 export const getArrayCountPagesByProducts = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => {
-    const countProducts = state.products.length;
-    const countPages = countProducts % 9;
+    const products = state.products;
+    const filterData = state.filter;
 
-    if (countProducts % 9 > 0) {
-      return Array.from({ length: countPages + 1 }, (_, index) => index + 1);
+    const filteredProducts = getFilteredProducts(products, filterData);
+
+    const countProducts = filteredProducts.length;
+    const countPages = Math.ceil(countProducts / 9);
+
+    if(countProducts < 9){
+      return [];
     }
 
     return Array.from({ length: countPages }, (_, index) => index + 1);
@@ -167,3 +218,7 @@ export const getSearchLive = createSelector(
   (state: ProductsState) => state.searchLive
 );
 
+export const getFilter = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.filter
+);

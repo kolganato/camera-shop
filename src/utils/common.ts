@@ -1,4 +1,13 @@
-import { SortingDirection, SortingType, Tab } from '../config';
+import { MutableRefObject } from 'react';
+import {
+  ProductCategory,
+  ProductLevel,
+  ProductType,
+  SortingDirection,
+  SortingType,
+  Tab,
+} from '../config';
+import { Filter } from '../types/fitler';
 import { Product } from '../types/product';
 import { ReviewData } from '../types/review-data';
 
@@ -93,3 +102,112 @@ export const getCurrentSortingDirection = (
 
   return SortingDirection.Default;
 };
+
+export const getCurrentCategory = (
+  param: string | null
+): ProductCategory | null => {
+  if (param === ProductCategory.Photo) {
+    return ProductCategory.Photo;
+  }
+
+  if (param === ProductCategory.Video) {
+    return ProductCategory.Video;
+  }
+
+  return null;
+};
+
+export const makeArrayByChecked = (
+  elements: MutableRefObject<HTMLInputElement | null>[]
+) => {
+  const newArr: string[] = [];
+
+  elements.forEach((element) => {
+    if (element.current?.checked) {
+      newArr.push(element.current.value);
+    }
+  });
+
+  return newArr;
+};
+
+export const createFilterData = (params: URLSearchParams): Filter => {
+  const data = {} as Filter;
+  const priceMin = params.get('price_gte') ? params.get('price_gte') : null;
+  const priceMax = params.get('price_lte') ? params.get('price_lte') : null;
+  const types = params.get('types') ? params.get('types') : null;
+  const levels = params.get('levels') ? params.get('levels') : null;
+  const category = params.get('category') ? params.get('category') : null;
+
+  if (priceMin) {
+    data.priceMin = Number(priceMin);
+  }
+
+  if (priceMax) {
+    data.priceMax = Number(priceMax);
+  }
+
+  if (category) {
+    data.category = getCurrentCategory(category);
+  }
+
+  if (types) {
+    const productTypes: string[] = Object.values(ProductType);
+
+    data.type = types
+      .split(',')
+      .filter((item) => productTypes.includes(item)) as ProductType[];
+  }
+
+  if (levels) {
+    const productCategories: string[] = Object.values(ProductLevel);
+
+    data.level = levels
+      .split(',')
+      .filter((item) => productCategories.includes(item)) as ProductLevel[];
+  }
+
+  return data;
+};
+
+export const getFilteredProductsWithoutPrice = (products: Product[], filterData: Filter): Product[] =>
+  products.filter((product) => {
+    if (filterData?.category && filterData.category !== product.category) {
+      return false;
+    }
+
+    if (filterData?.type && !filterData.type?.includes(product.type)) {
+      return false;
+    }
+
+    if (filterData?.level && !filterData.level?.includes(product.level)) {
+      return false;
+    }
+
+    return true;
+  });
+
+export const getFilteredProducts = (products: Product[], filterData: Filter): Product[] =>
+  products.filter((product) => {
+    if (filterData?.category && filterData.category !== product.category) {
+      return false;
+    }
+
+    if (filterData?.type && !filterData.type?.includes(product.type)) {
+      return false;
+    }
+
+    if (filterData?.level && !filterData.level?.includes(product.level)) {
+      return false;
+    }
+
+    if(filterData?.priceMin && !(filterData.priceMin <= product.price)){
+      return false;
+    }
+
+    if(filterData?.priceMax && !(filterData.priceMax >= product.price)){
+      return false;
+    }
+
+    return true;
+  });
