@@ -87,7 +87,6 @@ function Filter(): JSX.Element {
     }
 
     if (priceMinRef.current?.value) {
-      setMinPrice(Number(priceMinRef.current.value));
       searchParams.set('price_gte', priceMinRef.current.value);
     }
 
@@ -112,6 +111,10 @@ function Filter(): JSX.Element {
       ) {
         priceMaxRef.current.value = String(maxPriceProducts);
         searchParams.set('price_lte', String(maxPriceProducts));
+      }
+
+      if (priceMinRef.current?.value) {
+        setMinPrice(Number(priceMinRef.current.value));
       }
 
       setSearchParams(searchParams);
@@ -144,27 +147,50 @@ function Filter(): JSX.Element {
           <div className="catalog-filter__price-range">
             <div className="custom-input">
               <label>
-                <input
-                  type="number"
-                  placeholder={`от ${String(minPriceProducts)}`}
-                  name="priceMin"
-                  ref={priceMinRef}
-                  min={minPriceProducts}
-                  defaultValue={searchParams.get('price_gte') || undefined}
-                />
+                {searchParams.get('price_gte') && (
+                  <input
+                    type="number"
+                    placeholder={`от ${String(minPriceProducts)}`}
+                    name="priceMin"
+                    ref={priceMinRef}
+                    min={minPriceProducts}
+                    defaultValue={Number(searchParams.get('price_gte'))}
+                  />
+                )}
+                {!searchParams.get('price_gte') && (
+                  <input
+                    type="number"
+                    placeholder={`от ${String(minPriceProducts)}`}
+                    name="priceMin"
+                    ref={priceMinRef}
+                    min={minPriceProducts}
+                  />
+                )}
               </label>
             </div>
             <div className="custom-input">
               <label>
-                <input
-                  type="number"
-                  placeholder={`до ${String(maxPriceProducts)}`}
-                  name="priceMax"
-                  ref={priceMaxRef}
-                  min={minPrice}
-                  max={maxPriceProducts}
-                  defaultValue={searchParams.get('price_lte') || undefined}
-                />
+                {searchParams.get('price_lte') && (
+                  <input
+                    type="number"
+                    placeholder={`до ${String(maxPriceProducts)}`}
+                    name="priceMax"
+                    ref={priceMaxRef}
+                    min={minPrice}
+                    max={maxPriceProducts}
+                    defaultValue={Number(searchParams.get('price_lte'))}
+                  />
+                )}
+                {!searchParams.get('price_lte') && (
+                  <input
+                    type="number"
+                    placeholder={`до ${String(maxPriceProducts)}`}
+                    name="priceMax"
+                    ref={priceMaxRef}
+                    min={minPrice}
+                    max={maxPriceProducts}
+                  />
+                )}
               </label>
             </div>
           </div>
@@ -173,32 +199,50 @@ function Filter(): JSX.Element {
           <legend className="title title--h5">Категория</legend>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input
-                type="checkbox"
-                name="category"
-                ref={photocameraRef}
-                value={ProductCategory.Photo}
-                disabled={filterData.category === ProductCategory.Video}
-                defaultChecked={
-                  searchParams.get('category') === ProductCategory.Photo
-                }
-              />
+              {searchParams.get('category') === ProductCategory.Photo && (
+                <input
+                  type="checkbox"
+                  name="category"
+                  ref={photocameraRef}
+                  value={ProductCategory.Photo}
+                  disabled={filterData.category === ProductCategory.Video}
+                  defaultChecked
+                />
+              )}
+              {searchParams.get('category') !== ProductCategory.Photo && (
+                <input
+                  type="checkbox"
+                  name="category"
+                  ref={photocameraRef}
+                  value={ProductCategory.Photo}
+                  disabled={filterData.category === ProductCategory.Video}
+                />
+              )}
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Фотокамера</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input
-                type="checkbox"
-                name="category"
-                ref={videocameraRef}
-                value={ProductCategory.Video}
-                disabled={filterData.category === ProductCategory.Photo}
-                defaultChecked={
-                  searchParams.get('category') === ProductCategory.Video
-                }
-              />
+              {searchParams.get('category') === ProductCategory.Video && (
+                <input
+                  type="checkbox"
+                  name="category"
+                  ref={videocameraRef}
+                  value={ProductCategory.Video}
+                  disabled={filterData.category === ProductCategory.Photo}
+                  defaultChecked
+                />
+              )}
+              {searchParams.get('category') !== ProductCategory.Video && (
+                <input
+                  type="checkbox"
+                  name="category"
+                  ref={videocameraRef}
+                  value={ProductCategory.Video}
+                  disabled={filterData.category === ProductCategory.Photo}
+                />
+              )}
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Видеокамера</span>
             </label>
@@ -208,59 +252,88 @@ function Filter(): JSX.Element {
           <legend className="title title--h5">Тип камеры</legend>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input
-                type="checkbox"
-                value={ProductType.Digital}
-                ref={typeDigitalRef}
-                defaultChecked={
-                  typesBySearchParams?.includes(ProductType.Digital) || false
-                }
-              />
+              {typesBySearchParams?.includes(ProductType.Digital) && (
+                <input
+                  type="checkbox"
+                  value={ProductType.Digital}
+                  ref={typeDigitalRef}
+                  defaultChecked
+                />
+              )}
+              {!typesBySearchParams?.includes(ProductType.Digital) && (
+                <input
+                  type="checkbox"
+                  value={ProductType.Digital}
+                  ref={typeDigitalRef}
+                />
+              )}
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Цифровая</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input
-                type="checkbox"
-                value={ProductType.Film}
-                ref={typeFilmRef}
-                disabled={filterData.category === ProductCategory.Video}
-                defaultChecked={
-                  typesBySearchParams?.includes(ProductType.Film) || false
-                }
-              />
+              {typesBySearchParams?.includes(ProductType.Film) && (
+                <input
+                  type="checkbox"
+                  value={ProductType.Film}
+                  ref={typeFilmRef}
+                  disabled={filterData.category === ProductCategory.Video}
+                  defaultChecked
+                />
+              )}
+              {!typesBySearchParams?.includes(ProductType.Film) && (
+                <input
+                  type="checkbox"
+                  value={ProductType.Film}
+                  ref={typeFilmRef}
+                  disabled={filterData.category === ProductCategory.Video}
+                />
+              )}
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Плёночная</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input
-                type="checkbox"
-                ref={typeInstantRef}
-                value={ProductType.Instant}
-                disabled={filterData.category === ProductCategory.Video}
-                defaultChecked={
-                  typesBySearchParams?.includes(ProductType.Instant) || false
-                }
-              />
+              {typesBySearchParams?.includes(ProductType.Instant) && (
+                <input
+                  type="checkbox"
+                  ref={typeInstantRef}
+                  value={ProductType.Instant}
+                  disabled={filterData.category === ProductCategory.Video}
+                  defaultChecked
+                />
+              )}
+              {!typesBySearchParams?.includes(ProductType.Instant) && (
+                <input
+                  type="checkbox"
+                  ref={typeInstantRef}
+                  value={ProductType.Instant}
+                  disabled={filterData.category === ProductCategory.Video}
+                />
+              )}
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Моментальная</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input
-                type="checkbox"
-                ref={typeCollectebleRef}
-                value={ProductType.Collectible}
-                defaultChecked={
-                  typesBySearchParams?.includes(ProductType.Collectible) ||
-                  false
-                }
-              />
+              {typesBySearchParams?.includes(ProductType.Collectible) && (
+                <input
+                  type="checkbox"
+                  ref={typeCollectebleRef}
+                  value={ProductType.Collectible}
+                  defaultChecked
+                />
+              )}
+              {!typesBySearchParams?.includes(ProductType.Collectible) && (
+                <input
+                  type="checkbox"
+                  ref={typeCollectebleRef}
+                  value={ProductType.Collectible}
+                />
+              )}
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Коллекционная</span>
             </label>
@@ -270,45 +343,69 @@ function Filter(): JSX.Element {
           <legend className="title title--h5">Уровень</legend>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input
-                type="checkbox"
-                ref={levelZeroRef}
-                name="zero"
-                value={ProductLevel.Zero}
-                defaultChecked={
-                  levelsBySearchParams?.includes(ProductLevel.Zero) || false
-                }
-              />
+              {levelsBySearchParams?.includes(ProductLevel.Zero) && (
+                <input
+                  type="checkbox"
+                  ref={levelZeroRef}
+                  name="zero"
+                  value={ProductLevel.Zero}
+                  defaultChecked
+                />
+              )}
+              {!levelsBySearchParams?.includes(ProductLevel.Zero) && (
+                <input
+                  type="checkbox"
+                  ref={levelZeroRef}
+                  name="zero"
+                  value={ProductLevel.Zero}
+                />
+              )}
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Нулевой</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input
-                type="checkbox"
-                ref={levelAmateurRef}
-                name="non-professional"
-                value={ProductLevel.Amateur}
-                defaultChecked={
-                  levelsBySearchParams?.includes(ProductLevel.Amateur) || false
-                }
-              />
+              {levelsBySearchParams?.includes(ProductLevel.Amateur) && (
+                <input
+                  type="checkbox"
+                  ref={levelAmateurRef}
+                  name="non-professional"
+                  value={ProductLevel.Amateur}
+                  defaultChecked
+                />
+              )}
+              {!levelsBySearchParams?.includes(ProductLevel.Amateur) && (
+                <input
+                  type="checkbox"
+                  ref={levelAmateurRef}
+                  name="non-professional"
+                  value={ProductLevel.Amateur}
+                />
+              )}
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Любительский</span>
             </label>
           </div>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input
-                type="checkbox"
-                ref={levelProRef}
-                name="professional"
-                value={ProductLevel.Pro}
-                defaultChecked={
-                  levelsBySearchParams?.includes(ProductLevel.Pro) || false
-                }
-              />
+              {levelsBySearchParams?.includes(ProductLevel.Pro) && (
+                <input
+                  type="checkbox"
+                  ref={levelProRef}
+                  name="professional"
+                  value={ProductLevel.Pro}
+                  defaultChecked
+                />
+              )}
+              {!levelsBySearchParams?.includes(ProductLevel.Pro) && (
+                <input
+                  type="checkbox"
+                  ref={levelProRef}
+                  name="professional"
+                  value={ProductLevel.Pro}
+                />
+              )}
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Профессиональный</span>
             </label>
