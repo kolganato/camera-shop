@@ -117,6 +117,11 @@ function Filter(): JSX.Element {
         setMinPrice(Number(priceMinRef.current.value));
       }
 
+      if (priceMaxRef.current?.value && Number(priceMaxRef.current.value) < minPrice) {
+        priceMaxRef.current.min = String(minPrice);
+        searchParams.set('price_lte', String(minPrice));
+      }
+
       setSearchParams(searchParams);
       clearTimeout(timerId);
     }, 1000);
