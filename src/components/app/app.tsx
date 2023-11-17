@@ -9,16 +9,19 @@ import Page404 from '../../pages/404';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect } from 'react';
 import {
+  getHasError,
   getIsProductsLoading,
   getIsPromoLoading,
 } from '../../store/products/selector';
 import { getProductsAction, getPromoAction } from '../../store/api-actions';
 import Spinner from '../spinner';
+import ServerError from '../server-error';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
   const isProductsLoading = useAppSelector(getIsProductsLoading);
   const isPromoLoading = useAppSelector(getIsPromoLoading);
+  const hasError = useAppSelector(getHasError);
 
   useEffect(() => {
     if (!isProductsLoading) {
@@ -29,8 +32,12 @@ function App(): JSX.Element {
     }
   }, [isProductsLoading, dispatch, isPromoLoading]);
 
-  if(!isProductsLoading){
+  if(!isProductsLoading && !hasError){
     return <Spinner />;
+  }
+
+  if(hasError){
+    return <ServerError />;
   }
 
   return (

@@ -13,6 +13,7 @@ import {
   getCountProducts,
   getCountProductsInBasket,
   getCurrentPage,
+  getHasError,
   getIsModalProduct,
   getIsModalProductSucess,
   getIsModalReview,
@@ -66,6 +67,12 @@ describe('Products selectors', () => {
     const { promo } = state[NameSpace.Products];
     const result = getPromoProducts(state);
     expect(result).toEqual(promo);
+  });
+
+  it('Должен получить false при попытке подключиться к серверу', () => {
+    const { hasError } = state[NameSpace.Products];
+    const result = getHasError(state);
+    expect(result).toBe(hasError);
   });
 
   it('Должен получить список товаров для отображения в каталоге на одной странице', () => {

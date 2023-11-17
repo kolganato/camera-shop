@@ -222,3 +222,9 @@ export const getFilter = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.filter
 );
+
+export const getHasError = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.hasError
+);
+

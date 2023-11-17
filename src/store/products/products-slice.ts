@@ -13,6 +13,7 @@ import {
   getSimilarProductsAction,
 } from '../api-actions';
 import { DEFAULT_PAGE_NUMBER } from '../../utils/common';
+import { toast } from 'react-toastify';
 
 export type ProductsState = {
   products: Product[];
@@ -142,9 +143,11 @@ export const productsSlice = createSlice({
       .addCase(getProductsAction.rejected, (state) => {
         state.isProductsLoading = false;
         state.hasError = true;
+
+        toast.error('Проблема с получением списка товаров');
       })
       .addCase(getPromoAction.pending, (state) => {
-        state.hasError = false;
+        state.isPromoLoading = false;
       })
       .addCase(getPromoAction.fulfilled, (state, { payload }) => {
         state.promo = payload;
@@ -152,10 +155,12 @@ export const productsSlice = createSlice({
       })
       .addCase(getPromoAction.rejected, (state) => {
         state.isPromoLoading = false;
-        state.hasError = true;
+
+        toast.error('Проблема с получением промо товаров');
+
       })
       .addCase(getSimilarProductsAction.pending, (state) => {
-        state.hasError = false;
+        state.isSimilarProductsLoading = false;
       })
       .addCase(getSimilarProductsAction.fulfilled, (state, { payload }) => {
         state.similarProducts = payload;
@@ -163,10 +168,11 @@ export const productsSlice = createSlice({
       })
       .addCase(getSimilarProductsAction.rejected, (state) => {
         state.isSimilarProductsLoading = false;
-        state.hasError = true;
+
+        toast.error('Проблема с получением списка похожих товаров');
       })
       .addCase(getReviewsAction.pending, (state) => {
-        state.hasError = false;
+        state.isReviewsLoading = false;
       })
       .addCase(getReviewsAction.fulfilled, (state, { payload }) => {
         state.reviews = payload;
@@ -174,7 +180,8 @@ export const productsSlice = createSlice({
       })
       .addCase(getReviewsAction.rejected, (state) => {
         state.isReviewsLoading = false;
-        state.hasError = true;
+
+        toast.error('Проблема с получением списка отзывов к товару');
       })
       .addCase(fetchReviewAction.pending, (state) => {
         state.statusReviewData = Status.Loading;
@@ -185,6 +192,8 @@ export const productsSlice = createSlice({
       })
       .addCase(fetchReviewAction.rejected, (state) => {
         state.statusReviewData = Status.Error;
+
+        toast.error('Не удалось добавить отзыв');
       });
   },
 });
