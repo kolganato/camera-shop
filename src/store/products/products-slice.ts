@@ -37,8 +37,8 @@ export type ProductsState = {
   isReviewsLoading: boolean;
   statusReviewData: Status;
   searchLive: string;
-  sortingType: SortingType;
-  sortingDirection: SortingDirection;
+  sortingType: SortingType | null;
+  sortingDirection: SortingDirection | null;
 };
 
 const initialState: ProductsState = {
@@ -69,20 +69,20 @@ const initialState: ProductsState = {
   isReviewsLoading: false,
   statusReviewData: Status.Idle,
   searchLive: '',
-  sortingType: SortingType.Default,
-  sortingDirection: SortingDirection.Default,
+  sortingType: null,
+  sortingDirection: null,
 };
 
 export const productsSlice = createSlice({
   name: NameSpace.Products,
   initialState,
   reducers: {
-    setSortingType: (state, { payload }: PayloadAction<SortingType>) => {
+    setSortingType: (state, { payload }: PayloadAction<SortingType | null>) => {
       state.sortingType = payload;
     },
     setSortingDirection: (
       state,
-      { payload }: PayloadAction<SortingDirection>
+      { payload }: PayloadAction<SortingDirection | null>
     ) => {
       state.sortingDirection = payload;
     },

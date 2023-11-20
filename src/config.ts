@@ -84,13 +84,11 @@ export enum Status {
 export enum SortingType {
   Price = 'sortPrice',
   Popular = 'sortPopular',
-  Default = 'default'
 }
 
 export enum SortingDirection {
   LowToHigh = 'up',
   HighToLow = 'down',
-  Default = 'default'
 }
 
 export const TIME_TO_RENDER_PAGE = 250;

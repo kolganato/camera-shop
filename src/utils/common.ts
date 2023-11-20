@@ -24,8 +24,8 @@ export const sortReviewsByDate = (a: ReviewData, b: ReviewData) =>
 
 type Sorting = (
   products: Product[],
-  priority: SortingDirection,
-  method: SortingType
+  priority: SortingDirection | null,
+  method: SortingType | null
 ) => Product[];
 
 export const sorting: Sorting = (products, priority, method) => {
@@ -77,7 +77,7 @@ export const getTab = <T = string | null | Tab>(tab: T) => {
   return Tab.Characteristics;
 };
 
-export const getCurrentSortingType = (param: string | null): SortingType => {
+export const getCurrentSortingType = (param: string | null | SortingType): SortingType | null => {
   if (param === SortingType.Popular) {
     return SortingType.Popular;
   }
@@ -86,12 +86,12 @@ export const getCurrentSortingType = (param: string | null): SortingType => {
     return SortingType.Price;
   }
 
-  return SortingType.Default;
+  return null;
 };
 
 export const getCurrentSortingDirection = (
-  param: string | null
-): SortingDirection => {
+  param: string | null | SortingDirection
+): SortingDirection | null => {
   if (param === SortingDirection.HighToLow) {
     return SortingDirection.HighToLow;
   }
@@ -100,7 +100,7 @@ export const getCurrentSortingDirection = (
     return SortingDirection.LowToHigh;
   }
 
-  return SortingDirection.Default;
+  return null;
 };
 
 export const getCurrentCategory = (

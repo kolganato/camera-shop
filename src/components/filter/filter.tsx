@@ -48,8 +48,6 @@ function Filter(): JSX.Element {
     searchParams.delete('category');
     searchParams.delete('levels');
     searchParams.delete('types');
-    searchParams.delete('price_gte');
-    searchParams.delete('price_lte');
     searchParams.delete('page');
 
     if (photocameraRef.current?.checked) {
@@ -86,6 +84,13 @@ function Filter(): JSX.Element {
       searchParams.set('levels', levels.join(','));
     }
 
+    setSearchParams(searchParams);
+  };
+
+  const handlePriceChange = () => {
+    searchParams.delete('price_gte');
+    searchParams.delete('price_lte');
+
     if (priceMinRef.current?.value) {
       searchParams.set('price_gte', priceMinRef.current.value);
     }
@@ -117,7 +122,10 @@ function Filter(): JSX.Element {
         setMinPrice(Number(priceMinRef.current.value));
       }
 
-      if (priceMaxRef.current?.value && Number(priceMaxRef.current.value) < minPrice) {
+      if (
+        priceMaxRef.current?.value &&
+        Number(priceMaxRef.current.value) < minPrice
+      ) {
         priceMaxRef.current.min = String(minPrice);
         searchParams.set('price_lte', String(minPrice));
       }
@@ -152,50 +160,31 @@ function Filter(): JSX.Element {
           <div className="catalog-filter__price-range">
             <div className="custom-input">
               <label>
-                {searchParams.get('price_gte') && (
-                  <input
-                    type="number"
-                    placeholder={`от ${String(minPriceProducts)}`}
-                    name="priceMin"
-                    ref={priceMinRef}
-                    min={minPriceProducts}
-                    defaultValue={Number(searchParams.get('price_gte'))}
-                  />
-                )}
-                {!searchParams.get('price_gte') && (
-                  <input
-                    type="number"
-                    placeholder={`от ${String(minPriceProducts)}`}
-                    name="priceMin"
-                    ref={priceMinRef}
-                    min={minPriceProducts}
-                  />
-                )}
+                <input
+                  type="number"
+                  placeholder={`от ${String(minPriceProducts)}`}
+                  name="priceMin"
+                  ref={priceMinRef}
+                  min={minPriceProducts}
+                  defaultValue={
+                    Number(searchParams.get('price_gte')) || undefined
+                  }
+                  onChange={handlePriceChange}
+                />
               </label>
             </div>
             <div className="custom-input">
               <label>
-                {searchParams.get('price_lte') && (
-                  <input
-                    type="number"
-                    placeholder={`до ${String(maxPriceProducts)}`}
-                    name="priceMax"
-                    ref={priceMaxRef}
-                    min={minPrice}
-                    max={maxPriceProducts}
-                    defaultValue={Number(searchParams.get('price_lte'))}
-                  />
-                )}
-                {!searchParams.get('price_lte') && (
-                  <input
-                    type="number"
-                    placeholder={`до ${String(maxPriceProducts)}`}
-                    name="priceMax"
-                    ref={priceMaxRef}
-                    min={minPrice}
-                    max={maxPriceProducts}
-                  />
-                )}
+                <input
+                  type="number"
+                  placeholder={`до ${String(maxPriceProducts)}`}
+                  name="priceMax"
+                  ref={priceMaxRef}
+                  min={minPrice}
+                  max={maxPriceProducts}
+                  defaultValue={Number(searchParams.get('price_lte')) || undefined}
+                  onChange={handlePriceChange}
+                />
               </label>
             </div>
           </div>

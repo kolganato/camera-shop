@@ -35,11 +35,19 @@ function Sorting(): JSX.Element {
   const { register, handleSubmit } = useForm<FormSorting>();
 
   const onChange: SubmitHandler<FormSorting> = (data: FormSorting): void => {
-    dispatch(setSortingType(data.type));
-    dispatch(setSortingDirection(data.direction));
 
     searchParams.set('sortingType', data.type);
     searchParams.set('sortingDirection', data.direction);
+
+    if(data.type === null){
+      searchParams.set('sortingType', SortingType.Price);
+    }
+
+    if(data.direction === null){
+      searchParams.set('sortingDirection', SortingDirection.LowToHigh);
+    }
+
+
     setSearchParams(searchParams);
   };
 
@@ -50,8 +58,7 @@ function Sorting(): JSX.Element {
           <p className="title title--h5">Сортировать:</p>
           <div className="catalog-sort__type">
             <div className="catalog-sort__btn-text">
-              {(currentSortingType === SortingType.Price ||
-                currentSortingType === SortingType.Default) && (
+              {searchParams.get('sortingType') === SortingType.Price && (
                 <input
                   type="radio"
                   id={SortingType.Price}
@@ -60,7 +67,7 @@ function Sorting(): JSX.Element {
                   {...register('type')}
                 />
               )}
-              {currentSortingType === SortingType.Popular && (
+              {searchParams.get('sortingType') !== SortingType.Price && (
                 <input
                   type="radio"
                   id={SortingType.Price}
@@ -71,7 +78,7 @@ function Sorting(): JSX.Element {
               <label htmlFor={SortingType.Price}>по цене</label>
             </div>
             <div className="catalog-sort__btn-text">
-              {currentSortingType === SortingType.Popular && (
+              {searchParams.get('sortingType') === SortingType.Popular && (
                 <input
                   type="radio"
                   id={SortingType.Popular}
@@ -80,7 +87,7 @@ function Sorting(): JSX.Element {
                   {...register('type')}
                 />
               )}
-              {currentSortingType !== SortingType.Popular && (
+              {searchParams.get('sortingType') !== SortingType.Popular && (
                 <input
                   type="radio"
                   id={SortingType.Popular}
@@ -93,8 +100,7 @@ function Sorting(): JSX.Element {
           </div>
           <div className="catalog-sort__order">
             <div className="catalog-sort__btn catalog-sort__btn--up">
-              {(currentSortingDirection === SortingDirection.LowToHigh ||
-                currentSortingDirection === SortingDirection.Default) && (
+              {currentSortingDirection === SortingDirection.LowToHigh && (
                 <input
                   type="radio"
                   id={SortingDirection.LowToHigh}
@@ -104,7 +110,7 @@ function Sorting(): JSX.Element {
                   {...register('direction')}
                 />
               )}
-              {currentSortingDirection === SortingDirection.HighToLow && (
+              {currentSortingDirection !== SortingDirection.LowToHigh && (
                 <input
                   type="radio"
                   id={SortingDirection.LowToHigh}
