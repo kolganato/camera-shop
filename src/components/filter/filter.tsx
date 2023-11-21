@@ -139,7 +139,6 @@ function Filter(): JSX.Element {
     <div className="catalog-filter" data-testid="filter">
       <form
         action="#"
-        onChange={handleChange}
         ref={formRef}
         onReset={() => {
           if (formRef.current !== null) {
@@ -160,31 +159,54 @@ function Filter(): JSX.Element {
           <div className="catalog-filter__price-range">
             <div className="custom-input">
               <label>
-                <input
-                  type="number"
-                  placeholder={`от ${String(minPriceProducts)}`}
-                  name="priceMin"
-                  ref={priceMinRef}
-                  min={minPriceProducts}
-                  defaultValue={
-                    Number(searchParams.get('price_gte')) || undefined
-                  }
-                  onChange={handlePriceChange}
-                />
+                {searchParams.get('price_gte') && (
+                  <input
+                    type="number"
+                    placeholder={`от ${String(minPriceProducts)}`}
+                    name="priceMin"
+                    ref={priceMinRef}
+                    min={minPriceProducts}
+                    defaultValue={Number(searchParams.get('price_gte'))}
+                    onChange={handlePriceChange}
+                  />
+                )}
+                {!searchParams.get('price_gte') && (
+                  <input
+                    type="number"
+                    placeholder={`от ${String(minPriceProducts)}`}
+                    name="priceMin"
+                    ref={priceMinRef}
+                    min={minPriceProducts}
+                    onChange={handlePriceChange}
+                  />
+                )}
               </label>
             </div>
             <div className="custom-input">
               <label>
-                <input
-                  type="number"
-                  placeholder={`до ${String(maxPriceProducts)}`}
-                  name="priceMax"
-                  ref={priceMaxRef}
-                  min={minPrice}
-                  max={maxPriceProducts}
-                  defaultValue={Number(searchParams.get('price_lte')) || undefined}
-                  onChange={handlePriceChange}
-                />
+                {searchParams.get('price_lte') && (
+                  <input
+                    type="number"
+                    placeholder={`до ${String(maxPriceProducts)}`}
+                    name="priceMax"
+                    ref={priceMaxRef}
+                    min={minPrice}
+                    max={maxPriceProducts}
+                    defaultValue={Number(searchParams.get('price_lte'))}
+                    onChange={handlePriceChange}
+                  />
+                )}
+                {!searchParams.get('price_lte') && (
+                  <input
+                    type="number"
+                    placeholder={`до ${String(maxPriceProducts)}`}
+                    name="priceMax"
+                    ref={priceMaxRef}
+                    min={minPrice}
+                    max={maxPriceProducts}
+                    onChange={handlePriceChange}
+                  />
+                )}
               </label>
             </div>
           </div>
@@ -201,6 +223,7 @@ function Filter(): JSX.Element {
                   value={ProductCategory.Photo}
                   disabled={filterData.category === ProductCategory.Video}
                   defaultChecked
+                  onChange={handleChange}
                 />
               )}
               {searchParams.get('category') !== ProductCategory.Photo && (
@@ -210,6 +233,7 @@ function Filter(): JSX.Element {
                   ref={photocameraRef}
                   value={ProductCategory.Photo}
                   disabled={filterData.category === ProductCategory.Video}
+                  onChange={handleChange}
                 />
               )}
               <span className="custom-checkbox__icon" />
@@ -226,6 +250,7 @@ function Filter(): JSX.Element {
                   value={ProductCategory.Video}
                   disabled={filterData.category === ProductCategory.Photo}
                   defaultChecked
+                  onChange={handleChange}
                 />
               )}
               {searchParams.get('category') !== ProductCategory.Video && (
@@ -235,6 +260,7 @@ function Filter(): JSX.Element {
                   ref={videocameraRef}
                   value={ProductCategory.Video}
                   disabled={filterData.category === ProductCategory.Photo}
+                  onChange={handleChange}
                 />
               )}
               <span className="custom-checkbox__icon" />
@@ -251,6 +277,7 @@ function Filter(): JSX.Element {
                   type="checkbox"
                   value={ProductType.Digital}
                   ref={typeDigitalRef}
+                  onChange={handleChange}
                   defaultChecked
                 />
               )}
@@ -258,6 +285,7 @@ function Filter(): JSX.Element {
                 <input
                   type="checkbox"
                   value={ProductType.Digital}
+                  onChange={handleChange}
                   ref={typeDigitalRef}
                 />
               )}
@@ -273,6 +301,7 @@ function Filter(): JSX.Element {
                   value={ProductType.Film}
                   ref={typeFilmRef}
                   disabled={filterData.category === ProductCategory.Video}
+                  onChange={handleChange}
                   defaultChecked
                 />
               )}
@@ -281,6 +310,7 @@ function Filter(): JSX.Element {
                   type="checkbox"
                   value={ProductType.Film}
                   ref={typeFilmRef}
+                  onChange={handleChange}
                   disabled={filterData.category === ProductCategory.Video}
                 />
               )}
@@ -296,6 +326,7 @@ function Filter(): JSX.Element {
                   ref={typeInstantRef}
                   value={ProductType.Instant}
                   disabled={filterData.category === ProductCategory.Video}
+                  onChange={handleChange}
                   defaultChecked
                 />
               )}
@@ -303,6 +334,7 @@ function Filter(): JSX.Element {
                 <input
                   type="checkbox"
                   ref={typeInstantRef}
+                  onChange={handleChange}
                   value={ProductType.Instant}
                   disabled={filterData.category === ProductCategory.Video}
                 />
@@ -317,6 +349,7 @@ function Filter(): JSX.Element {
                 <input
                   type="checkbox"
                   ref={typeCollectebleRef}
+                  onChange={handleChange}
                   value={ProductType.Collectible}
                   defaultChecked
                 />
@@ -324,6 +357,7 @@ function Filter(): JSX.Element {
               {!typesBySearchParams?.includes(ProductType.Collectible) && (
                 <input
                   type="checkbox"
+                  onChange={handleChange}
                   ref={typeCollectebleRef}
                   value={ProductType.Collectible}
                 />
@@ -343,6 +377,7 @@ function Filter(): JSX.Element {
                   ref={levelZeroRef}
                   name="zero"
                   value={ProductLevel.Zero}
+                  onChange={handleChange}
                   defaultChecked
                 />
               )}
@@ -351,6 +386,7 @@ function Filter(): JSX.Element {
                   type="checkbox"
                   ref={levelZeroRef}
                   name="zero"
+                  onChange={handleChange}
                   value={ProductLevel.Zero}
                 />
               )}
@@ -366,6 +402,7 @@ function Filter(): JSX.Element {
                   ref={levelAmateurRef}
                   name="non-professional"
                   value={ProductLevel.Amateur}
+                  onChange={handleChange}
                   defaultChecked
                 />
               )}
@@ -374,6 +411,7 @@ function Filter(): JSX.Element {
                   type="checkbox"
                   ref={levelAmateurRef}
                   name="non-professional"
+                  onChange={handleChange}
                   value={ProductLevel.Amateur}
                 />
               )}
@@ -389,6 +427,7 @@ function Filter(): JSX.Element {
                   ref={levelProRef}
                   name="professional"
                   value={ProductLevel.Pro}
+                  onChange={handleChange}
                   defaultChecked
                 />
               )}
@@ -397,6 +436,7 @@ function Filter(): JSX.Element {
                   type="checkbox"
                   ref={levelProRef}
                   name="professional"
+                  onChange={handleChange}
                   value={ProductLevel.Pro}
                 />
               )}
