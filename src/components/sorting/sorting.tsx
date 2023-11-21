@@ -6,7 +6,7 @@ import {
   setSortingType,
 } from '../../store/products/products-slice';
 import { useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   getCurrentSortingDirection,
   getCurrentSortingType,
@@ -26,39 +26,52 @@ function Sorting(): JSX.Element {
   const currentSortingDirection = getCurrentSortingDirection(
     searchParams.get('sortingDirection')
   );
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  const resetFormRef = () => {
+    if (formRef.current !== null) {
+      formRef.current.reset();
+    }
+  };
 
   useEffect(() => {
     dispatch(setSortingType(currentSortingType));
     dispatch(setSortingDirection(currentSortingDirection));
+
+    return () => {
+      resetFormRef();
+    };
   }, [searchParams, dispatch, currentSortingType, currentSortingDirection]);
 
   const { register, handleSubmit } = useForm<FormSorting>();
 
   const onChange: SubmitHandler<FormSorting> = (data: FormSorting): void => {
-
     searchParams.set('sortingType', data.type);
     searchParams.set('sortingDirection', data.direction);
 
-    if(data.type === null){
+    if (data.type === null) {
       searchParams.set('sortingType', SortingType.Price);
     }
 
-    if(data.direction === null){
+    if (data.direction === null) {
       searchParams.set('sortingDirection', SortingDirection.LowToHigh);
     }
-
 
     setSearchParams(searchParams);
   };
 
   return (
     <div className="catalog-sort" data-testid="sorting">
-      <form action="#" onChange={(evt) => void handleSubmit(onChange)(evt)}>
+      <form
+        action="#"
+        onChange={(evt) => void handleSubmit(onChange)(evt)}
+        ref={formRef}
+      >
         <div className="catalog-sort__inner">
           <p className="title title--h5">Сортировать:</p>
           <div className="catalog-sort__type">
             <div className="catalog-sort__btn-text">
-              {searchParams.get('sortingType') === SortingType.Price && (
+              {currentSortingType === SortingType.Price && (
                 <input
                   type="radio"
                   id={SortingType.Price}
@@ -67,7 +80,7 @@ function Sorting(): JSX.Element {
                   {...register('type')}
                 />
               )}
-              {searchParams.get('sortingType') !== SortingType.Price && (
+              {currentSortingType !== SortingType.Price && (
                 <input
                   type="radio"
                   id={SortingType.Price}
@@ -78,7 +91,7 @@ function Sorting(): JSX.Element {
               <label htmlFor={SortingType.Price}>по цене</label>
             </div>
             <div className="catalog-sort__btn-text">
-              {searchParams.get('sortingType') === SortingType.Popular && (
+              {currentSortingType === SortingType.Popular && (
                 <input
                   type="radio"
                   id={SortingType.Popular}
@@ -87,7 +100,7 @@ function Sorting(): JSX.Element {
                   {...register('type')}
                 />
               )}
-              {searchParams.get('sortingType') !== SortingType.Popular && (
+              {currentSortingType !== SortingType.Popular && (
                 <input
                   type="radio"
                   id={SortingType.Popular}
