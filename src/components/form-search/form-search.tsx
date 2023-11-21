@@ -23,6 +23,13 @@ function FormSearch(): JSX.Element {
     }
   };
 
+  const focus = (key: string): void => {
+    const { activeElement: { [key]: elementSibling } = {} } = document;
+    if (elementSibling) {
+      elementSibling.focus();
+    }
+  };
+
   return (
     <div
       className={classNames('form-search', {
@@ -51,16 +58,24 @@ function FormSearch(): JSX.Element {
         </label>
         {searchLive.length >= 3 && productsBySearchLive.length >= 1 && (
           <ul className="form-search__select-list scroller">
-            {productsBySearchLive.map((item) => (
+            {productsBySearchLive.map((item, index) => (
               <li
                 className="form-search__select-item"
                 tabIndex={0}
                 key={item.id}
+                id={`product-${index}`}
                 onClick={() => {
                   navigate(`${AppRoute.Catalog}/${item.id}`);
                   handleClick();
                 }}
                 onKeyDown={(evt) => {
+                  evt.preventDefault();
+                  if (evt.key === 'ArrowDown') {
+                    focus('nextElementSibling');
+                  }
+                  if (evt.key === 'ArrowUp') {
+                    focus('previousElementSibling');
+                  }
                   if (evt.key === 'Enter') {
                     navigate(`${AppRoute.Catalog}/${item.id}`);
                     handleClick();
