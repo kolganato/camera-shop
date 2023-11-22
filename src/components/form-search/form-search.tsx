@@ -16,6 +16,8 @@ function FormSearch(): JSX.Element {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
+  const ulRef = useRef<HTMLUListElement | null>(null);
+
   const handleClick = () => {
     dispatch(setSearchLive(''));
     if (inputRef.current !== null) {
@@ -23,10 +25,29 @@ function FormSearch(): JSX.Element {
     }
   };
 
-  const focus = (key: string): void => {
-    const { activeElement: { [key]: elementSibling } = {} } = document;
-    if (elementSibling) {
-      elementSibling.focus();
+  const moveFocusDown = () => {
+    const childs = Array.from(ulRef.current?.children ?? []) as HTMLLIElement[];
+
+    const activeItem = document.activeElement;
+    for (let i = 0; i < childs.length; i++) {
+      const listLength = childs.length;
+      if (
+        activeItem === childs[i] &&
+        activeItem !== childs[listLength - 1]
+      ) {
+        childs[i + 1].focus();
+      }
+    }
+  };
+
+  const moveFocusUp = () => {
+    const childs = Array.from(ulRef.current?.children ?? []) as HTMLLIElement[];
+
+    const activeItem = document.activeElement;
+    for (let i = 0; i < childs.length; i++) {
+      if (activeItem === childs[i] && activeItem !== childs[0]) {
+        childs[i - 1].focus();
+      }
     }
   };
 
@@ -57,7 +78,7 @@ function FormSearch(): JSX.Element {
           />
         </label>
         {searchLive.length >= 3 && productsBySearchLive.length >= 1 && (
-          <ul className="form-search__select-list scroller">
+          <ul className="form-search__select-list scroller" ref={ulRef}>
             {productsBySearchLive.map((item, index) => (
               <li
                 className="form-search__select-item"
@@ -69,12 +90,11 @@ function FormSearch(): JSX.Element {
                   handleClick();
                 }}
                 onKeyDown={(evt) => {
-                  evt.preventDefault();
                   if (evt.key === 'ArrowDown') {
-                    focus('nextElementSibling');
+                    moveFocusDown();
                   }
                   if (evt.key === 'ArrowUp') {
-                    focus('previousElementSibling');
+                    moveFocusUp();
                   }
                   if (evt.key === 'Enter') {
                     navigate(`${AppRoute.Catalog}/${item.id}`);
