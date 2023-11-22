@@ -66,6 +66,29 @@ function Sorting(): JSX.Element {
         action="#"
         onChange={(evt) => void handleSubmit(onChange)(evt)}
         ref={formRef}
+        onKeyDown={(evt) => {
+          if (evt.key === 'ArrowDown') {
+            evt.preventDefault();
+            searchParams.set('sortingDirection', SortingDirection.HighToLow);
+
+            if (searchParams.get('sortingType') === null) {
+              searchParams.set('sortingType', SortingType.Price);
+            }
+
+            setSearchParams(searchParams);
+          }
+
+          if (evt.key === 'ArrowUp') {
+            evt.preventDefault();
+            searchParams.set('sortingDirection', SortingDirection.LowToHigh);
+
+            if (searchParams.get('sortingType') === null) {
+              searchParams.set('sortingType', SortingType.Price);
+            }
+
+            setSearchParams(searchParams);
+          }
+        }}
       >
         <div className="catalog-sort__inner">
           <p className="title title--h5">Сортировать:</p>
