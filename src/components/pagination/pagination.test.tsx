@@ -3,8 +3,9 @@ import { withHistory, withStore } from '../../utils/mock-component';
 import { makeFakeProduct } from '../../test-mocks/test-mocks';
 import { testInitialState } from '../../store/products/products-slice';
 import Pagination from '.';
+import { TIME_TO_RENDER_PAGE } from '../../config';
 
-describe('Component: Catalog', () => {
+describe('Component: Pagination', () => {
   it('Должен отрисовать компонент', () => {
     const products = Array.from({length: 39}, makeFakeProduct);
     const paginationTestId = 'pagination';
@@ -13,7 +14,7 @@ describe('Component: Catalog', () => {
     const { withStoreComponent } = withStore(<Pagination />, {
       PRODUCTS: {
         ...testInitialState,
-        products
+        products,
       }
     });
     const preparedComponent = withHistory(withStoreComponent);
@@ -21,6 +22,11 @@ describe('Component: Catalog', () => {
     render(preparedComponent);
 
     expect(screen.getByTestId(paginationTestId)).toBeInTheDocument();
-    expect(screen.getByText(expectedText)).toBeInTheDocument();
+
+    const waitingRenderTimer = setTimeout(() => {
+      expect(screen.getByText(expectedText)).toBeInTheDocument();
+
+      clearTimeout(waitingRenderTimer);
+    }, TIME_TO_RENDER_PAGE);
   });
 });

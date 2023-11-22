@@ -4,7 +4,12 @@ import {
   makeFakePromo,
   makeFakeReview,
 } from '../../test-mocks/test-mocks';
-import { COUNT_PRODUCTS_SHOW, DEFAULT_PAGE_NUMBER } from '../../utils/common';
+import {
+  COUNT_PRODUCTS_SHOW,
+  DEFAULT_PAGE_NUMBER,
+  getFilteredProducts,
+  sorting,
+} from '../../utils/common';
 import { testInitialState } from './products-slice';
 import {
   getArrayCountPagesByProducts,
@@ -76,14 +81,22 @@ describe('Products selectors', () => {
   });
 
   it('Должен получить список товаров для отображения в каталоге на одной странице', () => {
-    const { products, currentPage } = state[NameSpace.Products];
+    const { products, currentPage, filter, sortingType, sortingDirection } =
+      state[NameSpace.Products];
     const result = getProductsShow(state);
 
+    const filteredProducts = getFilteredProducts(products, filter);
+
     if (currentPage === DEFAULT_PAGE_NUMBER) {
-      expect(result).toEqual(products.slice(0, COUNT_PRODUCTS_SHOW));
+      expect(result).toEqual(
+        sorting(filteredProducts, sortingDirection, sortingType).slice(
+          0,
+          COUNT_PRODUCTS_SHOW
+        )
+      );
     } else {
       expect(result).toEqual(
-        products.slice(
+        sorting(filteredProducts, sortingDirection, sortingType).slice(
           (currentPage - 1) * COUNT_PRODUCTS_SHOW,
           COUNT_PRODUCTS_SHOW * currentPage
         )
@@ -110,32 +123,32 @@ describe('Products selectors', () => {
   });
 
   it('Должен получить количество страниц пагинации относительно количества товаров', () => {
-    const { products } = state[NameSpace.Products];
+    const { products, filter } = state[NameSpace.Products];
     const result = getCountPagesByProducts(state);
-    const countProducts = products.length;
-    const countPages = countProducts % 9;
+    const filteredProducts = getFilteredProducts(products, filter);
 
-    if (countProducts % 9 > 0) {
-      expect(result).toBe(countPages + 1);
+    const countProducts = filteredProducts.length;
+
+    if (countProducts < 9) {
+      expect(result).toBe(1);
     } else {
+      const countPages = Math.ceil(countProducts / 9);
       expect(result).toBe(countPages);
     }
   });
 
   it('Должен получить массив страниц пагинации', () => {
-    const { products } = state[NameSpace.Products];
+    const { products, filter } = state[NameSpace.Products];
     const result = getArrayCountPagesByProducts(state);
-    const countProducts = products.length;
-    const countPages = countProducts % 9;
+    const filteredProducts = getFilteredProducts(products, filter);
 
-    if (countProducts % 9 > 0) {
-      expect(result).toEqual(
-        Array.from({ length: countPages + 1 }, (_, index) => index + 1)
-      );
-    } else {
-      expect(result).toEqual(
-        Array.from({ length: countPages }, (_, index) => index + 1)
-      );
+    const countProducts = filteredProducts.length;
+    const countPages = Math.ceil(countProducts / 9);
+
+    if(countProducts < 9){
+      expect(result).toEqual([]);
+    }else{
+      expect(result).toEqual(Array.from({ length: countPages }, (_, index) => index + 1));
     }
   });
 

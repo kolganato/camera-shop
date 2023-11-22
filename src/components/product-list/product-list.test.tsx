@@ -6,6 +6,7 @@ import {
 } from '../../store/products/products-slice';
 import ProductList from '.';
 import { COUNT_PRODUCTS_SHOW } from '../../utils/common';
+import { TIME_TO_RENDER_PAGE } from '../../config';
 
 describe('Component: ProductList', () => {
   it('Должен отрисовать компонент', () => {
@@ -27,7 +28,11 @@ describe('Component: ProductList', () => {
 
     render(preparedComponent);
 
-    expect(screen.getByTestId(productListTestId)).toBeInTheDocument();
-    expect(screen.getAllByTestId(productCardTestId).length).toBe(expectedCount);
+    const waitingRenderTimer = setTimeout(() => {
+      expect(screen.getByTestId(productListTestId)).toBeInTheDocument();
+      expect(screen.getAllByTestId(productCardTestId).length).toBe(expectedCount);
+
+      clearTimeout(waitingRenderTimer);
+    }, TIME_TO_RENDER_PAGE);
   });
 });

@@ -240,11 +240,10 @@ describe('Products Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('Должен вернуть флаг ошибки загрузки промо продуктов false и ошибки true', () => {
+  it('Должен вернуть флаг ошибки загрузки промо продуктов false', () => {
     const expectedState = {
       ...testInitialState,
       isPromoLoading: false,
-      hasError: true,
     };
 
     const result = productsSlice.reducer(undefined, getPromoAction.rejected);
@@ -280,11 +279,10 @@ describe('Products Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('Должен вернуть флаг ошибки загрузки похожих продуктов false и ошибки true', () => {
+  it('Должен вернуть флаг ошибки загрузки похожих продуктов false', () => {
     const expectedState = {
       ...testInitialState,
       isSimilarProductsLoading: false,
-      hasError: true,
     };
 
     const result = productsSlice.reducer(
@@ -323,11 +321,10 @@ describe('Products Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('Должен вернуть флаг ошибки загрузки отзывов false и ошибки true', () => {
+  it('Должен вернуть флаг ошибки загрузки отзывов false', () => {
     const expectedState = {
       ...testInitialState,
       isReviewsLoading: false,
-      hasError: true,
     };
 
     const result = productsSlice.reducer(undefined, getReviewsAction.rejected);
