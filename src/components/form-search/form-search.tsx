@@ -56,7 +56,7 @@ function FormSearch(): JSX.Element {
   return (
     <div
       className={classNames('form-search', {
-        'list-opened': searchLive.length > 1,
+        'list-opened': searchLive.length >= 1,
       })}
       data-testid="form-search"
     >

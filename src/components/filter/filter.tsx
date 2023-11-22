@@ -118,6 +118,11 @@ function Filter(): JSX.Element {
         searchParams.set('price_lte', String(maxPriceProducts));
       }
 
+      if(priceMaxRef.current?.value && priceMinRef.current?.value && Number(priceMaxRef.current.value) < Number(priceMinRef.current.value)){
+        priceMaxRef.current.value = priceMinRef.current.value;
+        searchParams.set('price_lte', priceMinRef.current.value);
+      }
+
       if (priceMinRef.current?.value) {
         setMinPrice(Number(priceMinRef.current.value));
       }
@@ -162,7 +167,7 @@ function Filter(): JSX.Element {
                 {searchParams.get('price_gte') && (
                   <input
                     type="number"
-                    placeholder={`от ${String(minPriceProducts)}`}
+                    placeholder={String(minPriceProducts)}
                     name="priceMin"
                     ref={priceMinRef}
                     min={minPriceProducts}
@@ -173,7 +178,7 @@ function Filter(): JSX.Element {
                 {!searchParams.get('price_gte') && (
                   <input
                     type="number"
-                    placeholder={`от ${String(minPriceProducts)}`}
+                    placeholder={String(minPriceProducts)}
                     name="priceMin"
                     ref={priceMinRef}
                     min={minPriceProducts}
@@ -187,7 +192,7 @@ function Filter(): JSX.Element {
                 {searchParams.get('price_lte') && (
                   <input
                     type="number"
-                    placeholder={`до ${String(maxPriceProducts)}`}
+                    placeholder={String(maxPriceProducts)}
                     name="priceMax"
                     ref={priceMaxRef}
                     min={minPrice}
@@ -199,7 +204,7 @@ function Filter(): JSX.Element {
                 {!searchParams.get('price_lte') && (
                   <input
                     type="number"
-                    placeholder={`до ${String(maxPriceProducts)}`}
+                    placeholder={String(maxPriceProducts)}
                     name="priceMax"
                     ref={priceMaxRef}
                     min={minPrice}
