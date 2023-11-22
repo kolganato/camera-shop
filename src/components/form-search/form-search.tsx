@@ -25,8 +25,9 @@ function FormSearch(): JSX.Element {
     }
   };
 
-  const moveFocusDown = () => {
+  const moveFocusDown = (evt: React.KeyboardEvent) => {
     const childs = Array.from(ulRef.current?.children ?? []) as HTMLLIElement[];
+    evt.preventDefault();
 
     const activeItem = document.activeElement;
     for (let i = 0; i < childs.length; i++) {
@@ -40,8 +41,9 @@ function FormSearch(): JSX.Element {
     }
   };
 
-  const moveFocusUp = () => {
+  const moveFocusUp = (evt: React.KeyboardEvent) => {
     const childs = Array.from(ulRef.current?.children ?? []) as HTMLLIElement[];
+    evt.preventDefault();
 
     const activeItem = document.activeElement;
     for (let i = 0; i < childs.length; i++) {
@@ -91,10 +93,10 @@ function FormSearch(): JSX.Element {
                 }}
                 onKeyDown={(evt) => {
                   if (evt.key === 'ArrowDown') {
-                    moveFocusDown();
+                    moveFocusDown(evt);
                   }
                   if (evt.key === 'ArrowUp') {
-                    moveFocusUp();
+                    moveFocusUp(evt);
                   }
                   if (evt.key === 'Enter') {
                     navigate(`${AppRoute.Catalog}/${item.id}`);
