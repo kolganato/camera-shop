@@ -84,15 +84,15 @@ function ProductCard({
           </button>
         )}
         {inBasket && (
-          <a
+          <Link
             className="btn btn--purple-border product-card__btn product-card__btn--in-cart"
-            href="#"
+            to={AppRoute.Basket}
           >
             <svg width={16} height={16} aria-hidden="true">
               <use xlinkHref="#icon-basket" />
             </svg>
             В корзине
-          </a>
+          </Link>
         )}
         <Link className="btn btn--transparent" to={`${AppRoute.Catalog}/${id}`}>
           Подробнее
