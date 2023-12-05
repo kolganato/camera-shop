@@ -1,11 +1,14 @@
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector, useClosingModal } from '../../hooks';
 import {
+  getIsModalOrderSuccess,
   getIsModalProduct,
   getIsModalProductSucess,
+  getIsModalRemoveProduct,
   getIsModalReview,
   getIsModalReviewSuccess,
   getProductToAdd,
+  getProductToRemove,
   getStatusReviewData,
   getStatusShowModal,
 } from '../../store/products/selector';
@@ -20,6 +23,8 @@ import {
 } from '../../store/products/products-slice';
 import ModalReviewSuccess from '../modal-review-success';
 import { Status } from '../../config';
+import ModalRemoveProduct from '../modal-remove-product';
+import ModalOrderSucces from '../modal-order-success';
 
 type ModalProps = {
   id?: Product['id'];
@@ -29,11 +34,14 @@ function Modal({ id }: ModalProps): JSX.Element {
   const dispatch = useAppDispatch();
   const isActive = useAppSelector(getStatusShowModal);
   const productToAdd = useAppSelector(getProductToAdd);
+  const productToRemove = useAppSelector(getProductToRemove);
   const statusData = useAppSelector(getStatusReviewData);
   const isModalProduct = useAppSelector(getIsModalProduct);
   const isModalReview = useAppSelector(getIsModalReview);
   const isModalProductSuccess = useAppSelector(getIsModalProductSucess);
   const isModalReviewSuccess = useAppSelector(getIsModalReviewSuccess);
+  const isModalRemoveProduct = useAppSelector(getIsModalRemoveProduct);
+  const isModalOrderSuccess = useAppSelector(getIsModalOrderSuccess);
 
   const closeModal = useClosingModal;
 
@@ -44,10 +52,13 @@ function Modal({ id }: ModalProps): JSX.Element {
           closeModal(dispatch);
         }
       };
+
+      document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleEsc);
 
       return () => {
         window.removeEventListener('keydown', handleEsc);
+        document.body.style.overflow = 'auto';
       };
     }
   }, [isActive, dispatch, closeModal]);
@@ -76,11 +87,13 @@ function Modal({ id }: ModalProps): JSX.Element {
           <ModalAddingSuccess />
         )}
         {isModalReview && !isModalReviewSuccess && id && (
-          <ModalAddingReview productId={id}/>
+          <ModalAddingReview productId={id} />
         )}
-        {isModalReview && isModalReviewSuccess && (
-          <ModalReviewSuccess />
+        {isModalReview && isModalReviewSuccess && <ModalReviewSuccess />}
+        {isModalRemoveProduct && productToRemove && (
+          <ModalRemoveProduct product={productToRemove} />
         )}
+        {isModalOrderSuccess && <ModalOrderSucces />}
       </div>
     </div>
   );

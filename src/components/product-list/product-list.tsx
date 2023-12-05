@@ -30,7 +30,7 @@ function ProductList(): JSX.Element {
           <ProductCard
             product={product}
             key={product.id}
-            inBasket={basket.includes(product.id)}
+            inBasket={basket.some((item) => item.id === product.id)}
             onClick={handleClick}
             data-testid="product-card"
           />
