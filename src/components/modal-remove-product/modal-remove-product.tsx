@@ -1,18 +1,15 @@
 import { useAppDispatch, useClosingModal } from '../../hooks';
 import {
-  addProductToBasket,
-  setProductToAdd,
-  setStatusModalProductSuccess,
+  removeProductFromBasket,
+  setProductToRemove,
 } from '../../store/products/products-slice';
 import { Product } from '../../types/product';
 
-type ModalAddingProductProps = {
+type ModalRemoveProductProps = {
   product: Product;
 };
 
-function ModalAddingProduct({
-  product,
-}: ModalAddingProductProps): JSX.Element {
+function ModalRemoveProduct({ product }: ModalRemoveProductProps): JSX.Element {
   const dispatch = useAppDispatch();
   const closeModal = useClosingModal;
 
@@ -23,7 +20,6 @@ function ModalAddingProduct({
     previewImg2x,
     previewImgWebp,
     previewImgWebp2x,
-    price,
     vendorCode,
     level,
     category,
@@ -31,8 +27,8 @@ function ModalAddingProduct({
   } = product;
 
   return (
-    <div className="modal__content" data-testid="modal-add-product">
-      <p className="title title--h4">Добавить товар в корзину</p>
+    <div className="modal__content" data-testid="modal-remove-product">
+      <p className="title title--h4">Удалить этот товар?</p>
       <div className="basket-item basket-item--short">
         <div className="basket-item__img">
           <picture>
@@ -59,33 +55,38 @@ function ModalAddingProduct({
             <li className="basket-item__list-item">{`${type} ${category.toLocaleLowerCase()}`}</li>
             <li className="basket-item__list-item">{level} уровень</li>
           </ul>
-          <p className="basket-item__price">
-            <span className="visually-hidden">Цена:</span>
-            {price.toLocaleString('ru-RU')} ₽
-          </p>
         </div>
       </div>
       <div className="modal__buttons">
         <button
-          className="btn btn--purple modal__btn modal__btn--fit-width"
+          className="btn btn--purple modal__btn modal__btn--half-width"
           type="button"
           onClick={() => {
-            dispatch(addProductToBasket(id));
-            dispatch(setStatusModalProductSuccess(true));
+            dispatch(removeProductFromBasket(id));
+            dispatch(setProductToRemove(null));
+            closeModal(dispatch);
           }}
         >
-          <svg width={24} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-add-basket" />
-          </svg>
-          Добавить в корзину
+          Удалить
         </button>
+        <a
+          className="btn btn--transparent modal__btn modal__btn--half-width"
+          href="#"
+          onClick={(evt) => {
+            evt.preventDefault();
+            dispatch(setProductToRemove(null));
+            closeModal(dispatch);
+          }}
+        >
+          Продолжить покупки
+        </a>
       </div>
       <button
         className="cross-btn"
         type="button"
         aria-label="Закрыть попап"
         onClick={() => {
-          dispatch(setProductToAdd(null));
+          dispatch(setProductToRemove(null));
           closeModal(dispatch);
         }}
       >
@@ -97,4 +98,4 @@ function ModalAddingProduct({
   );
 }
 
-export default ModalAddingProduct;
+export default ModalRemoveProduct;

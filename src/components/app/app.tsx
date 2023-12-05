@@ -12,16 +12,25 @@ import {
   getHasError,
   getIsProductsLoading,
   getIsPromoLoading,
+  getStatusBasket,
 } from '../../store/products/selector';
 import { getProductsAction, getPromoAction } from '../../store/api-actions';
 import Spinner from '../spinner';
 import ServerError from '../server-error';
+import { fillBasket } from '../../store/products/products-slice';
+import { ProductBasket } from '../../types/product-basket';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
   const isProductsLoading = useAppSelector(getIsProductsLoading);
   const isPromoLoading = useAppSelector(getIsPromoLoading);
   const hasError = useAppSelector(getHasError);
+  const isEmptyBasket = useAppSelector(getStatusBasket);
+  const basketByLocalStorage = localStorage.getItem('basket');
+
+  if(isEmptyBasket && basketByLocalStorage){
+    dispatch(fillBasket(JSON.parse(basketByLocalStorage) as ProductBasket[]));
+  }
 
   useEffect(() => {
     if (!isProductsLoading) {

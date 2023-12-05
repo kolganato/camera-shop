@@ -9,6 +9,8 @@ import {
 import { Filter } from '../../types/fitler';
 import { DEFAULT_PAGE_NUMBER } from '../../utils/common';
 import {
+  fetchOrderAction,
+  fetchPromocodeAction,
   fetchReviewAction,
   getProductsAction,
   getPromoAction,
@@ -17,21 +19,32 @@ import {
 } from '../api-actions';
 import {
   addProductToBasket,
+  changeCountProductInBasket,
+  clearBasket,
+  decreaseProductInBasket,
+  fillBasket,
+  increaseProductInBasket,
   productsSlice,
+  removeProductFromBasket,
   setCurrentPage,
   setFilter,
   setProductToAdd,
+  setProductToRemove,
   setSearchLive,
   setSortingDirection,
   setSortingType,
   setStatusActiveModal,
+  setStatusModalOrder,
   setStatusModalProduct,
   setStatusModalProductSuccess,
+  setStatusModalRemoveProduct,
   setStatusModalReview,
   setStatusModalReviewSuccess,
+  setStatusPromocodeData,
   setStatusReviewData,
   testInitialState,
 } from './products-slice';
+import { ProductBasket } from '../../types/product-basket';
 
 describe('Products Slice', () => {
   const state = {
@@ -88,7 +101,6 @@ describe('Products Slice', () => {
     expect(result.sortingDirection).toBe(expectedSortingDirection);
   });
 
-
   it('Должен вернуть фильтры каталога', () => {
     const expectedFilter = {} as Filter;
     const result = productsSlice.reducer(state, setFilter(expectedFilter));
@@ -96,10 +108,94 @@ describe('Products Slice', () => {
   });
 
   it('Должен вернуть массив с добавленным id продукта', () => {
-    const product = makeFakeProduct();
-    const expectedBasket = [product.id];
+    const product = state.products[0];
+    const expectedBasket = [{ ...product, count: 1 }];
     const result = productsSlice.reducer(state, addProductToBasket(product.id));
     expect(result.basket).toEqual(expectedBasket);
+  });
+
+  it('Должен вернуть продукт готовый к удалению из корзины', () => {
+    const expectedProduct = state.products[0];
+    const result = productsSlice.reducer(
+      state,
+      setProductToRemove(expectedProduct)
+    );
+    expect(result.productToRemove).toEqual(expectedProduct);
+  });
+
+  it('Должен вернуть корзину без удаленного продукта', () => {
+    const product = state.products[0];
+    const expectedBasket = [] as ProductBasket[];
+    const result = productsSlice.reducer(
+      state,
+      removeProductFromBasket(product.id)
+    );
+    expect(result.basket).toEqual(expectedBasket);
+  });
+
+  it('Должен увеличить количество выбранного продукта в корзине', () => {
+    const product = state.products[0];
+    const expectedState = {
+      ...state,
+      basket: [{ ...product, count: 2 }],
+    };
+    const result = productsSlice.reducer(
+      { ...state, basket: [{ ...product, count: 1 }] },
+      increaseProductInBasket(product.id)
+    );
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен уменшить количество выбранного продукта в корзине', () => {
+    const product = state.products[0];
+    const expectedState = {
+      ...state,
+      basket: [{ ...product, count: 1 }],
+    };
+    const result = productsSlice.reducer(
+      { ...state, basket: [{ ...product, count: 2 }] },
+      decreaseProductInBasket(product.id)
+    );
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен изменить количество выбранного продукта в корзине', () => {
+    const product = state.products[0];
+    const expectedState = {
+      ...state,
+      basket: [{ ...product, count: 13 }],
+    };
+    const result = productsSlice.reducer(
+      { ...state, basket: [{ ...product, count: 2 }] },
+      changeCountProductInBasket([product.id, 13])
+    );
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен заполнить корзину', () => {
+    const product = state.products[0];
+    const expectedState = {
+      ...state,
+      basket: [{ ...product, count: 13 }],
+    };
+    const result = productsSlice.reducer(
+      state,
+      fillBasket([{...product, count: 13}])
+    );
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен очистить корзину', () => {
+    const product = state.products[0];
+    const expectedState = {
+      ...state,
+      basket: [],
+    };
+    const result = productsSlice.reducer(
+      { ...state, basket: [{ ...product, count: 2 }] },
+      clearBasket()
+    );
+    expect(result).toEqual(expectedState);
   });
 
   it('Должен вернуть продукт для добавления в корзину и состояние модального окна добавления продукта', () => {
@@ -158,6 +254,24 @@ describe('Products Slice', () => {
     expect(result.isModalProductSuccess).toBe(expectedStatusModalReviewSuccess);
   });
 
+  it('Должен вернуть состояния модального окна при удалении продукта из корзины', () => {
+    const expectedStatusModalRemoveProduct = true;
+    const result = productsSlice.reducer(
+      state,
+      setStatusModalRemoveProduct(expectedStatusModalRemoveProduct)
+    );
+    expect(result.isModalRemoveProduct).toBe(expectedStatusModalRemoveProduct);
+  });
+
+  it('Должен вернуть состояния модального окна успешного оформления заказа', () => {
+    const expectedStatusModalOrderSuccess = true;
+    const result = productsSlice.reducer(
+      state,
+      setStatusModalOrder(expectedStatusModalOrderSuccess)
+    );
+    expect(result.isModalOrderSuccess).toBe(expectedStatusModalOrderSuccess);
+  });
+
   it('Должен вернуть значение searchLive', () => {
     const expectedSearchLive = 'look';
     const result = productsSlice.reducer(
@@ -174,6 +288,24 @@ describe('Products Slice', () => {
       setStatusReviewData(expectedStatusReviewData)
     );
     expect(result.statusReviewData).toBe(expectedStatusReviewData);
+  });
+
+  it('Должен вернуть статус отправки промокода', () => {
+    const expectedStatusPromocodeData = Status.Idle;
+    const result = productsSlice.reducer(
+      state,
+      setStatusPromocodeData(expectedStatusPromocodeData)
+    );
+    expect(result.statusPromocodeData).toBe(expectedStatusPromocodeData);
+  });
+
+  it('Должен вернуть статус оформления заказа', () => {
+    const expectedStatusOrderData = Status.Idle;
+    const result = productsSlice.reducer(
+      state,
+      setStatusPromocodeData(expectedStatusOrderData)
+    );
+    expect(result.statusOrderData).toBe(expectedStatusOrderData);
   });
 
   it('Должен вернуть флаг процесса загрузки true и ошибки false', () => {
@@ -367,10 +499,96 @@ describe('Products Slice', () => {
   it('Должен вернуть статус отправки отзыва Error', () => {
     const expectedState = {
       ...testInitialState,
-      statusReviewData: Status.Error
+      statusReviewData: Status.Error,
     };
 
     const result = productsSlice.reducer(undefined, fetchReviewAction.rejected);
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен вернуть статус проверки промокода', () => {
+    const expectedState = {
+      ...testInitialState,
+      statusPromocodeData: Status.Loading,
+    };
+
+    const result = productsSlice.reducer(
+      initialState,
+      fetchPromocodeAction.pending
+    );
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен вернуть статус успешной проверки промокода Success и получить скидку', () => {
+    const promocode = 'camera-333';
+    const sales = 15;
+    const coupon = {
+      coupon: promocode,
+      sales,
+    };
+
+    const expectedState = {
+      ...testInitialState,
+      coupon,
+      statusPromocodeData: Status.Success,
+    };
+
+    const result = productsSlice.reducer(
+      undefined,
+      fetchPromocodeAction.fulfilled(coupon, '', promocode)
+    );
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен вернуть статус проверки промокода Error', () => {
+    const expectedState = {
+      ...testInitialState,
+      statusPromocodeData: Status.Error,
+    };
+
+    const result = productsSlice.reducer(undefined, fetchPromocodeAction.rejected);
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен вернуть статус оформления заказа', () => {
+    const expectedState = {
+      ...testInitialState,
+      statusOrderData: Status.Loading,
+    };
+
+    const result = productsSlice.reducer(
+      initialState,
+      fetchOrderAction.pending
+    );
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен вернуть статус успешного оформления заказа Success', () => {
+    const response = '201';
+    const orderData = {
+      camerasIds: [state.products[0].id],
+      coupon: 'camera-333',
+    };
+
+    const expectedState = {
+      ...testInitialState,
+      statusOrderData: Status.Success,
+    };
+
+    const result = productsSlice.reducer(
+      undefined,
+      fetchOrderAction.fulfilled(response, '', orderData)
+    );
+    expect(result).toEqual(expectedState);
+  });
+
+  it('Должен вернуть статус оформления заказа Error', () => {
+    const expectedState = {
+      ...testInitialState,
+      statusOrderData: Status.Error,
+    };
+
+    const result = productsSlice.reducer(undefined, fetchOrderAction.rejected);
     expect(result).toEqual(expectedState);
   });
 });

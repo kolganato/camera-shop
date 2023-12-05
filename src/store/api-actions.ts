@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Product } from '../types/product';
-import { CombinedType } from '../types/api-types';
+import { CombinedType, Coupon, Order } from '../types/api-types';
 import { APIRoute } from '../config';
 import { Promo } from '../types/promo';
 import { ReviewData } from '../types/review-data';
@@ -48,6 +48,29 @@ export const fetchReviewAction = createAsyncThunk<
   CombinedType
 >('products/fetchReview', async (review, { extra: api }) => {
   const { data } = await api.post<ReviewData>(APIRoute.Reviews, review);
+
+  return data;
+});
+
+export const fetchPromocodeAction = createAsyncThunk<
+  Coupon,
+  string,
+  CombinedType
+>('products/fetchPromocode', async (promocode, { extra: api }) => {
+  const { data } = await api.post<number>(APIRoute.Coupons, {coupon: promocode});
+
+  return {
+    sales: data,
+    coupon: promocode
+  };
+});
+
+export const fetchOrderAction = createAsyncThunk<
+  string,
+  Order,
+  CombinedType
+>('products/fetchOrder', async (order, { extra: api }) => {
+  const { data } = await api.post<string>(APIRoute.Orders, order);
 
   return data;
 });

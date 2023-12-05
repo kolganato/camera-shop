@@ -17,15 +17,20 @@ import {
   getCountPagesByProducts,
   getCountProducts,
   getCountProductsInBasket,
+  getCoupon,
   getCurrentPage,
   getHasError,
+  getIsModalOrderSuccess,
   getIsModalProduct,
   getIsModalProductSucess,
+  getIsModalRemoveProduct,
   getIsModalReview,
   getIsModalReviewSuccess,
   getIsProductsLoading,
   getIsPromoLoading,
+  getOrderData,
   getProductToAdd,
+  getProductToRemove,
   getProducts,
   getProductsBySearchLive,
   getProductsShow,
@@ -33,10 +38,14 @@ import {
   getReviews,
   getSearchLive,
   getSimilarProducts,
+  getStatusBasket,
+  getStatusOrder,
+  getStatusPromocodeData,
   getStatusReviewData,
   getStatusReviewsLoading,
   getStatusShowModal,
   getStatusSimilarProductsLoading,
+  getTotalPrice,
 } from './selector';
 
 describe('Products selectors', () => {
@@ -158,16 +167,28 @@ describe('Products selectors', () => {
     expect(result).toBe(currentPage);
   });
 
+  it('Должен получить статус заполнености корзины', () => {
+    const { basket } = state[NameSpace.Products];
+    const result = getStatusBasket(state);
+    expect(result).toEqual(basket.length === 0);
+  });
+
   it('Должен получить массив id из корзины', () => {
     const { basket } = state[NameSpace.Products];
     const result = getBasket(state);
     expect(result).toEqual(basket);
   });
 
-  it('Должен получить товар для добавления в козину', () => {
+  it('Должен получить товар для добавления в корзины', () => {
     const { productToAdd } = state[NameSpace.Products];
     const result = getProductToAdd(state);
     expect(result).toEqual(productToAdd);
+  });
+
+  it('Должен получить товар для удаления из корзины', () => {
+    const { productToRemove } = state[NameSpace.Products];
+    const result = getProductToRemove(state);
+    expect(result).toEqual(productToRemove);
   });
 
   it('Должен получить количество товаров в корзине', () => {
@@ -218,6 +239,18 @@ describe('Products selectors', () => {
     expect(result).toBe(isModalReviewSuccess);
   });
 
+  it('Должен получить статус модального окна удаления товара', () => {
+    const { isModalRemoveProduct } = state[NameSpace.Products];
+    const result = getIsModalRemoveProduct(state);
+    expect(result).toBe(isModalRemoveProduct);
+  });
+
+  it('Должен получить статус модального окна успешного оформления заказа', () => {
+    const { isModalOrderSuccess } = state[NameSpace.Products];
+    const result = getIsModalOrderSuccess(state);
+    expect(result).toBe(isModalOrderSuccess);
+  });
+
   it('Должен получить статус отправления отзыва', () => {
     const { statusReviewData } = state[NameSpace.Products];
     const result = getStatusReviewData(state);
@@ -238,5 +271,42 @@ describe('Products selectors', () => {
     expect(result).toEqual(
       products.filter((product) => product.name.match(searchLiveReg))
     );
+  });
+
+  it('Должен получить полную стоимость товаров в корзине', () => {
+    const { basket } = state[NameSpace.Products];
+    const result = getTotalPrice(state);
+
+    expect(result).toEqual(basket.reduce((total, product) => (product.price * product.count) + total, 0));
+  });
+
+  it('Должен получить статус проверки промокода', () => {
+    const { statusPromocodeData } = state[NameSpace.Products];
+    const result = getStatusPromocodeData(state);
+    expect(result).toEqual(statusPromocodeData);
+  });
+
+  it('Должен получить купон', () => {
+    const { coupon } = state[NameSpace.Products];
+    const result = getCoupon(state);
+    expect(result).toEqual(coupon);
+  });
+
+  it('Должен получить сформированные данные для оформления заказа', () => {
+    const { basket } = state[NameSpace.Products];
+    const result = getOrderData(state);
+    const data: number[] = [];
+
+    basket.forEach((item) => {
+      data.push(...Array.from({length: item.count}, () => item.count));
+    });
+
+    expect(result).toEqual(data);
+  });
+
+  it('Должен получить статус оформления заказа', () => {
+    const { statusOrderData } = state[NameSpace.Products];
+    const result = getStatusOrder(state);
+    expect(result).toEqual(statusOrderData);
   });
 });
