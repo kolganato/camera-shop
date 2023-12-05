@@ -49,7 +49,7 @@ function SimilarProducts({ products }: SimilarProductsProps): JSX.Element {
                   <SwiperSlide key={product.id} data-testid="slide-card">
                     <ProductCard
                       product={product}
-                      inBasket={basket.includes(product.id)}
+                      inBasket={basket.some((item) => item.id === product.id)}
                       onClick={handleClick}
                       isSimilar
                     />
