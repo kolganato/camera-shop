@@ -142,9 +142,20 @@ export const getBasket = createSelector(
   (state: ProductsState) => state.basket
 );
 
+export const getStatusBasket = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.basket.length === 0
+);
+
+
 export const getProductToAdd = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.productToAdd
+);
+
+export const getProductToRemove = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.productToRemove
 );
 
 export const getCountProductsInBasket = createSelector(
@@ -197,6 +208,16 @@ export const getIsModalReviewSuccess = createSelector(
   (state: ProductsState) => state.isModalReviewSuccess
 );
 
+export const getIsModalRemoveProduct = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isModalRemoveProduct
+);
+
+export const getIsModalOrderSuccess = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.isModalOrderSuccess
+);
+
 export const getStatusReviewData = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
   (state: ProductsState) => state.statusReviewData
@@ -228,3 +249,39 @@ export const getHasError = createSelector(
   (state: ProductsState) => state.hasError
 );
 
+export const getTotalPrice = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => {
+    const products = state.basket;
+
+    return products.reduce((total, product) => (product.price * product.count) + total, 0);
+  }
+);
+
+export const getStatusPromocodeData = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.statusPromocodeData
+);
+
+export const getCoupon = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.coupon
+);
+
+export const getOrderData = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => {
+    const data: number[] = [];
+
+    state.basket.forEach((item) => {
+      data.push(...Array.from({length: item.count}, () => item.count));
+    });
+
+    return data;
+  }
+);
+
+export const getStatusOrder = createSelector(
+  (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
+  (state: ProductsState) => state.statusOrderData
+);
