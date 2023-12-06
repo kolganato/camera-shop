@@ -297,6 +297,7 @@ function BasketPage(): JSX.Element {
                 <button
                   className="btn btn--purple"
                   type="submit"
+                  disabled={productsBasket.length === 0}
                   onClick={(evt) => {
                     evt.preventDefault();
 
