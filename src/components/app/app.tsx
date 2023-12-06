@@ -28,9 +28,11 @@ function App(): JSX.Element {
   const isEmptyBasket = useAppSelector(getStatusBasket);
   const basketByLocalStorage = localStorage.getItem('basket');
 
-  if(isEmptyBasket && basketByLocalStorage){
-    dispatch(fillBasket(JSON.parse(basketByLocalStorage) as ProductBasket[]));
-  }
+  useEffect(() => {
+    if(isEmptyBasket && basketByLocalStorage){
+      dispatch(fillBasket(JSON.parse(basketByLocalStorage) as ProductBasket[]));
+    }
+  }, [dispatch, isEmptyBasket, basketByLocalStorage]);
 
   useEffect(() => {
     if (!isProductsLoading) {
