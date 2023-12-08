@@ -255,6 +255,16 @@ function BasketPage(): JSX.Element {
                           placeholder="Введите промокод"
                           ref={inputRef}
                           onChange={(evt) => handleChangePromocode(evt)}
+                          onKeyDown={(evt) => {
+                            if(evt.code === 'Space' && inputRef.current !== null){
+                              evt.preventDefault();
+                            }
+                          }}
+                          onPaste={(evt) => {
+                            if(evt.clipboardData.getData('text').search(' ') >= 0){
+                              evt.preventDefault();
+                            }
+                          }}
                         />
                       </label>
                       <p className="custom-input__error">Промокод неверный</p>
