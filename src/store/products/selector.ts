@@ -160,7 +160,15 @@ export const getProductToRemove = createSelector(
 
 export const getCountProductsInBasket = createSelector(
   (state: Pick<State, NameSpace.Products>) => state[NameSpace.Products],
-  (state: ProductsState) => state.basket.length
+  (state: ProductsState) => {
+    const data: number[] = [];
+
+    state.basket.forEach((item) => {
+      data.push(...Array.from({length: item.count}, () => item.id));
+    });
+
+    return data.length;
+  }
 );
 
 export const getStatusShowModal = createSelector(
@@ -274,7 +282,7 @@ export const getOrderData = createSelector(
     const data: number[] = [];
 
     state.basket.forEach((item) => {
-      data.push(...Array.from({length: item.count}, () => item.count));
+      data.push(...Array.from({length: item.count}, () => item.id));
     });
 
     return data;

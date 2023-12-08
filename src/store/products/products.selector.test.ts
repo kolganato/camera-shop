@@ -194,7 +194,14 @@ describe('Products selectors', () => {
   it('Должен получить количество товаров в корзине', () => {
     const { basket } = state[NameSpace.Products];
     const result = getCountProductsInBasket(state);
-    expect(result).toBe(basket.length);
+
+    const data: number[] = [];
+
+    basket.forEach((item) => {
+      data.push(...Array.from({length: item.count}, () => item.id));
+    });
+
+    expect(result).toBe(data.length);
   });
 
   it('Должен получить статус отображения модального окна', () => {

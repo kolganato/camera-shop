@@ -310,6 +310,8 @@ export const productsSlice = createSlice({
       })
       .addCase(fetchOrderAction.fulfilled, (state) => {
         state.statusOrderData = Status.Success;
+        state.basket = [];
+        localStorage.removeItem('basket');
       })
       .addCase(fetchOrderAction.rejected, (state) => {
         state.statusOrderData = Status.Error;

@@ -74,14 +74,18 @@ function BasketPage(): JSX.Element {
 
   const handleSubmitPromocode = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
+    if (inputRef.current !== null && isCorrectPromocode) {
+      dispatch(fetchPromocodeAction(inputRef.current.value));
+    }
+  };
+
+  const handleChangePromocode = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    evt.preventDefault();
     if (inputRef.current !== null) {
       setIsCorrectPromocode(true);
       if (promocodeReg.test(inputRef.current.value)) {
         setIsCorrectPromocode(false);
-        return;
       }
-
-      dispatch(fetchPromocodeAction(inputRef.current.value));
     }
   };
 
@@ -250,6 +254,7 @@ function BasketPage(): JSX.Element {
                           name="promo"
                           placeholder="Введите промокод"
                           ref={inputRef}
+                          onChange={(evt) => handleChangePromocode(evt)}
                         />
                       </label>
                       <p className="custom-input__error">Промокод неверный</p>

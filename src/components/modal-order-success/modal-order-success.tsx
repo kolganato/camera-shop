@@ -1,6 +1,5 @@
 import { AppRoute } from '../../config';
 import { useAppDispatch, useClosingModal } from '../../hooks';
-import { clearBasket } from '../../store/products/products-slice';
 import browserHistory from '../../browser-history';
 
 function ModalOrderSucces(): JSX.Element {
@@ -9,13 +8,11 @@ function ModalOrderSucces(): JSX.Element {
   const history = browserHistory;
 
   const handleClose = () => {
-    dispatch(clearBasket());
     closeModal(dispatch);
   };
 
   const handleClick = () => {
     closeModal(dispatch);
-    dispatch(clearBasket());
     history.push(AppRoute.Root);
   };
 
