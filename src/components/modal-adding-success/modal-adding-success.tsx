@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../config';
 import { useAppDispatch, useClosingModal } from '../../hooks';
 import { setProductToAdd } from '../../store/products/products-slice';
@@ -6,10 +6,12 @@ import { setProductToAdd } from '../../store/products/products-slice';
 function ModalAddingSuccess(): JSX.Element {
   const dispatch = useAppDispatch();
   const closeModal = useClosingModal;
+  const navigate = useNavigate();
 
   const handleClick = () => {
     dispatch(setProductToAdd(null));
     closeModal(dispatch);
+    navigate(AppRoute.Root);
   };
 
   return (

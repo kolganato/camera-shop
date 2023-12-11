@@ -302,8 +302,6 @@ export const productsSlice = createSlice({
       .addCase(fetchPromocodeAction.rejected, (state) => {
         state.statusPromocodeData = Status.Error;
         state.coupon = null;
-
-        toast.error('Промокод неверный');
       })
       .addCase(fetchOrderAction.pending, (state) => {
         state.statusOrderData = Status.Loading;

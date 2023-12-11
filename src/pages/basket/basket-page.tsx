@@ -199,6 +199,16 @@ function BasketPage(): JSX.Element {
                             );
                           }
                         }}
+                        onPaste={(evt) => {
+                          if(evt.clipboardData.getData('text').search(',') >= 0){
+                            evt.preventDefault();
+                          }
+                        }}
+                        onKeyDown={(evt) => {
+                          if(evt.key === ','){
+                            evt.preventDefault();
+                          }
+                        }}
                         min={1}
                         max={99}
                         aria-label="количество товара"
@@ -223,9 +233,6 @@ function BasketPage(): JSX.Element {
                       type="button"
                       aria-label="Удалить товар"
                       onClick={() => void handleRemoveProduct(product)}
-                      onFocus={(evt) => {
-                        evt.target.blur();
-                      }}
                     >
                       <svg width={10} height={10} aria-hidden="true">
                         <use xlinkHref="#icon-close" />
